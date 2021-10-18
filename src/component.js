@@ -4,9 +4,24 @@ export default class Component {
 	}
 
 	/**
-	 * Optional function
+	 * Life cycle hook
+	 */
+	beforeRender() {}
+
+	/**
+	 * Life cycle hook
 	 */
 	afterRender() {}
+
+	/**
+	 * Life cycle hook
+	 */
+	beforeDestroy() {}
+
+	/**
+	 * Life cycle hook
+	 */
+	afterDestroy() {}
 
 	/**
 	 * Required function in the child class

@@ -13,10 +13,9 @@ export default class SignIn extends Component {
 	/**
 	 * Required function
 	 * Automatically called by UserLoginTunnel.createStep
-	 * @param {Object} props Data exposed by the UserLoginTunnel
 	 * @returns {HTMLElement}
 	 */
-	render(props) {
+	render() {
 		const email = this.getStore('home').get('email');
 		return <TemplateSignIn email={email} />;
 	}

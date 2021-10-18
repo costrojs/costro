@@ -3,12 +3,13 @@ import Home from './home/assets/scripts/home.js';
 import SignIn from './sign-in/assets/scripts/sign-in.js';
 import SignUp from './sign-up/assets/scripts/sign-up.js';
 
-const tunnel = new Tunnel({
+const app = new Tunnel({
 	target: document.querySelector('#app'),
+	mode: 'history',
 	routes: [
 		{
 			name: 'home',
-			path: '/prisma-connect',
+			path: '/',
 			component: Home
 		},
 		{
@@ -23,4 +24,3 @@ const tunnel = new Tunnel({
 		}
 	]
 });
-tunnel.navigate('home');

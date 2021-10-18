@@ -19,17 +19,6 @@ export default class Home extends Component {
 	}
 
 	/**
-	 * Required function
-	 * Automatically called by UserLoginTunnel.hashChanged
-	 * @returns {Object} Step data, useful for next steps if necessary
-	 */
-	// setState() {
-	// 	return () => ({
-	// 		email: document.querySelector(this.element).querySelector('#pmc-email').value
-	// 	});
-	// }
-
-	/**
 	 * Optional function
 	 * Automatically called by UserLoginTunnel.createStep
 	 */

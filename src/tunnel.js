@@ -1,9 +1,13 @@
 import extend from './extend';
 import Hash from './location/hash';
+import History from './location/history';
+
+export const LIFECYCLE_HOOKS = ['beforeRender', 'afterRender', 'beforeDestroy', 'afterDestroy'];
 
 export default class Tunnel {
-	constructor({ target, routes }) {
-		this.mode = 'hash';
+	constructor({ target, routes, mode = 'hash' }) {
+		this.mode = mode;
+		this.defaultPath = '/';
 
 		this.components = new Map(
 			routes.map((route) => {
@@ -24,26 +28,37 @@ export default class Tunnel {
 				];
 			})
 		);
-		// this.state = new Map(routes.map((route) => [route, {}]));
 
 		this.target = target;
 		this.previousRoute = null;
 		this.currentPath = null;
 
-		this.location = new {
-			hash: Hash
-		}[this.mode]({
+		const location = {
+			hash: Hash,
+			history: History
+		};
+
+		this.location = new location[this.mode]({
 			onRouteChange: this.onRouteChange.bind(this)
 		});
+		this.location.addEvents();
 
-		this.location.addEvents instanceof Function && this.location.addEvents();
+		this.addEvents();
+		this.onRouteChange({
+			currentPath: this.location.getPath()
+		});
+	}
 
-		const path = this.location.getPath();
-		if (path !== '') {
-			this.onRouteChange({
-				currentPath: path
-			});
-		}
+	addEvents() {
+		document.addEventListener('routeChange', (e) => {
+			const { path, route } = e.detail;
+			this.location.setPath(path || this.components.get(route).path);
+		});
+
+		document.addEventListener('applyPathToElement', (e) => {
+			const { element, route } = e.detail;
+			element.setAttribute('href', this.components.get(route).path);
+		});
 	}
 
 	navigate(route) {
@@ -55,32 +70,21 @@ export default class Tunnel {
 	 * @param {Event} e Event data
 	 */
 	onRouteChange({ currentPath, previousPath = null }) {
-		this.currentRoute = this.getRouteFromPath(currentPath);
+		this.currentRoute = this.getRouteFromPath(currentPath || this.defaultPath);
 		this.previousRoute = this.getRouteFromPath(previousPath);
 
 		const currentComponent = this.components.get(this.currentRoute);
 
 		// Check if route exist
 		if (currentComponent) {
-			const dependsOn = currentComponent.component.dependsOn;
-
 			// Check if previous route exist
 			if (this.previousRoute) {
-				// Set the state with the data from the previous step
-				// this.setState({
-				// 	route: this.previousRoute,
-				// 	data: this.components.get(this.previousRoute).component.getState()
-				// });
-
 				// Destroy the previous step
 				this.destroyComponent(this.previousRoute);
 			}
 
 			// Create the new step
-			this.createComponent({
-				route: this.currentRoute
-				// data: dependsOn && dependsOn.length ? this.getDataFromDependentSteps(dependsOn) : {}
-			});
+			this.createComponent(this.currentRoute);
 		} else {
 			console.warn('Unknown route');
 		}
@@ -105,45 +109,27 @@ export default class Tunnel {
 	}
 
 	/**
-	 * Get data from dependent steps
-	 * @param {Array} dependentSteps
-	 * @returns {Object} Aggregated data
-	 */
-	// getDataFromDependentSteps(dependentSteps) {
-	// 	const data = {};
-	// 	dependentSteps.forEach((route) => (data[route] = this.state.get(route)));
-	// 	return data;
-	// }
-
-	/**
-	 * Set the state for a specific route
-	 * Current data is merged with the actual
-	 * @param {Object} options
-	 * @param {String} route Route
-	 * @param {String} data Data from the step associated to the route
-	 */
-	// setState({ route, data }) {
-	// 	this.state.set(route, extend(true, this.state.get(route), data));
-	// }
-
-	/**
 	 * Destroy the step
 	 * @param {String} route Route to destroy
 	 */
 	destroyComponent(route) {
+		const Step = this.components.get(route).component;
+
+		Step.beforeDestroy();
 		this.target.replaceChildren();
+		Step.afterDestroy();
 	}
 
 	/**
 	 * Create the step
 	 * @param {Object} options
 	 * @param {String} route Route
-	 * @param {String} data Data from the step associated to the route
 	 */
-	createComponent({ route, data }) {
+	createComponent(route) {
 		const Step = this.components.get(route).component;
 
-		this.render(Step.render(data));
+		Step.beforeRender();
+		this.render(Step.render());
 		Step.afterRender();
 	}
 

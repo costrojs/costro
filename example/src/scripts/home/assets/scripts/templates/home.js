@@ -1,5 +1,5 @@
-import { createElement } from 'jsx-dom'
-
+import { createElement } from 'jsx-dom';
+import { Link } from '../../../../../../../dist/tunnel';
 /**
  * Template step
  * @param {Object} props Data from dependent steps
@@ -13,6 +13,9 @@ export default function templateHome(props) {
 			<br />
 			<input type="text" id="pmc-email" placeholder="monemail@email.com" />
 			<button className="pmc-submit">Continuer</button>
+			<Link path="/connexion" tag="button">
+				Go to
+			</Link>
 		</div>
-	)
+	);
 }

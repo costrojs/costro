@@ -19,7 +19,7 @@ export default class Hash {
 	hashChanged(e) {
 		this.onRouteChange({
 			currentPath: this.getPath(),
-			previousPath: this.getPreviousPath(e)
+			previousPath: this.getPreviousPath(e) || '/' // todo: why '/'?
 		});
 	}
 
