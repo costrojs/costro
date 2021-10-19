@@ -1,4 +1,3 @@
-import extend from './extend';
 import Hash from './location/hash';
 import History from './location/history';
 
@@ -7,16 +6,23 @@ export const LIFECYCLE_HOOKS = ['beforeRender', 'afterRender', 'beforeDestroy', 
 export default class Tunnel {
 	constructor({ target, routes, mode = 'hash' }) {
 		this.mode = mode;
-		this.defaultPath = '/';
 
 		this.routes = new Map(
 			routes.map((route) => {
 				const component = new route.component(); // eslint-disable-line new-cap
 
 				// Push new function inside step context to change the route
-				component.currentRoute = () => this.currentRoute;
-				component.navigate = (route) => this.navigate(route);
-				component.getExternalState = (route) => this.routes.get(route).component.getState();
+				component.getRoute = () => {
+					const path = this.location.getPath();
+					return this.getRouteFromPath(path);
+				};
+				component.navigate = (route) => {
+					const path = this.routes.get(route).path;
+					this.navigate(path);
+				};
+				component.getExternalStore = (route) => {
+					return this.routes.get(route).component.getStore();
+				};
 
 				return [
 					route.name,
@@ -32,8 +38,8 @@ export default class Tunnel {
 		this.previousRoute = null;
 		this.currentPath = null;
 
-		this.onRouteChanged = this.onRouteChanged.bind(this);
-		this.applyPathToElement = this.applyPathToElement.bind(this);
+		this.onNavigate = this.onNavigate.bind(this);
+		this.onUpdateLinkHref = this.onUpdateLinkHref.bind(this);
 		const location = {
 			hash: Hash,
 			history: History
@@ -51,22 +57,22 @@ export default class Tunnel {
 	}
 
 	addEvents() {
-		document.addEventListener('routeChange', this.onRouteChanged);
-		document.addEventListener('applyPathToElement', this.applyPathToElement);
+		document.addEventListener('navigate', this.onNavigate);
+		document.addEventListener('updateLinkHref', this.onUpdateLinkHref);
 	}
 
-	onRouteChanged(e) {
+	onNavigate(e) {
 		const { path, route } = e.detail;
-		this.location.setPath(path || this.routes.get(route).path);
+		this.navigate(path || this.routes.get(route).path);
 	}
 
-	applyPathToElement(e) {
+	onUpdateLinkHref(e) {
 		const { element, route } = e.detail;
 		element.setAttribute('href', this.routes.get(route).path);
 	}
 
-	navigate(route) {
-		this.location.setPath(this.routes.get(route).path);
+	navigate(path) {
+		this.location.setPath(path);
 	}
 
 	/**

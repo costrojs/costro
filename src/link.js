@@ -8,7 +8,7 @@ export default function Link({ route, path, children, tag = 'a', ...attrs }) {
 	if (tag === 'a') {
 		if (route) {
 			document.dispatchEvent(
-				new window.CustomEvent('applyPathToElement', {
+				new window.CustomEvent('updateLinkHref', {
 					detail: {
 						route,
 						element
@@ -27,7 +27,7 @@ export default function Link({ route, path, children, tag = 'a', ...attrs }) {
 	element.addEventListener('click', (e) => {
 		e.preventDefault();
 		document.dispatchEvent(
-			new window.CustomEvent('routeChange', {
+			new window.CustomEvent('navigate', {
 				detail: {
 					route,
 					path

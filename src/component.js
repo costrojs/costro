@@ -1,6 +1,6 @@
 export default class Component {
 	constructor() {
-		this.state = new Map();
+		this.store = new Map();
 	}
 
 	/**
@@ -33,11 +33,14 @@ export default class Component {
 	/**
 	 * Required function in the child class
 	 */
-	setState(data) {
-		Object.keys(data).forEach((key) => this.state.set(key, data[key]));
+	setStore(data) {
+		const keys = Object.keys(data);
+		for (var i = 0, length = keys.length; i < length; i++) {
+			this.store.set(keys[i], data[keys[i]]);
+		}
 	}
 
-	getState(key) {
-		return key ? this.state.get(key) : this.state;
+	getStore(key) {
+		return key ? this.store.get(key) : this.store;
 	}
 }
