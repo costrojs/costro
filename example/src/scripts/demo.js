@@ -1,7 +1,7 @@
 import { Tunnel } from '../../../src/index';
-import Home from './home/assets/scripts/home.js';
-import SignIn from './sign-in/assets/scripts/sign-in.js';
-import SignUp from './sign-up/assets/scripts/sign-up.js';
+import Home from './home';
+import About from './about';
+import Contact from './contact';
 
 const app = new Tunnel({
 	target: document.querySelector('#app'),
@@ -13,14 +13,14 @@ const app = new Tunnel({
 			component: Home
 		},
 		{
-			name: 'signIn',
-			path: '/connexion',
-			component: SignIn
+			name: 'about',
+			path: '/about',
+			component: About
 		},
 		{
-			name: 'signUp',
-			path: '/inscription',
-			component: SignUp
+			name: 'contact',
+			path: '/contact',
+			component: Contact
 		}
 	]
 });

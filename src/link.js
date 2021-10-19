@@ -1,8 +1,8 @@
-export default function Link({ route, path, children, tag = 'a' }) {
-	const link = document.createElement(tag);
+export default function Link({ route, path, children, tag = 'a', ...attrs }) {
+	const element = document.createElement(tag);
 
 	if (children.length) {
-		link.innerText = children[0];
+		element.innerText = children[0];
 	}
 
 	if (tag === 'a') {
@@ -11,16 +11,20 @@ export default function Link({ route, path, children, tag = 'a' }) {
 				new window.CustomEvent('applyPathToElement', {
 					detail: {
 						route,
-						element: link
+						element
 					}
 				})
 			);
 		} else if (path) {
-			link.setAttribute('href', path);
+			element.setAttribute('href', path);
 		}
 	}
 
-	link.addEventListener('click', (e) => {
+	Object.keys(attrs).forEach((key) =>
+		element.setAttribute(key === 'className' ? 'class' : key, attrs[key])
+	);
+
+	element.addEventListener('click', (e) => {
 		e.preventDefault();
 		document.dispatchEvent(
 			new window.CustomEvent('routeChange', {
@@ -32,5 +36,5 @@ export default function Link({ route, path, children, tag = 'a' }) {
 		);
 	});
 
-	return link;
+	return element;
 }

@@ -9,15 +9,14 @@ export default class Tunnel {
 		this.mode = mode;
 		this.defaultPath = '/';
 
-		this.components = new Map(
+		this.routes = new Map(
 			routes.map((route) => {
 				const component = new route.component(); // eslint-disable-line new-cap
 
 				// Push new function inside step context to change the route
+				component.currentRoute = () => this.currentRoute;
 				component.navigate = (route) => this.navigate(route);
-				component.getStore = (route) => {
-					return this.components.get(route).component.getState();
-				};
+				component.getExternalState = (route) => this.routes.get(route).component.getState();
 
 				return [
 					route.name,
@@ -33,6 +32,8 @@ export default class Tunnel {
 		this.previousRoute = null;
 		this.currentPath = null;
 
+		this.onRouteChanged = this.onRouteChanged.bind(this);
+		this.applyPathToElement = this.applyPathToElement.bind(this);
 		const location = {
 			hash: Hash,
 			history: History
@@ -50,19 +51,22 @@ export default class Tunnel {
 	}
 
 	addEvents() {
-		document.addEventListener('routeChange', (e) => {
-			const { path, route } = e.detail;
-			this.location.setPath(path || this.components.get(route).path);
-		});
+		document.addEventListener('routeChange', this.onRouteChanged);
+		document.addEventListener('applyPathToElement', this.applyPathToElement);
+	}
 
-		document.addEventListener('applyPathToElement', (e) => {
-			const { element, route } = e.detail;
-			element.setAttribute('href', this.components.get(route).path);
-		});
+	onRouteChanged(e) {
+		const { path, route } = e.detail;
+		this.location.setPath(path || this.routes.get(route).path);
+	}
+
+	applyPathToElement(e) {
+		const { element, route } = e.detail;
+		element.setAttribute('href', this.routes.get(route).path);
 	}
 
 	navigate(route) {
-		this.location.setPath(this.components.get(route).path);
+		this.location.setPath(this.routes.get(route).path);
 	}
 
 	/**
@@ -70,10 +74,10 @@ export default class Tunnel {
 	 * @param {Event} e Event data
 	 */
 	onRouteChange({ currentPath, previousPath = null }) {
-		this.currentRoute = this.getRouteFromPath(currentPath || this.defaultPath);
+		this.currentRoute = this.getRouteFromPath(currentPath);
 		this.previousRoute = this.getRouteFromPath(previousPath);
 
-		const currentComponent = this.components.get(this.currentRoute);
+		const currentComponent = this.routes.get(this.currentRoute);
 
 		// Check if route exist
 		if (currentComponent) {
@@ -88,8 +92,6 @@ export default class Tunnel {
 		} else {
 			console.warn('Unknown route');
 		}
-
-		this.displayDebug();
 	}
 
 	/**
@@ -99,7 +101,7 @@ export default class Tunnel {
 	 */
 	getRouteFromPath(path) {
 		let route = null;
-		for (const step of this.components.entries()) {
+		for (const step of this.routes.entries()) {
 			if (step[1].path === path) {
 				route = step[0];
 				break;
@@ -113,7 +115,7 @@ export default class Tunnel {
 	 * @param {String} route Route to destroy
 	 */
 	destroyComponent(route) {
-		const Step = this.components.get(route).component;
+		const Step = this.routes.get(route).component;
 
 		Step.beforeDestroy();
 		this.target.replaceChildren();
@@ -126,7 +128,7 @@ export default class Tunnel {
 	 * @param {String} route Route
 	 */
 	createComponent(route) {
-		const Step = this.components.get(route).component;
+		const Step = this.routes.get(route).component;
 
 		Step.beforeRender();
 		this.render(Step.render());
@@ -138,25 +140,10 @@ export default class Tunnel {
 	 * @param {HTMLElement} template Step template
 	 */
 	render(template) {
-		this.target.appendChild(template);
-	}
-
-	/**
-	 * Enable debug infos
-	 */
-	displayDebug() {
-		console.groupCollapsed('Tunnel::routes');
-		console.log({ currentRoute: this.currentRoute, previousRoute: this.previousRoute });
-		console.groupEnd();
-		console.groupCollapsed('Tunnel::steps');
-		for (const step of this.components.entries()) {
-			console.log({
-				name: step[0],
-				path: step[1].path,
-				component: step[1].component,
-				state: step[1].component.getState()
-			});
+		if (template instanceof HTMLElement) {
+			this.target.appendChild(template);
+		} else {
+			this.target.insertAdjacentHTML('beforeend', template);
 		}
-		console.groupEnd();
 	}
 }
