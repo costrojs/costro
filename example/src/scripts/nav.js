@@ -1,4 +1,4 @@
-import { Link } from '../../../src/index';
+import { Link } from '../../../dist/tunnel';
 import { createElement } from 'jsx-dom';
 
 export default function Nav(props) {

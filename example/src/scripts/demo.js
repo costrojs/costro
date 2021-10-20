@@ -1,4 +1,4 @@
-import { Tunnel } from '../../../src/index';
+import { Tunnel } from '../../../dist/tunnel';
 import Home from './home';
 import About from './about';
 import Contact from './contact';

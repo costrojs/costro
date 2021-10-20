@@ -1,9 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = (env, argv) => {
 	const isProduction = argv.mode === 'production';
@@ -54,7 +53,7 @@ module.exports = (env, argv) => {
 			]
 		},
 		plugins: [
-			new ProgressBarPlugin(),
+			new webpack.ProgressPlugin(),
 			new MiniCssExtractPlugin({
 				filename: '[name].css',
 				chunkFilename: '[name].css'
@@ -78,24 +77,21 @@ module.exports = (env, argv) => {
 			minimizer: [
 				new TerserPlugin({
 					extractComments: false,
-					cache: true,
 					parallel: true,
-					sourceMap: false,
 					terserOptions: {
-						extractComments: 'all',
 						compress: {
-							drop_console: false
-						},
-						mangle: true
+							// Drop console.log|console.info|console.debug
+							// Keep console.warn|console.error
+							pure_funcs: ['console.log', 'console.info', 'console.debug']
+						}
 					}
 				}),
-				new OptimizeCSSAssetsPlugin({})
+				new CssMinimizerPlugin()
 			],
-			namedModules: true,
+			chunkIds: 'deterministic', // or 'named'
 			removeAvailableModules: true,
 			removeEmptyChunks: true,
 			mergeDuplicateChunks: true,
-			occurrenceOrder: true,
 			providedExports: false,
 			splitChunks: false
 		}

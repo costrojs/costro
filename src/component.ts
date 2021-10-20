@@ -1,4 +1,6 @@
 export default class Component {
+	store: Map<string, object>;
+
 	constructor() {
 		this.store = new Map();
 	}
@@ -33,14 +35,14 @@ export default class Component {
 	/**
 	 * Required function in the child class
 	 */
-	setStore(data) {
+	setStore(data: any) {
 		const keys = Object.keys(data);
 		for (var i = 0, length = keys.length; i < length; i++) {
 			this.store.set(keys[i], data[keys[i]]);
 		}
 	}
 
-	getStore(key) {
+	getStore(key: string) {
 		return key ? this.store.get(key) : this.store;
 	}
 }

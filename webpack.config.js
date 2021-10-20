@@ -1,8 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
-const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = (env, argv) => {
 	const isProduction = argv.mode === 'production';
@@ -10,7 +9,7 @@ module.exports = (env, argv) => {
 	return {
 		watch: !isProduction,
 		entry: {
-			tunnel: './src/index.js'
+			tunnel: './src/index.ts'
 		},
 		watchOptions: {
 			ignored: /node_modules/
@@ -20,8 +19,10 @@ module.exports = (env, argv) => {
 			path: path.resolve(__dirname, './dist/'),
 			filename: '[name].js',
 			sourceMapFilename: '[file].map',
-			libraryTarget: 'umd',
-			library: 'tunnel'
+			library: {
+				name: 'tunnel',
+				type: 'umd'
+			}
 		},
 		module: {
 			rules: [
@@ -33,10 +34,25 @@ module.exports = (env, argv) => {
 							loader: 'babel-loader'
 						}
 					]
+				},
+				{
+					test: /\.ts$/,
+					include: path.resolve(__dirname, './src'),
+					use: [
+						{
+							loader: 'babel-loader'
+						},
+						{
+							loader: 'ts-loader'
+						}
+					]
 				}
 			]
 		},
-		plugins: [new ProgressBarPlugin(), new webpack.optimize.ModuleConcatenationPlugin()],
+		resolve: {
+			extensions: ['.js', '.ts']
+		},
+		plugins: [new webpack.ProgressPlugin(), new webpack.optimize.ModuleConcatenationPlugin()],
 		stats: {
 			assets: true,
 			colors: true,
@@ -54,24 +70,21 @@ module.exports = (env, argv) => {
 			minimizer: [
 				new TerserPlugin({
 					extractComments: false,
-					cache: true,
 					parallel: true,
-					sourceMap: false,
 					terserOptions: {
-						extractComments: false,
 						compress: {
-							drop_console: true
-						},
-						mangle: true
+							// Drop console.log|console.info|console.debug
+							// Keep console.warn|console.error
+							pure_funcs: ['console.log', 'console.info', 'console.debug']
+						}
 					}
 				}),
-				new OptimizeCSSAssetsPlugin({})
+				new CssMinimizerPlugin()
 			],
-			namedModules: true,
+			chunkIds: 'deterministic', // or 'named'
 			removeAvailableModules: true,
 			removeEmptyChunks: true,
 			mergeDuplicateChunks: true,
-			occurrenceOrder: true,
 			providedExports: false,
 			splitChunks: false
 		}

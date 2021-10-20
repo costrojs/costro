@@ -1,22 +1,25 @@
 export default class Hash {
-	constructor({ onRouteChange }) {
+	onRouteChange: Function
+
+	constructor({ onRouteChange }: {onRouteChange: Function}) {
 		this.onRouteChange = onRouteChange;
+
 		this.hashChanged = this.hashChanged.bind(this);
 	}
 
-	setPath(path) {
+	setPath(path: string) {
 		window.location.hash = path;
 	}
 
-	getPath() {
+	getPath():string {
 		return window.location.hash.substr(1);
 	}
 
 	addEvents() {
-		window.addEventListener('hashchange', this.hashChanged);
+		// window.addEventListener('hashchange', this.hashChanged);
 	}
 
-	hashChanged(e) {
+	hashChanged(e: HashChangeEvent) {
 		this.onRouteChange({
 			currentPath: this.getPath(),
 			previousPath: this.getPreviousPath(e) || '/' // todo: why '/'?
@@ -28,7 +31,7 @@ export default class Hash {
 	 * @param {Event} e Event data
 	 * @returns {(String|null)} Previous route or null
 	 */
-	getPreviousPath(e) {
+	getPreviousPath(e: HashChangeEvent): string|null {
 		return e && e.oldURL ? e.oldURL.split('#')[1] : null;
 	}
 }

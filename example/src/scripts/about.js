@@ -1,4 +1,4 @@
-import { Component } from '../../../src/index';
+import { Component } from '../../../dist/tunnel';
 import Navigation from './nav';
 import { createElement } from 'jsx-dom';
 

@@ -1,5 +1,9 @@
 export default class History {
-	constructor({ onRouteChange }) {
+	currentPath: string;
+	previousPath: null|string;
+	onRouteChange: Function
+
+	constructor({ onRouteChange }: {onRouteChange: Function}) {
 		this.currentPath = this.getPath();
 		this.previousPath = null;
 
@@ -16,7 +20,7 @@ export default class History {
 		this.onPopState = this.onPopState.bind(this);
 	}
 
-	setPath(path) {
+	setPath(path: string) {
 		this.previousPath = this.getPath();
 		this.currentPath = path;
 
@@ -24,7 +28,7 @@ export default class History {
 			{
 				path: this.currentPath
 			},
-			null,
+			'',
 			`${path}`
 		);
 
@@ -34,7 +38,7 @@ export default class History {
 		});
 	}
 
-	getPath() {
+	getPath():string {
 		return window.location.pathname;
 	}
 
@@ -42,7 +46,7 @@ export default class History {
 		window.addEventListener('popstate', this.onPopState);
 	}
 
-	onPopState(e) {
+	onPopState() {
 		this.previousPath = this.currentPath;
 		this.currentPath = this.getPath();
 
