@@ -1,10 +1,11 @@
 module.exports = {
-	parser: 'babel-eslint',
+	parser: '@babel/eslint-parser',
 	parserOptions: {
 		ecmaVersion: 6,
 		ecmaFeatures: {
 			impliedStrict: true,
-			experimentalObjectRestSpread: true
+			experimentalObjectRestSpread: true,
+			jsx: true
 		},
 		sourceType: 'module'
 	},
@@ -16,7 +17,7 @@ module.exports = {
 		jest: true
 	},
 
-	extends: ['standard', 'plugin:react/recommended'],
+	extends: ['standard', 'plugin:react/recommended', 'plugin:prettier/recommended'],
 
 	plugins: ['prettier'],
 

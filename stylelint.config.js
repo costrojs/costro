@@ -1,6 +1,5 @@
 module.exports = {
-	extends: ['stylelint-config-standard'],
-	plugins: ['stylelint-prettier'],
+	extends: ['stylelint-config-standard', 'stylelint-prettier/recommended'],
 	rules: {
 		indentation: ['tab', { ignore: 'inside-parens' }],
 		'unit-whitelist': ['em', 'rem', '%', 'px', 's', 'deg', 'fr', 'vh', 'vw', 'ms'],
