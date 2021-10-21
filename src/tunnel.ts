@@ -1,68 +1,47 @@
 import Hash from './location/hash';
 import History from './location/history';
 
-export const LIFECYCLE_HOOKS = ['beforeRender', 'afterRender', 'beforeDestroy', 'afterDestroy'];
+interface interfaceLocationInstances {
+	[key: string]: any;
+}
 
-const LOCATION = {
+export interface Route {
+	name: string;
+	path: string;
+	component: any;
+}
+
+export interface RouteData {
+	path: string;
+	component: any;
+}
+
+const LOCATION_INSTANCES: interfaceLocationInstances = {
 	hash: Hash,
 	history: History
 };
 
-export interface location2 {
-	[key: string]: any
-}
-
-export interface Route {
-	name: string,
-	path: string,
-	component: any
-}
-
-export interface Route2 {
-	path: string,
-	component: any
-}
-
 export default class Tunnel {
 	mode: string;
-	routes: Map<string, Route2>;
+	routes: Map<string, RouteData>;
 	target: HTMLElement;
 	location: any;
+	currentRoute: null | string;
+	previousRoute: null | string;
+	currentPath: null | string;
 
-	currentRoute: null|string;
-	previousRoute: null|string;
-	currentPath: null|string;
-
-	constructor({ target, routes, mode = 'hash' }: {target: HTMLElement, routes: Array<Route>, mode: string}) {
+	constructor({
+		target,
+		routes,
+		mode = 'hash'
+	}: {
+		target: HTMLElement;
+		routes: Array<Route>;
+		mode: string;
+	}) {
 		this.mode = mode;
 
-		this.routes = new Map(
-			routes.map((route) => {
-				const component = new route.component(); // eslint-disable-line new-cap
-
-				// Push new function inside step context to change the route
-				component.getRoute = (): null|string => {
-					const path = this.location.getPath();
-					return this.getRouteFromPath(path);
-				};
-				component.navigate = (route: string): void => {
-					const component = this.routes.get(route);
-					component && this.navigate(component.path);
-				};
-				component.getExternalStore = (route: string): any|null => {
-					const component = this.routes.get(route);
-					return component ? component.component.getStore() : null;
-				};
-
-				return [
-					route.name,
-					{
-						path: route.path,
-						component
-					}
-				];
-			})
-		);
+		this.routes = this.createRoutesMap(routes);
 
 		this.target = target;
 		this.currentRoute = null;
@@ -72,7 +51,8 @@ export default class Tunnel {
 		this.onNavigate = this.onNavigate.bind(this);
 		this.onUpdateLinkHref = this.onUpdateLinkHref.bind(this);
 
-		this.location = new (LOCATION as location2)[this.mode]({
+		const LocationInstance = this.getLocationInstance(mode);
+		this.location = new LocationInstance({
 			onRouteChange: this.onRouteChange.bind(this)
 		});
 		this.location.addEvents();
@@ -83,15 +63,55 @@ export default class Tunnel {
 		});
 	}
 
+	createRoutesMap(routes: Array<Route>): Map<string, RouteData> {
+		return new Map(
+			routes.map((route: Route) => {
+				const component = new route.component();
+				this.setComponentInjection(component);
+				return [
+					route.name,
+					{
+						path: route.path,
+						component
+					}
+				];
+			})
+		);
+	}
+
+	/**
+	 * Push new function inside step context to change the route
+	 */
+	setComponentInjection(component: any) {
+		component.getRoute = (): null | string => {
+			const path = this.location.getPath();
+			return this.getRouteFromPath(path);
+		};
+		component.navigate = (route: string): void => {
+			const component = this.routes.get(route);
+			component && this.navigate(component.path);
+		};
+		component.getExternalStore = (route: string): any | null => {
+			const component = this.routes.get(route);
+			return component ? component.component.getStore() : null;
+		};
+	}
+
+	getLocationInstance(mode: string): any {
+		const LocationInstance: any = LOCATION_INSTANCES[mode];
+		if (LocationInstance) {
+			return LocationInstance;
+		}
+		throw new Error(`Router :: Unknown mode "${mode}"`);
+	}
+
 	addEvents() {
-        //@ts-ignore
 		document.addEventListener('navigate', this.onNavigate);
-        //@ts-ignore
 		document.addEventListener('updateLinkHref', this.onUpdateLinkHref);
 	}
 
-	onNavigate(e: CustomEvent) {
-		const { route } = e.detail;
+	onNavigate(e: Event) {
+		const { route } = (<CustomEvent>e).detail;
 
 		if (route) {
 			const component = this.routes.get(route);
@@ -101,8 +121,8 @@ export default class Tunnel {
 		}
 	}
 
-	onUpdateLinkHref(e: CustomEvent) {
-		const { element, route } = e.detail;
+	onUpdateLinkHref(e: Event) {
+		const { element, route } = (<CustomEvent>e).detail;
 		if (element && route) {
 			const component = this.routes.get(route);
 			if (component) {
@@ -119,7 +139,13 @@ export default class Tunnel {
 	 * Event listener for the hash change
 	 * @param {Event} e Event data
 	 */
-	onRouteChange({ currentPath, previousPath = null }: {currentPath: string, previousPath?: null|string}) {
+	onRouteChange({
+		currentPath,
+		previousPath = null
+	}: {
+		currentPath: string;
+		previousPath?: null | string;
+	}) {
 		this.currentRoute = this.getRouteFromPath(currentPath);
 		this.previousRoute = this.getRouteFromPath(previousPath);
 
@@ -139,7 +165,7 @@ export default class Tunnel {
 	 * @param {String} path Route path
 	 * @returns {String} Route name
 	 */
-	getRouteFromPath(path: null|string): null|string {
+	getRouteFromPath(path: null | string): null | string {
 		let route = null;
 		for (const step of this.routes.entries()) {
 			if (step[1].path === path) {
@@ -183,7 +209,7 @@ export default class Tunnel {
 	 * Render the step template
 	 * @param {HTMLElement} template Step template
 	 */
-	render(template: HTMLElement|string) {
+	render(template: HTMLElement | string) {
 		if (template instanceof HTMLElement) {
 			this.target.appendChild(template);
 		} else {
