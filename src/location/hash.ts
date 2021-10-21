@@ -1,7 +1,7 @@
 export default class Hash {
-	onRouteChange: Function
+	onRouteChange: Function;
 
-	constructor({ onRouteChange }: {onRouteChange: Function}) {
+	constructor({ onRouteChange }: { onRouteChange: Function }) {
 		this.onRouteChange = onRouteChange;
 
 		this.hashChanged = this.hashChanged.bind(this);
@@ -11,7 +11,7 @@ export default class Hash {
 		window.location.hash = path;
 	}
 
-	getPath():string {
+	getPath(): string {
 		return window.location.hash.substr(1);
 	}
 
@@ -31,7 +31,7 @@ export default class Hash {
 	 * @param {Event} e Event data
 	 * @returns {(String|null)} Previous route or null
 	 */
-	getPreviousPath(e: HashChangeEvent): string|null {
+	getPreviousPath(e: HashChangeEvent): string | null {
 		return e && e.oldURL ? e.oldURL.split('#')[1] : null;
 	}
 }

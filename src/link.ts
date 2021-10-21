@@ -1,8 +1,18 @@
 export interface Attributes {
-	[key: string]: string
+	[key: string]: string;
 }
 
-export default function Link({ route, tag = 'a', children, ...attrs }: {route: string, tag: string, children: Array<any>, attrs: Attributes}) {
+export default function Link({
+	route,
+	tag = 'a',
+	children,
+	...attrs
+}: {
+	route: string;
+	tag: string;
+	children: Array<any>;
+	attrs: Attributes;
+}) {
 	const element = document.createElement(tag);
 
 	if (children.length) {

@@ -1,9 +1,9 @@
 export default class History {
 	currentPath: string;
-	previousPath: null|string;
-	onRouteChange: Function
+	previousPath: null | string;
+	onRouteChange: Function;
 
-	constructor({ onRouteChange }: {onRouteChange: Function}) {
+	constructor({ onRouteChange }: { onRouteChange: Function }) {
 		this.currentPath = this.getPath();
 		this.previousPath = null;
 
@@ -38,7 +38,7 @@ export default class History {
 		});
 	}
 
-	getPath():string {
+	getPath(): string {
 		return window.location.pathname;
 	}
 

@@ -3,6 +3,7 @@ import Home from './home';
 import About from './about';
 import Contact from './contact';
 
+// eslint-disable-next-line no-unused-vars
 const app = new Tunnel({
 	target: document.querySelector('#app'),
 	mode: 'history',
