@@ -49,7 +49,6 @@ export default class Tunnel {
 		this.currentPath = null;
 
 		this.onNavigate = this.onNavigate.bind(this);
-		this.onUpdateLinkHref = this.onUpdateLinkHref.bind(this);
 
 		const LocationInstance = this.getLocationInstance(mode);
 		this.location = new LocationInstance({
@@ -83,9 +82,8 @@ export default class Tunnel {
 	 * Push new function inside step context to change the route
 	 */
 	setComponentInjection(component: any) {
-		component.getRoute = (): null | string => {
-			const path = this.location.getPath();
-			return this.getRouteFromPath(path);
+		component.getPath = (): null | string => {
+			return this.location.getPath();
 		};
 		component.navigate = (route: string): void => {
 			const component = this.routes.get(route);
@@ -107,28 +105,11 @@ export default class Tunnel {
 
 	addEvents() {
 		document.addEventListener('navigate', this.onNavigate);
-		document.addEventListener('updateLinkHref', this.onUpdateLinkHref);
 	}
 
 	onNavigate(e: Event) {
-		const { route } = (<CustomEvent>e).detail;
-
-		if (route) {
-			const component = this.routes.get(route);
-			if (component) {
-				this.navigate(component.path);
-			}
-		}
-	}
-
-	onUpdateLinkHref(e: Event) {
-		const { element, route } = (<CustomEvent>e).detail;
-		if (element && route) {
-			const component = this.routes.get(route);
-			if (component) {
-				element.setAttribute('href', component.path);
-			}
-		}
+		const { path } = (<CustomEvent>e).detail;
+		path && this.navigate(path);
 	}
 
 	navigate(path: string) {

@@ -8,7 +8,7 @@ export default class Contact extends Component {
 
 		return (
 			<div>
-				<Navigation route={this.getRoute()} />
+				<Navigation path={this.getPath()} />
 				<h2>Contact</h2>
 				{date && <p>{date}</p>}
 			</div>

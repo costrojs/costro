@@ -1,7 +1,11 @@
-export default class Component {
+class Component {
 	store: Map<string, object>;
+	isReactComponent = true;
 
-	constructor() {
+	// @ts-ignore
+	constructor(props) {
+		// @ts-ignore
+		this.props = props;
 		this.store = new Map();
 	}
 
@@ -46,3 +50,8 @@ export default class Component {
 		return key ? this.store.get(key) : this.store;
 	}
 }
+
+// @ts-ignore
+Component.prototype.isReactComponent = {};
+
+export default Component;

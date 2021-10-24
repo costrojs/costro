@@ -1,18 +1,23 @@
-import { Link } from '../../../dist/tunnel';
+import { Link, Component, History } from '../../../dist/tunnel';
 import { createElement } from 'jsx-dom';
 
-export default function Nav(props) {
-	return (
-		<ul>
-			{['home', 'contact', 'about'].map((route) => (
-				<li>
-					{route === props.route ? (
-						<span>{route}</span>
-					) : (
-						<Link route={route}>{route}</Link>
-					)}
-				</li>
-			))}
-		</ul>
-	);
+export default class Nav extends Component {
+	render() {
+		return (
+			<ul>
+				{['/', '/contact', '/about'].map((path) => (
+					<li>
+						{path === this.props.path ? (
+							<span>{path}</span>
+						) : (
+							<button onClick={() => History(path)}>{path}</button>
+							// <Link path={route}>
+							// 	<span>{route}</span>
+							// </Link>
+						)}
+					</li>
+				))}
+			</ul>
+		);
+	}
 }

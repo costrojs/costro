@@ -17,10 +17,14 @@ export default class Home extends Component {
 		}, 1000);
 	}
 
+	beforeDestroy() {
+		clearInterval(this.timer);
+	}
+
 	render() {
 		return (
 			<div className="home">
-				<Navigation route={this.getRoute()} />
+				<Navigation path={this.getPath()} />
 				<h2>Home</h2>
 				<input type="date" placeholder="Get the date" onChange={this.onDateChanged} />
 				<span className="time">{new Date().toLocaleTimeString()}</span>

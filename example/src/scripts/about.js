@@ -6,7 +6,7 @@ export default class About extends Component {
 	render() {
 		return (
 			<div>
-				<Navigation route={this.getRoute()} />
+				<Navigation path={this.getPath()} />
 				<h2>About</h2>
 			</div>
 		);
