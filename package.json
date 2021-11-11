@@ -24,7 +24,7 @@
 		"test:markdown": "markdownlint '**/*.md' --ignore node_modules",
 		"test:stylelint": "stylelint './src/**/*.css' './example/src/**/*.css' --config ./stylelint.config.js",
 		"test:stylelint:fix": "stylelint './src/**/*.css' './example/src/**/*.css' --config ./stylelint.config.js --fix",
-		"test:type-check": "tsc --noEmit --watch",
+		"test:type-check": "tsc --noEmit",
 		"test:watch": "jest --watchAll --coverage"
 	},
 	"dependencies": {

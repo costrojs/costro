@@ -43,7 +43,7 @@ jobs:
       - name: Test Markdown
         run: npm run test:markdown
 
-      - name: Build Release
+      - name: Build
         run: |
           npm run build
           npm run build:example
