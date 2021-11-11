@@ -1,4 +1,4 @@
-import { Link, Component, History } from '../../../dist/tunnel';
+import { Link, Component } from '../../../dist/tunnel';
 import { createElement } from 'jsx-dom';
 
 export default class Nav extends Component {
