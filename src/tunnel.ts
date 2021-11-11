@@ -1,20 +1,6 @@
 import Hash from './location/hash';
 import History from './location/history';
-
-interface interfaceLocationInstances {
-	[key: string]: any;
-}
-
-export interface Route {
-	name: string;
-	path: string;
-	component: any;
-}
-
-export interface RouteData {
-	path: string;
-	component: any;
-}
+import { RouteData, interfaceLocationInstances, Route } from './interface';
 
 const LOCATION_INSTANCES: interfaceLocationInstances = {
 	hash: Hash,
@@ -22,31 +8,28 @@ const LOCATION_INSTANCES: interfaceLocationInstances = {
 };
 
 export default class Tunnel {
+	target: HTMLElement;
 	mode: string;
 	routes: Map<string, RouteData>;
-	target: HTMLElement;
 	location: any;
-	currentRoute: null | string;
-	previousRoute: null | string;
-	currentPath: null | string;
+	currentRoute: undefined | RouteData;
+	previousRoute: undefined | RouteData;
 
 	constructor({
 		target,
-		routes,
-		mode = 'hash'
+		mode = 'hash',
+		routes
 	}: {
 		target: HTMLElement;
-		routes: Array<Route>;
 		mode: string;
+		routes: Array<Route>;
 	}) {
 		this.mode = mode;
+		this.target = target;
+		this.currentRoute = undefined;
+		this.previousRoute = undefined;
 
 		this.routes = this.createRoutesMap(routes);
-
-		this.target = target;
-		this.currentRoute = null;
-		this.previousRoute = null;
-		this.currentPath = null;
 
 		this.onNavigate = this.onNavigate.bind(this);
 
@@ -68,9 +51,8 @@ export default class Tunnel {
 				const component = new route.component();
 				this.setComponentInjection(component);
 				return [
-					route.name,
+					route.path,
 					{
-						path: route.path,
 						component
 					}
 				];
@@ -85,13 +67,13 @@ export default class Tunnel {
 		component.getPath = (): null | string => {
 			return this.location.getPath();
 		};
-		component.navigate = (route: string): void => {
-			const component = this.routes.get(route);
-			component && this.navigate(component.path);
+		component.navigate = (path: string): void => {
+			const route = this.routes.get(path);
+			route && this.navigate(path);
 		};
-		component.getExternalStore = (route: string): any | null => {
-			const component = this.routes.get(route);
-			return component ? component.component.getStore() : null;
+		component.getExternalStore = (path: string): any | null => {
+			const route = this.routes.get(path);
+			return route ? route.component.getStore() : null;
 		};
 	}
 
@@ -109,7 +91,7 @@ export default class Tunnel {
 
 	onNavigate(e: Event) {
 		const { path } = (<CustomEvent>e).detail;
-		path && this.navigate(path);
+		typeof path === 'string' && this.navigate(path);
 	}
 
 	navigate(path: string) {
@@ -127,13 +109,17 @@ export default class Tunnel {
 		currentPath: string;
 		previousPath?: null | string;
 	}) {
-		this.currentRoute = this.getRouteFromPath(currentPath);
-		this.previousRoute = this.getRouteFromPath(previousPath);
+		if (currentPath) {
+			this.currentRoute = this.routes.get(currentPath);
 
-		if (this.currentRoute) {
 			// Check if route exist
-			if (this.routes.get(this.currentRoute)) {
-				this.previousRoute && this.destroyComponent(this.previousRoute);
+			if (this.currentRoute) {
+				if (previousPath) {
+					this.previousRoute = this.routes.get(previousPath);
+					if (this.previousRoute) {
+						this.previousRoute && this.destroyComponent(this.previousRoute);
+					}
+				}
 				this.createComponent(this.currentRoute);
 			} else {
 				console.warn('Unknown route');
@@ -142,48 +128,23 @@ export default class Tunnel {
 	}
 
 	/**
-	 * Get route name from route path
-	 * @param {String} path Route path
-	 * @returns {String} Route name
-	 */
-	getRouteFromPath(path: null | string): null | string {
-		let route = null;
-		for (const step of this.routes.entries()) {
-			if (step[1].path === path) {
-				route = step[0];
-				break;
-			}
-		}
-		return route;
-	}
-
-	/**
 	 * Destroy the step
-	 * @param {String} route Route to destroy
+	 * @param {Object} route Route to destroy
 	 */
-	destroyComponent(route: string) {
-		const currentComponent = this.routes.get(route);
-
-		if (currentComponent) {
-			currentComponent.component.beforeDestroy();
-			this.target.replaceChildren();
-			currentComponent.component.afterDestroy();
-		}
+	destroyComponent(route: RouteData) {
+		route.component.beforeDestroy();
+		this.target.replaceChildren();
+		route.component.afterDestroy();
 	}
 
 	/**
 	 * Create the step
-	 * @param {Object} options
-	 * @param {String} route Route
+	 * @param {Object} route Route
 	 */
-	createComponent(route: string) {
-		const currentComponent = this.routes.get(route);
-
-		if (currentComponent) {
-			currentComponent.component.beforeRender();
-			this.render(currentComponent.component.render());
-			currentComponent.component.afterRender();
-		}
+	createComponent(route: RouteData) {
+		route.component.beforeRender();
+		this.render(route.component.render());
+		route.component.afterRender();
 	}
 
 	/**

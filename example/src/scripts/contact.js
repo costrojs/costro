@@ -4,11 +4,11 @@ import { createElement } from 'jsx-dom';
 
 export default class Contact extends Component {
 	render() {
-		const date = this.getExternalStore('home').get('date');
+		const date = this.getExternalStore('/').get('date');
 
 		return (
 			<div>
-				<Navigation path={this.getPath()} />
+				<Navigation />
 				<h2>Contact</h2>
 				{date && <p>{date}</p>}
 			</div>

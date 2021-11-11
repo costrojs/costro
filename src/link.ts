@@ -17,7 +17,13 @@ export default function Link({
 
 	// Insert Link children elements
 	const fragment = document.createDocumentFragment();
-	children.forEach((child) => fragment.appendChild(child));
+	children.forEach((child) => {
+		if (child instanceof HTMLElement) {
+			fragment.appendChild(child);
+		} else if (typeof child === 'string') {
+			fragment.appendChild(document.createTextNode(child));
+		}
+	});
 	element.appendChild(fragment);
 
 	Object.keys(attrs).forEach((key: string) =>

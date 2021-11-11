@@ -24,7 +24,7 @@ export default class Home extends Component {
 	render() {
 		return (
 			<div className="home">
-				<Navigation path={this.getPath()} />
+				<Navigation />
 				<h2>Home</h2>
 				<input type="date" placeholder="Get the date" onChange={this.onDateChanged} />
 				<span className="time">{new Date().toLocaleTimeString()}</span>

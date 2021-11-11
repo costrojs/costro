@@ -1,8 +1,12 @@
 export default class Hash {
 	onRouteChange: Function;
+	defaultHash: string;
 
 	constructor({ onRouteChange }: { onRouteChange: Function }) {
 		this.onRouteChange = onRouteChange;
+
+		// Get path can returns an empty string and not matched the "/" path
+		this.defaultHash = '/';
 
 		this.hashChanged = this.hashChanged.bind(this);
 	}
@@ -12,17 +16,17 @@ export default class Hash {
 	}
 
 	getPath(): string {
-		return window.location.hash.substr(1);
+		return window.location.hash.substr(1) || this.defaultHash;
 	}
 
 	addEvents() {
-		// window.addEventListener('hashchange', this.hashChanged);
+		window.addEventListener('hashchange', this.hashChanged);
 	}
 
-	hashChanged(e: HashChangeEvent) {
+	hashChanged(e: Event) {
 		this.onRouteChange({
 			currentPath: this.getPath(),
-			previousPath: this.getPreviousPath(e) || '/' // todo: why '/'?
+			previousPath: this.getPreviousPath(e as HashChangeEvent)
 		});
 	}
 
@@ -32,6 +36,6 @@ export default class Hash {
 	 * @returns {(String|null)} Previous route or null
 	 */
 	getPreviousPath(e: HashChangeEvent): string | null {
-		return e && e.oldURL ? e.oldURL.split('#')[1] : null;
+		return e && e.oldURL ? e.oldURL.split('#')[1] || this.defaultHash : null;
 	}
 }

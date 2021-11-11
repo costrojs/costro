@@ -9,17 +9,14 @@ const app = new Tunnel({
 	mode: 'history',
 	routes: [
 		{
-			name: 'home',
 			path: '/',
 			component: Home
 		},
 		{
-			name: 'about',
 			path: '/about',
 			component: About
 		},
 		{
-			name: 'contact',
 			path: '/contact',
 			component: Contact
 		}
