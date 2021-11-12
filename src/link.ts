@@ -15,6 +15,9 @@ export default function Link({
 	const element = document.createElement('a')
 	element.setAttribute('href', to)
 
+	// @ts-ignore
+	element.__customLink = true
+
 	// Insert Link children elements
 	const fragment = document.createDocumentFragment()
 	children.forEach((child) => {
@@ -30,18 +33,6 @@ export default function Link({
 		// @ts-ignore
 		element.setAttribute(key === 'className' ? 'class' : key, attrs[key])
 	)
-
-	function onClickOnLink(e: Event) {
-		e.preventDefault()
-		document.dispatchEvent(
-			new window.CustomEvent('navigate', {
-				detail: {
-					path: to
-				}
-			})
-		)
-	}
-	element.addEventListener('click', onClickOnLink)
 
 	return element
 }

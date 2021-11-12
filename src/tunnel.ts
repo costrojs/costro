@@ -37,6 +37,7 @@ export default class Tunnel {
 		}
 
 		this.onNavigate = this.onNavigate.bind(this)
+		this.onClickOnApp = this.onClickOnApp.bind(this)
 
 		const LocationInstance = this.getLocationInstance(mode)
 		this.location = new LocationInstance({
@@ -124,6 +125,7 @@ export default class Tunnel {
 
 	addEvents() {
 		document.addEventListener('navigate', this.onNavigate)
+		this.target.addEventListener('click', this.onClickOnApp)
 	}
 
 	onNavigate(e: Event) {
@@ -133,6 +135,18 @@ export default class Tunnel {
 
 	navigate(path: string) {
 		this.location.setPath(path)
+	}
+
+	onClickOnApp(e: Event) {
+		const target = e.target as HTMLElement
+
+		// @ts-ignore
+		if (target.__customLink) {
+			e.preventDefault()
+
+			const href = target.getAttribute('href')
+			href && this.navigate(href)
+		}
 	}
 
 	/**
