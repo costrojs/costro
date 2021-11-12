@@ -33,7 +33,7 @@ export default class Tunnel {
 		this.routes = this.createRoutesData(routes)
 		console.log(this.routes)
 		if (!this.routes.size) {
-			throw new Error('Tunnel::Invalid routes')
+			throw new Error('Tunnel::Constructor | Invalid routes configuration')
 		}
 
 		this.onNavigate = this.onNavigate.bind(this)
@@ -72,10 +72,7 @@ export default class Tunnel {
 						}
 					]
 				})
-				.filter((item): Boolean => {
-					const result = !!item[1].component && !!item[1].componentType
-					return result
-				})
+				.filter((item): Boolean => item)
 		)
 	}
 
@@ -155,7 +152,7 @@ export default class Tunnel {
 				}
 				this.createComponent(this.currentRoute)
 			} else {
-				console.warn('Unknown route')
+				throw new Error(`Tunnel::onRouteChange | Unknown route "${currentPath}"`)
 			}
 		}
 	}
@@ -179,6 +176,7 @@ export default class Tunnel {
 	 * @param {Object} route Route
 	 */
 	createComponent(route: RouteData) {
+		console.log('before', route.component)
 		if (route.componentType === 'Component') {
 			route.component.beforeRender()
 			this.target.appendChild(route.component.render())
@@ -186,9 +184,11 @@ export default class Tunnel {
 		} else if (route.componentType === 'HTMLElement') {
 			this.target.appendChild(route.component)
 		} else if (route.componentType === 'DocumentFragment') {
-			this.target.appendChild(route.component)
+			// Append a clone of the fragment because fragment can be reused only once
+			this.target.appendChild(route.component.cloneNode())
 		} else if (route.componentType === 'String') {
 			this.target.insertAdjacentHTML('beforeend', route.component)
 		}
+		console.log('after', route.component)
 	}
 }
