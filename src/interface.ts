@@ -3,6 +3,12 @@ export interface Constructable<T> {
 }
 
 export interface Component {
+	beforeRender: Function;
+	afterRender: Function;
+	beforeDestroy: Function;
+	afterDestroy: Function;
+	render: Function;
+	setStore: Function;
 	getStore: Function;
 }
 
@@ -12,9 +18,10 @@ export interface interfaceLocationInstances {
 
 export interface Route {
 	path: string;
-	component: Constructable<Component>;
+	component: Constructable<Component> | Function | any; // Multi types with constructor and function fails
 }
 
 export interface RouteData {
 	component: any;
+	componentType: string | null;
 }

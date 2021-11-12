@@ -1,6 +1,7 @@
 import Hash from './location/hash';
 import History from './location/history';
 import { RouteData, interfaceLocationInstances, Route } from './interface';
+import Component from './component';
 
 const LOCATION_INSTANCES: interfaceLocationInstances = {
 	hash: Hash,
@@ -22,14 +23,18 @@ export default class Tunnel {
 	}: {
 		target: HTMLElement;
 		mode: string;
-		routes: Array<Route>;
+		routes: Route[];
 	}) {
 		this.mode = mode;
 		this.target = target;
 		this.currentRoute = undefined;
 		this.previousRoute = undefined;
 
-		this.routes = this.createRoutesMap(routes);
+		this.routes = this.createRoutesData(routes);
+		console.log(this.routes);
+		if (!this.routes.size) {
+			throw new Error('Tunnel::Invalid routes');
+		}
 
 		this.onNavigate = this.onNavigate.bind(this);
 
@@ -45,33 +50,61 @@ export default class Tunnel {
 		});
 	}
 
-	createRoutesMap(routes: Array<Route>): Map<string, RouteData> {
+	createRoutesData(routes: Route[]): Map<string, RouteData> {
 		return new Map(
-			routes.map((route: Route) => {
-				const component = new route.component();
-				this.setComponentInjection(component);
-				return [
-					route.path,
-					{
-						component
+			routes
+				.filter((route): Boolean => route.component instanceof Function)
+				.map((route: Route): any => {
+					let instance = undefined;
+
+					if (route.component.prototype instanceof Component) {
+						instance = new route.component() as any;
+						this.setComponentInjection(instance);
+					} else {
+						instance = route.component();
 					}
-				];
-			})
+
+					return [
+						route.path,
+						{
+							component: instance,
+							componentType: this.getComponentType(instance)
+						}
+					];
+				})
+				.filter((item): Boolean => {
+					const result = !!item[1].component && !!item[1].componentType;
+					return result;
+				})
 		);
+	}
+
+	getComponentType(instance: any): string | null {
+		if (Object.getPrototypeOf(instance) instanceof Component) {
+			return 'Component';
+		} else if (instance instanceof HTMLElement) {
+			return 'HTMLElement';
+		} else if (instance instanceof DocumentFragment) {
+			return 'DocumentFragment';
+		} else if (typeof instance === 'string') {
+			return 'String';
+		}
+
+		return null;
 	}
 
 	/**
 	 * Push new function inside step context to change the route
 	 */
-	setComponentInjection(component: any) {
-		component.getPath = (): null | string => {
+	setComponentInjection(instance: any) {
+		instance.getPath = (): null | string => {
 			return this.location.getPath();
 		};
-		component.navigate = (path: string): void => {
+		instance.navigate = (path: string): void => {
 			const route = this.routes.get(path);
 			route && this.navigate(path);
 		};
-		component.getExternalStore = (path: string): any | null => {
+		instance.getExternalStore = (path: string): any | null => {
 			const route = this.routes.get(path);
 			return route ? route.component.getStore() : null;
 		};
@@ -132,9 +165,13 @@ export default class Tunnel {
 	 * @param {Object} route Route to destroy
 	 */
 	destroyComponent(route: RouteData) {
-		route.component.beforeDestroy();
-		this.target.replaceChildren();
-		route.component.afterDestroy();
+		if (route.componentType === 'Component') {
+			route.component.beforeDestroy();
+			this.target.replaceChildren();
+			route.component.afterDestroy();
+		} else {
+			this.target.replaceChildren();
+		}
 	}
 
 	/**
@@ -142,20 +179,16 @@ export default class Tunnel {
 	 * @param {Object} route Route
 	 */
 	createComponent(route: RouteData) {
-		route.component.beforeRender();
-		this.render(route.component.render());
-		route.component.afterRender();
-	}
-
-	/**
-	 * Render the step template
-	 * @param {HTMLElement} template Step template
-	 */
-	render(template: HTMLElement | string) {
-		if (template instanceof HTMLElement) {
-			this.target.appendChild(template);
-		} else {
-			this.target.insertAdjacentHTML('beforeend', template);
+		if (route.componentType === 'Component') {
+			route.component.beforeRender();
+			this.target.appendChild(route.component.render());
+			route.component.afterRender();
+		} else if (route.componentType === 'HTMLElement') {
+			this.target.appendChild(route.component);
+		} else if (route.componentType === 'DocumentFragment') {
+			this.target.appendChild(route.component);
+		} else if (route.componentType === 'String') {
+			this.target.insertAdjacentHTML('beforeend', route.component);
 		}
 	}
 }
