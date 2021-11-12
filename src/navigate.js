@@ -1,8 +1,8 @@
-export default function History(path) {
+export default function navigate(to) {
 	document.dispatchEvent(
 		new window.CustomEvent('navigate', {
 			detail: {
-				path
+				to
 			}
 		})
 	)

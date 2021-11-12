@@ -2,16 +2,19 @@ export interface Attributes {
 	[key: string]: string
 }
 
-export default function Link({
-	to,
-	children,
-	...attrs
-}: {
-	to: string
-	tag: string
-	children: Array<any>
-	attrs: Attributes
-}) {
+export default function Link(
+	{
+		to,
+		children = [],
+		...attrs
+	}: {
+		to: string
+		tag: string
+		children: Array<any>
+		attrs: Attributes
+	},
+	isString: Boolean
+) {
 	const element = document.createElement('a')
 	element.setAttribute('href', to)
 
@@ -29,10 +32,10 @@ export default function Link({
 	})
 	element.appendChild(fragment)
 
-	Object.keys(attrs).forEach((key: string) =>
+	Object.entries(attrs).forEach(([key, value]) =>
 		// @ts-ignore
-		element.setAttribute(key === 'className' ? 'class' : key, attrs[key])
+		element.setAttribute(key === 'className' ? 'class' : key, value)
 	)
 
-	return element
+	return isString ? element.outerHTML : element
 }

@@ -129,8 +129,8 @@ export default class Tunnel {
 	}
 
 	onNavigate(e: Event) {
-		const { path } = (<CustomEvent>e).detail
-		typeof path === 'string' && this.navigate(path)
+		const { to } = (<CustomEvent>e).detail
+		typeof to === 'string' && this.navigate(to)
 	}
 
 	navigate(path: string) {
