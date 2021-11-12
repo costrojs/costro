@@ -6,14 +6,14 @@ export default class Nav extends Component {
 		return (
 			<ul>
 				<li>
-					<Link path="/">Home</Link>
+					<Link to="/">Home</Link>
 					{/* <button onClick={() => History('/')}>Home</button> */}
 				</li>
 				<li>
-					<Link path="/about">About</Link>
+					<Link to="/about">About</Link>
 				</li>
 				<li>
-					<Link path="/contact">Contact</Link>
+					<Link to="/contact">Contact</Link>
 				</li>
 			</ul>
 		)

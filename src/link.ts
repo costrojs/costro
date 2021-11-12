@@ -3,17 +3,17 @@ export interface Attributes {
 }
 
 export default function Link({
-	path,
+	to,
 	children,
 	...attrs
 }: {
-	path: string
+	to: string
 	tag: string
 	children: Array<any>
 	attrs: Attributes
 }) {
 	const element = document.createElement('a')
-	element.setAttribute('href', path)
+	element.setAttribute('href', to)
 
 	// Insert Link children elements
 	const fragment = document.createDocumentFragment()
@@ -36,7 +36,7 @@ export default function Link({
 		document.dispatchEvent(
 			new window.CustomEvent('navigate', {
 				detail: {
-					path
+					path: to
 				}
 			})
 		)
