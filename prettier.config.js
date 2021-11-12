@@ -4,5 +4,23 @@ module.exports = {
 	semi: false,
 	trailingComma: 'none',
 	singleQuote: true,
-	arrowParens: 'always'
+	arrowParens: 'always',
+	overrides: [
+		{
+			files: '*.md',
+			options: {
+				proseWrap: 'preserve',
+				tabWidth: 2,
+				useTabs: false,
+				singleQuote: true,
+				semi: true
+			}
+		},
+		{
+			files: '*.html',
+			options: {
+				printWidth: 500
+			}
+		}
+	]
 }
