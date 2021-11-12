@@ -25,7 +25,6 @@ module.exports = {
 		indent: ['error', 'tab', { ignoredNodes: ['TemplateLiteral > *'] }],
 		'no-tabs': 0,
 		'no-console': 0,
-		semi: [1, 'always'],
 		'space-before-function-paren': [
 			'error',
 			{ anonymous: 'never', named: 'never', asyncArrow: 'always' }
@@ -47,4 +46,4 @@ module.exports = {
 			version: '0' // Remove the warning of the missing React package
 		}
 	}
-};
+}

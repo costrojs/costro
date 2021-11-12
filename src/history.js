@@ -5,5 +5,5 @@ export default function History(path) {
 				path
 			}
 		})
-	);
+	)
 }

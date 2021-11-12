@@ -8,7 +8,7 @@ module.exports = (api) => {
 				}
 			}
 		]
-	];
+	]
 
 	const plugins = [
 		'@babel/plugin-proposal-class-properties',
@@ -19,16 +19,16 @@ module.exports = (api) => {
 				pragmaFrag: 'Fragment'
 			}
 		]
-	];
+	]
 
-	api.cache.using(() => process.env.NODE_ENV);
+	api.cache.using(() => process.env.NODE_ENV)
 
 	if (api.env('test')) {
-		plugins.push('babel-plugin-dynamic-import-node');
+		plugins.push('babel-plugin-dynamic-import-node')
 	}
 
 	return {
 		presets,
 		plugins
-	};
-};
+	}
+}

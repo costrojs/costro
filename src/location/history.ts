@@ -1,13 +1,13 @@
 export default class History {
-	currentPath: string;
-	previousPath: null | string;
-	onRouteChange: Function;
+	currentPath: string
+	previousPath: null | string
+	onRouteChange: Function
 
 	constructor({ onRouteChange }: { onRouteChange: Function }) {
-		this.currentPath = this.getPath();
-		this.previousPath = null;
+		this.currentPath = this.getPath()
+		this.previousPath = null
 
-		this.onRouteChange = onRouteChange;
+		this.onRouteChange = onRouteChange
 
 		// Set initial state
 		window.history.replaceState(
@@ -15,14 +15,14 @@ export default class History {
 				path: this.currentPath
 			},
 			''
-		);
+		)
 
-		this.onPopState = this.onPopState.bind(this);
+		this.onPopState = this.onPopState.bind(this)
 	}
 
 	setPath(path: string) {
-		this.previousPath = this.getPath();
-		this.currentPath = path;
+		this.previousPath = this.getPath()
+		this.currentPath = path
 
 		window.history.pushState(
 			{
@@ -30,29 +30,29 @@ export default class History {
 			},
 			'',
 			`${path}`
-		);
+		)
 
 		this.onRouteChange({
 			currentPath: this.currentPath,
 			previousPath: this.previousPath
-		});
+		})
 	}
 
 	getPath(): string {
-		return window.location.pathname;
+		return window.location.pathname
 	}
 
 	addEvents() {
-		window.addEventListener('popstate', this.onPopState);
+		window.addEventListener('popstate', this.onPopState)
 	}
 
 	onPopState() {
-		this.previousPath = this.currentPath;
-		this.currentPath = this.getPath();
+		this.previousPath = this.currentPath
+		this.currentPath = this.getPath()
 
 		this.onRouteChange({
 			currentPath: this.currentPath,
 			previousPath: this.previousPath
-		});
+		})
 	}
 }

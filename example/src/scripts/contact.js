@@ -1,10 +1,10 @@
-import { Component } from '../../../dist/tunnel';
-import Navigation from './nav';
-import { createElement } from 'jsx-dom';
+import { Component } from '../../../dist/tunnel'
+import Navigation from './nav'
+import { createElement } from 'jsx-dom'
 
 export default class Contact extends Component {
 	render() {
-		const date = this.getExternalStore('/').get('date');
+		const date = this.getExternalStore('/').get('date')
 
 		return (
 			<div>
@@ -12,6 +12,6 @@ export default class Contact extends Component {
 				<h2>Contact</h2>
 				{date && <p>{date}</p>}
 			</div>
-		);
+		)
 	}
 }

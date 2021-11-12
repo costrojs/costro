@@ -1,6 +1,6 @@
-import { Component } from '../../../dist/tunnel';
-import Navigation from './nav';
-import { createElement } from 'jsx-dom';
+import { Component } from '../../../dist/tunnel'
+import Navigation from './nav'
+import { createElement } from 'jsx-dom'
 
 export default class About extends Component {
 	render() {
@@ -9,6 +9,6 @@ export default class About extends Component {
 				<Navigation />
 				<h2>About</h2>
 			</div>
-		);
+		)
 	}
 }

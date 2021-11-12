@@ -1,12 +1,12 @@
 class Component {
-	store: Map<string, object>;
-	isReactComponent = true;
+	store: Map<string, object>
+	isReactComponent = true
 
 	// @ts-ignore
 	constructor(props) {
 		// @ts-ignore
-		this.props = props;
-		this.store = new Map();
+		this.props = props
+		this.store = new Map()
 	}
 
 	/**
@@ -33,25 +33,25 @@ class Component {
 	 * Required function in the child class
 	 */
 	render() {
-		throw new Error('You have to implement the function "render" for the component.');
+		throw new Error('You have to implement the function "render" for the component.')
 	}
 
 	/**
 	 * Required function in the child class
 	 */
 	setStore(data: any) {
-		const keys = Object.keys(data);
+		const keys = Object.keys(data)
 		for (var i = 0, length = keys.length; i < length; i++) {
-			this.store.set(keys[i], data[keys[i]]);
+			this.store.set(keys[i], data[keys[i]])
 		}
 	}
 
 	getStore(key: string) {
-		return key ? this.store.get(key) : this.store;
+		return key ? this.store.get(key) : this.store
 	}
 }
 
 // @ts-ignore
-Component.prototype.isReactComponent = {};
+Component.prototype.isReactComponent = {}
 
-export default Component;
+export default Component

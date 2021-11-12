@@ -1,5 +1,5 @@
-import { Link, Component } from '../../../dist/tunnel';
-import { createElement } from 'jsx-dom';
+import { Link, Component } from '../../../dist/tunnel'
+import { createElement } from 'jsx-dom'
 
 export default class Nav extends Component {
 	render() {
@@ -16,6 +16,6 @@ export default class Nav extends Component {
 					<Link path="/contact">Contact</Link>
 				</li>
 			</ul>
-		);
+		)
 	}
 }

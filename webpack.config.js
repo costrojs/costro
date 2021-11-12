@@ -1,10 +1,10 @@
-const path = require('path');
-const webpack = require('webpack');
-const TerserPlugin = require('terser-webpack-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const path = require('path')
+const webpack = require('webpack')
+const TerserPlugin = require('terser-webpack-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
 module.exports = (env, argv) => {
-	const isProduction = argv.mode === 'production';
+	const isProduction = argv.mode === 'production'
 
 	return {
 		watch: !isProduction,
@@ -88,5 +88,5 @@ module.exports = (env, argv) => {
 			providedExports: false,
 			splitChunks: false
 		}
-	};
-};
+	}
+}
