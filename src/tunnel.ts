@@ -91,8 +91,6 @@ export default class Tunnel {
 			return 'HTMLElement'
 		} else if (instance instanceof DocumentFragment) {
 			return 'DocumentFragment'
-		} else if (typeof instance === 'string') {
-			return 'String'
 		}
 
 		return null
@@ -201,13 +199,10 @@ export default class Tunnel {
 			route.component.beforeRender()
 			this.target.appendChild(route.component.render())
 			route.component.afterRender()
-			console.log(route.component.render())
 		} else if (route.componentType === 'HTMLElement') {
 			this.target.appendChild(route.component)
 		} else if (route.componentType === 'DocumentFragment') {
 			this.target.appendChild(route.component())
-		} else if (route.componentType === 'String') {
-			this.target.insertAdjacentHTML('beforeend', route.component)
 		}
 	}
 }

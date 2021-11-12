@@ -2,19 +2,16 @@ export interface Attributes {
 	[key: string]: string
 }
 
-export default function Link(
-	{
-		to,
-		children = [],
-		...attrs
-	}: {
-		to: string
-		tag: string
-		children: Array<any>
-		attrs: Attributes
-	},
-	isString: Boolean
-) {
+export default function Link({
+	to,
+	children = [],
+	...attrs
+}: {
+	to: string
+	tag: string
+	children: Array<any>
+	attrs: Attributes
+}) {
 	const element = document.createElement('a')
 	element.setAttribute('href', to)
 
@@ -37,5 +34,5 @@ export default function Link(
 		element.setAttribute(key === 'className' ? 'class' : key, value)
 	)
 
-	return isString ? element.outerHTML : element
+	return element
 }
