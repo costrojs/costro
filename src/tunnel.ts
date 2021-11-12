@@ -64,11 +64,18 @@ export default class Tunnel {
 						instance = route.component()
 					}
 
+					const componentType = this.getComponentType(instance)
+
+					// DocumentFragment are rendered inside a function to reused them
+					if (componentType === 'DocumentFragment') {
+						instance = () => route.component()
+					}
+
 					return [
 						route.path,
 						{
 							component: instance,
-							componentType: this.getComponentType(instance)
+							componentType
 						}
 					]
 				})
@@ -176,19 +183,17 @@ export default class Tunnel {
 	 * @param {Object} route Route
 	 */
 	createComponent(route: RouteData) {
-		console.log('before', route.component)
 		if (route.componentType === 'Component') {
 			route.component.beforeRender()
 			this.target.appendChild(route.component.render())
 			route.component.afterRender()
+			console.log(route.component.render())
 		} else if (route.componentType === 'HTMLElement') {
 			this.target.appendChild(route.component)
 		} else if (route.componentType === 'DocumentFragment') {
-			// Append a clone of the fragment because fragment can be reused only once
-			this.target.appendChild(route.component.cloneNode())
+			this.target.appendChild(route.component())
 		} else if (route.componentType === 'String') {
 			this.target.insertAdjacentHTML('beforeend', route.component)
 		}
-		console.log('after', route.component)
 	}
 }
