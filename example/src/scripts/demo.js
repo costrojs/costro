@@ -14,6 +14,9 @@ function Navigation() {
 			<li>
 				<Link to="/contact">Contact</Link>
 			</li>
+			<li>
+				<Link to="/dashboard">Dashboard</Link>
+			</li>
 		</ul>
 	)
 }
@@ -47,6 +50,13 @@ class Contact extends Component {
 	}
 }
 
+function Dashboard() {
+	return `
+        ${Link({ to: '/contact', children: ['Contact'] }, true)}
+        <h2>Dashboard</h2>
+    `
+}
+
 const routes = [
 	{
 		path: '/',
@@ -59,6 +69,10 @@ const routes = [
 	{
 		path: '/contact',
 		component: Contact
+	},
+	{
+		path: '/dashboard',
+		component: Dashboard
 	}
 ]
 

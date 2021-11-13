@@ -2,21 +2,27 @@ export interface Attributes {
 	[key: string]: string
 }
 
-export default function Link({
-	to,
-	children = [],
-	...attrs
-}: {
-	to: string
-	tag: string
-	children: Array<any>
-	attrs: Attributes
-}) {
+export default function Link(
+	{
+		to,
+		children = [],
+		...attrs
+	}: {
+		to: string
+		children: Array<any>
+		attrs: Attributes
+	},
+	isHTML: Boolean = false
+) {
 	const element = document.createElement('a')
 	element.setAttribute('href', to)
 
 	// @ts-ignore
 	element.__customLink = true
+
+	if (isHTML) {
+		element.classList.add('customLink')
+	}
 
 	// Insert Link children elements
 	const fragment = document.createDocumentFragment()
@@ -34,5 +40,5 @@ export default function Link({
 		element.setAttribute(key === 'className' ? 'class' : key, value)
 	)
 
-	return element
+	return isHTML ? element.outerHTML : element
 }

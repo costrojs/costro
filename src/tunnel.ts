@@ -91,6 +91,8 @@ export default class Tunnel {
 			return 'HTMLElement'
 		} else if (instance instanceof DocumentFragment) {
 			return 'DocumentFragment'
+		} else if (typeof instance === 'string') {
+			return 'String'
 		}
 
 		return null
@@ -203,6 +205,22 @@ export default class Tunnel {
 			this.target.appendChild(route.component)
 		} else if (route.componentType === 'DocumentFragment') {
 			this.target.appendChild(route.component())
+		} else if (route.componentType === 'String') {
+			const template = document.createElement('template')
+			template.innerHTML = route.component.trim()
+			const fragment = document.importNode(template.content, true)
+
+			// Transform .customLink CSS class to a Node property for the event delegation of the router
+			const customLinks = [...fragment.querySelectorAll('.customLink')]
+			for (let i = 0, length = customLinks.length; i < length; i++) {
+				const link = customLinks[i]
+				link.classList.remove('customLink')
+
+				// @ts-ignore
+				link.__customLink = true
+			}
+
+			this.target.appendChild(fragment)
 		}
 	}
 }
