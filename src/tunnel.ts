@@ -56,27 +56,14 @@ export default class Tunnel {
 		return new Map(
 			routes
 				.filter((route): Boolean => route.component instanceof Function)
-				.map((route: Route): any => {
-					let instance = undefined
-
-					if (route.component.prototype instanceof Component) {
-						instance = new route.component() as any
-						this.setComponentInjection(instance)
-					} else {
-						instance = () => route.component()
+				.map((route: Route): any => [
+					route.path,
+					{
+						instance: route.component,
+						component: null,
+						componentType: null
 					}
-
-					const componentType = this.getComponentType(instance)
-
-					return [
-						route.path,
-						{
-							component: instance,
-							componentType
-						}
-					]
-				})
-				.filter((item): Boolean => item)
+				])
 		)
 	}
 
@@ -156,75 +143,108 @@ export default class Tunnel {
 		currentPath: string
 		previousPath?: null | string
 	}) {
-		if (currentPath) {
-			this.currentRoute = this.routes.get(currentPath)
+		this.currentRoute = this.routes.get(currentPath)
 
-			// Check if route exist
-			if (this.currentRoute) {
-				if (previousPath) {
-					this.previousRoute = this.routes.get(previousPath)
-					if (this.previousRoute) {
-						this.previousRoute && this.destroyComponent(this.previousRoute)
-					}
+		// Check if route exist
+		if (this.currentRoute) {
+			if (previousPath) {
+				this.previousRoute = this.routes.get(previousPath)
+				if (this.previousRoute) {
+					this.updatePreviousRoute(previousPath)
 				}
-				this.createComponent(this.currentRoute)
+			}
+
+			this.updateCurrentRoute(currentPath)
+		} else {
+			throw new Error(`Tunnel::onRouteChange | Unknown route "${currentPath}"`)
+		}
+	}
+
+	updatePreviousRoute(path: string) {
+		if (this.previousRoute && this.previousRoute.component === null) {
+			this.createInstanceInCache(path)
+		}
+		this.destroyComponent(path)
+	}
+
+	updateCurrentRoute(path: string) {
+		if (this.currentRoute && this.currentRoute.component === null) {
+			this.createInstanceInCache(path)
+		}
+		this.createComponent(path)
+	}
+
+	/**
+	 * Destroy the component
+	 * @param {String} path Route
+	 */
+	destroyComponent(path: string) {
+		if (this.previousRoute) {
+			if (this.previousRoute.componentType === 'Component') {
+				this.previousRoute.component.beforeDestroy()
+				this.target.replaceChildren()
+				this.previousRoute.component.afterDestroy()
 			} else {
-				throw new Error(`Tunnel::onRouteChange | Unknown route "${currentPath}"`)
+				this.target.replaceChildren()
 			}
 		}
 	}
 
 	/**
-	 * Destroy the step
-	 * @param {Object} route Route to destroy
+	 * Create the component
+	 * @param {String} path Route
 	 */
-	destroyComponent(route: RouteData) {
-		if (route.componentType === 'Component') {
-			route.component.beforeDestroy()
-			this.target.replaceChildren()
-			route.component.afterDestroy()
-		} else {
-			this.target.replaceChildren()
-		}
-	}
+	createComponent(path: string) {
+		if (this.currentRoute) {
+			if (this.currentRoute.componentType === 'Component') {
+				this.currentRoute.component.beforeRender()
+				this.target.appendChild(this.currentRoute.component.render())
+				this.currentRoute.component.afterRender()
+			} else if (this.currentRoute.componentType === 'HTMLElement') {
+				this.target.appendChild(this.currentRoute.component())
+			} else if (this.currentRoute.componentType === 'DocumentFragment') {
+				this.target.appendChild(this.currentRoute.component())
+			} else if (this.currentRoute.componentType === 'String') {
+				const template = document.createElement('template')
+				template.innerHTML = this.currentRoute.component().trim()
+				const fragment = document.importNode(template.content, true)
 
-	/**
-	 * Create the step
-	 * @param {Object} route Route
-	 */
-	createComponent(route: RouteData) {
-		if (route.componentType === 'Component') {
-			route.component.beforeRender()
-			this.target.appendChild(route.component.render())
-			route.component.afterRender()
-		} else if (route.componentType === 'HTMLElement') {
-			this.target.appendChild(route.component())
-		} else if (route.componentType === 'DocumentFragment') {
-			this.target.appendChild(route.component())
-		} else if (route.componentType === 'String') {
-			const template = document.createElement('template')
-			template.innerHTML = route.component().trim()
-			const fragment = document.importNode(template.content, true)
-
-			// Transform .customLink CSS class to a Node property for the event delegation of the router
-			/**
+				// Transform .customLink CSS class to a Node property for the event delegation of the router
+				/**
 				TODO:
 				[...fragment.querySelectorAll(`.${config.customLinkCssClass}`)] => Bublé needs transforms: { spreadRest: false }
 				Array.from[fragment.querySelectorAll(`.${config.customLinkCssClass}`)]
 				Array.prototype.slice.call(fragment.querySelectorAll(`.${config.customLinkCssClass}`))
 			 */
-			const customLinks = Array.prototype.slice.call(
-				fragment.querySelectorAll(`.${config.customLinkCssClass}`)
-			)
-			for (let i = 0, length = customLinks.length; i < length; i++) {
-				const link = customLinks[i]
-				link.classList.remove(config.customLinkCssClass)
+				const customLinks = Array.prototype.slice.call(
+					fragment.querySelectorAll(`.${config.customLinkCssClass}`)
+				)
+				for (let i = 0, length = customLinks.length; i < length; i++) {
+					const link = customLinks[i]
+					link.classList.remove(config.customLinkCssClass)
 
-				// @ts-ignore
-				link[config.customLinkProperty] = true
+					// @ts-ignore
+					link[config.customLinkProperty] = true
+				}
+
+				this.target.appendChild(fragment)
+			}
+		}
+	}
+
+	createInstanceInCache(path: string) {
+		const route = this.routes.get(path)
+
+		if (route) {
+			if (route.instance.prototype instanceof Component) {
+				route.component = new route.instance()
+				this.setComponentInjection(route.component)
+			} else {
+				route.component = () => route.instance()
 			}
 
-			this.target.appendChild(fragment)
+			route.componentType = this.getComponentType(route.component)
+			this.routes.set(path, route)
 		}
 	}
 }

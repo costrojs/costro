@@ -22,7 +22,8 @@ export interface Route {
 }
 
 export interface RouteData {
-	component: any
+	instance: any
+	component: any | null
 	componentType: string | null
 }
 
