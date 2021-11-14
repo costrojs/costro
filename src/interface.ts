@@ -25,3 +25,7 @@ export interface RouteData {
 	component: any
 	componentType: string | null
 }
+
+export interface Attributes {
+	[key: string]: string
+}

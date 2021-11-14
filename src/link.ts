@@ -1,8 +1,5 @@
 import config from './config'
-
-export interface Attributes {
-	[key: string]: string
-}
+import { Attributes } from './interface'
 
 export default function Link(
 	{
