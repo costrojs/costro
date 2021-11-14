@@ -34,8 +34,8 @@ jobs:
       - name: Test ESLint
         run: npm run test:eslint
 
-      - name: Test Stylelint
-        run: npm run test:stylelint
+      # - name: Test Stylelint
+      #   run: npm run test:stylelint
 
       - name: Test Typescript
         run: npm run test:type-check
