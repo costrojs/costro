@@ -26,7 +26,8 @@
 		"test:stylelint": "stylelint './src/**/*.css' './example/src/**/*.css' --config ./stylelint.config.js",
 		"test:stylelint:fix": "stylelint './src/**/*.css' './example/src/**/*.css' --config ./stylelint.config.js --fix",
 		"test:type-check": "tsc --noEmit",
-		"test:watch": "jest --watchAll --coverage"
+		"test:watch": "jest --watchAll --coverage",
+		"watch:type-check": "tsc --noEmit --watch"
 	},
 	"dependencies": {
 		"validate-target": "^2.0.0"
