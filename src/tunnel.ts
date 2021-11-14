@@ -211,7 +211,13 @@ export default class Tunnel {
 			const fragment = document.importNode(template.content, true)
 
 			// Transform .customLink CSS class to a Node property for the event delegation of the router
-			const customLinks = [...fragment.querySelectorAll('.customLink')]
+			/**
+				TODO:
+				[...fragment.querySelectorAll('.customLink')] => Bublé needs transforms: { spreadRest: false }
+				Array.from[fragment.querySelectorAll('.customLink')]
+				Array.prototype.slice.call(fragment.querySelectorAll('.customLink'))
+			 */
+			const customLinks = Array.prototype.slice.call(fragment.querySelectorAll('.customLink'))
 			for (let i = 0, length = customLinks.length; i < length; i++) {
 				const link = customLinks[i]
 				link.classList.remove('customLink')

@@ -2,23 +2,22 @@ import path from 'path'
 import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import sucrase from '@rollup/plugin-sucrase'
-import { getBabelOutputPlugin } from '@rollup/plugin-babel'
+import buble from '@rollup/plugin-buble'
 import { terser } from 'rollup-plugin-terser'
 
 const outputTarget = path.resolve(__dirname, './dist')
 const plugins = [
 	resolve(),
 	commonjs({
-		include: ['node_modules/**', 'dist/**']
+		include: ['node_modules/**', 'dist/**'] // Include the library development dist directory
 	}),
 	sucrase({
 		transforms: ['jsx'],
 		jsxPragma: 'createElement',
 		jsxFragmentPragma: 'Fragment'
 	}),
-	getBabelOutputPlugin({
-		configFile: path.resolve(__dirname, '../babel.config.js'),
-		allowAllFormats: true
+	buble({
+		exclude: ['node_modules/jsx-dom/**'] // Exclude transpilation from jsx-dom
 	})
 ]
 
@@ -28,7 +27,7 @@ if (process.env.ENV === 'production') {
 
 export default [
 	{
-		input: './example/src/scripts/demo.js',
+		input: path.resolve(__dirname, './src/demo.js'),
 		output: [
 			{
 				file: `${outputTarget}/demo.js`,

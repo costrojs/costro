@@ -1,4 +1,4 @@
-import { Tunnel, Link, Component } from '../../../dist/tunnel'
+import { Tunnel, Link, Component } from '../../dist/tunnel'
 import { createElement, Fragment } from 'jsx-dom'
 
 function Navigation() {

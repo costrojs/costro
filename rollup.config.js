@@ -1,6 +1,6 @@
 import path from 'path'
 import typescript from '@rollup/plugin-typescript'
-import { getBabelOutputPlugin } from '@rollup/plugin-babel'
+import buble from '@rollup/plugin-buble'
 import { terser } from 'rollup-plugin-terser'
 
 const outputTarget = path.resolve(__dirname, './dist')
@@ -9,9 +9,8 @@ const plugins = [
 		include: 'src/**',
 		typescript: require('typescript')
 	}),
-	getBabelOutputPlugin({
-		configFile: path.resolve(__dirname, './babel.config.js'),
-		allowAllFormats: true
+	buble({
+		// transforms: { spreadRest: false }
 	})
 ]
 
