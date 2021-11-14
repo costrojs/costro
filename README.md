@@ -83,3 +83,27 @@ Mode: `hash`
 ```text
 http://example.com/#/about
 ```
+
+## Installation
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/router/dist/tunnel.js"></script>
+<!-- umd -->
+<script>
+  // window.Tunnel
+</script>
+```
+
+```html
+<script type="module">
+  import { Tunnel } from 'https://cdn.jsdelivr.net/npm/router/dist/tunnel.esm.js'; // esm
+</script>
+```
+
+```bash
+npm i router
+```
+
+```js
+import { Tunnel } from 'router'; // cjs
+```

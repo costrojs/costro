@@ -11,7 +11,7 @@
 		"declaration": false,
 		"skipLibCheck": true,
 		"allowSyntheticDefaultImports": true,
-		"module": "amd",
+		"module": "esnext",
 		"baseUrl": "./src",
 
 		"resolveJsonModule": true
