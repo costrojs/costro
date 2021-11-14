@@ -1,3 +1,5 @@
+import config from './config'
+
 export interface Attributes {
 	[key: string]: string
 }
@@ -18,10 +20,10 @@ export default function Link(
 	element.setAttribute('href', to)
 
 	// @ts-ignore
-	element.__customLink = true
+	element[config.customLinkProperty] = true
 
 	if (isHTML) {
-		element.classList.add('customLink')
+		element.classList.add(config.customLinkCssClass)
 	}
 
 	// Insert Link children elements

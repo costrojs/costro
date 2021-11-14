@@ -1,3 +1,4 @@
+import config from './config'
 import Hash from './location/hash'
 import History from './location/history'
 import { RouteData, interfaceLocationInstances, Route } from './interface'
@@ -141,7 +142,7 @@ export default class Tunnel {
 		const target = e.target as HTMLElement
 
 		// @ts-ignore
-		if (target.__customLink) {
+		if (target[config.customLinkProperty]) {
 			e.preventDefault()
 
 			const href = target.getAttribute('href')
@@ -213,17 +214,19 @@ export default class Tunnel {
 			// Transform .customLink CSS class to a Node property for the event delegation of the router
 			/**
 				TODO:
-				[...fragment.querySelectorAll('.customLink')] => Bublé needs transforms: { spreadRest: false }
-				Array.from[fragment.querySelectorAll('.customLink')]
-				Array.prototype.slice.call(fragment.querySelectorAll('.customLink'))
+				[...fragment.querySelectorAll(`.${config.customLinkCssClass}`)] => Bublé needs transforms: { spreadRest: false }
+				Array.from[fragment.querySelectorAll(`.${config.customLinkCssClass}`)]
+				Array.prototype.slice.call(fragment.querySelectorAll(`.${config.customLinkCssClass}`))
 			 */
-			const customLinks = Array.prototype.slice.call(fragment.querySelectorAll('.customLink'))
+			const customLinks = Array.prototype.slice.call(
+				fragment.querySelectorAll(`.${config.customLinkCssClass}`)
+			)
 			for (let i = 0, length = customLinks.length; i < length; i++) {
 				const link = customLinks[i]
-				link.classList.remove('customLink')
+				link.classList.remove(config.customLinkCssClass)
 
 				// @ts-ignore
-				link.__customLink = true
+				link[config.customLinkProperty] = true
 			}
 
 			this.target.appendChild(fragment)
