@@ -63,15 +63,10 @@ export default class Tunnel {
 						instance = new route.component() as any
 						this.setComponentInjection(instance)
 					} else {
-						instance = route.component()
+						instance = () => route.component()
 					}
 
 					const componentType = this.getComponentType(instance)
-
-					// DocumentFragment are rendered inside a function to reused them
-					if (componentType === 'DocumentFragment') {
-						instance = () => route.component()
-					}
 
 					return [
 						route.path,
@@ -88,11 +83,11 @@ export default class Tunnel {
 	getComponentType(instance: any): string | null {
 		if (Object.getPrototypeOf(instance) instanceof Component) {
 			return 'Component'
-		} else if (instance instanceof HTMLElement) {
+		} else if (instance() instanceof HTMLElement) {
 			return 'HTMLElement'
-		} else if (instance instanceof DocumentFragment) {
+		} else if (instance() instanceof DocumentFragment) {
 			return 'DocumentFragment'
-		} else if (typeof instance === 'string') {
+		} else if (typeof instance() === 'string') {
 			return 'String'
 		}
 
@@ -203,12 +198,12 @@ export default class Tunnel {
 			this.target.appendChild(route.component.render())
 			route.component.afterRender()
 		} else if (route.componentType === 'HTMLElement') {
-			this.target.appendChild(route.component)
+			this.target.appendChild(route.component())
 		} else if (route.componentType === 'DocumentFragment') {
 			this.target.appendChild(route.component())
 		} else if (route.componentType === 'String') {
 			const template = document.createElement('template')
-			template.innerHTML = route.component.trim()
+			template.innerHTML = route.component().trim()
 			const fragment = document.importNode(template.content, true)
 
 			// Transform .customLink CSS class to a Node property for the event delegation of the router
