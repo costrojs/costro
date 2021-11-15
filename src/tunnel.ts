@@ -60,6 +60,7 @@ export default class Tunnel {
 					route.path,
 					{
 						instance: route.component,
+						path: route.path,
 						component: null,
 						componentType: null
 					}
@@ -143,6 +144,11 @@ export default class Tunnel {
 		currentPath: string
 		previousPath?: null | string
 	}) {
+		// Route is already active
+		if (this.currentRoute && this.currentRoute.path == currentPath) {
+			return
+		}
+
 		this.currentRoute = this.routes.get(currentPath)
 
 		// Check if route exist

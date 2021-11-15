@@ -23,6 +23,7 @@ export interface Route {
 
 export interface RouteData {
 	instance: any
+	path: string
 	component: any | null
 	componentType: string | null
 }
