@@ -242,15 +242,7 @@ export default class Tunnel {
 				const template = document.createElement('template')
 				template.innerHTML = this.#currentRoute.component().trim()
 				const fragment = document.importNode(template.content, true)
-
-				// Transform .customLink CSS class to a Node property for the event delegation of the router
-				/**
-				TODO:
-				[...fragment.querySelectorAll(`.${config.customLinkCssClass}`)] => Bublé needs transforms: { spreadRest: false }
-				Array.from[fragment.querySelectorAll(`.${config.customLinkCssClass}`)]
-				Array.prototype.slice.call(fragment.querySelectorAll(`.${config.customLinkCssClass}`))
-			 */
-				const customLinks = Array.prototype.slice.call(
+				const customLinks = Array.from(
 					fragment.querySelectorAll(`.${config.customLinkCssClass}`)
 				)
 				for (let i = 0, length = customLinks.length; i < length; i++) {
