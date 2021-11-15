@@ -24,7 +24,12 @@ export default class Hash {
 	}
 
 	getPath(): string {
-		return window.location.hash.substr(1) || this.#defaultHash
+		// Get the path differently according to the Firefox bug
+		// https://bugzilla.mozilla.org/show_bug.cgi?id=378962
+		let href = window.location.href
+		const index = href.indexOf('#')
+
+		return index >= 0 ? href.slice(index + 1) : this.#defaultHash
 	}
 
 	addEvents() {
