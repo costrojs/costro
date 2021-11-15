@@ -24,6 +24,7 @@ export interface Route {
 export interface RouteData {
 	instance: any
 	path: string
+	isFunction: Boolean
 	component: any | null
 	componentType: string | null
 }

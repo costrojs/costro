@@ -5,74 +5,114 @@ function Navigation() {
 	return (
 		<ul>
 			<li>
-				<Link to="/">Home</Link>
+				<Link to="/">htmlElementByFunction</Link>
 				{/* <button onClick={() => navigate('/')}>Home</button> */}
 			</li>
 			<li>
-				<Link to="/about">About</Link>
+				<Link to="/document-fragment-by-function">documentFragmentByFunction</Link>
 			</li>
 			<li>
-				<Link to="/contact">Contact</Link>
+				<Link to="/custom-component">CustomComponent</Link>
 			</li>
 			<li>
-				<Link to="/dashboard">Dashboard</Link>
+				<Link to="/string-by-function">StringByFunction</Link>
+			</li>
+			<li>
+				<Link to="/html-element">htmlElement</Link>
+			</li>
+			<li>
+				<Link to="/document-fragment">documentFragment</Link>
+			</li>
+			<li>
+				<Link to="/string">string</Link>
 			</li>
 		</ul>
 	)
 }
 
-function Home() {
+function htmlElementByFunction() {
 	return (
 		<div>
 			<Navigation />
-			<h2>Home</h2>
+			<h2>HTMLElement by Function</h2>
 		</div>
 	)
 }
 
-function About() {
+function documentFragmentByFunction() {
 	return (
 		<>
 			<Navigation />
-			<h2>About</h2>
+			<h2>DocumentFragment by Function</h2>
 		</>
 	)
 }
 
-class Contact extends Component {
+class CustomComponent extends Component {
 	render() {
 		return (
 			<>
 				<Navigation />
-				<h2>Contact</h2>
+				<h2>Custom Component by Function</h2>
 			</>
 		)
 	}
 }
 
-function Dashboard() {
+function StringByFunction() {
 	return `
-        ${Link({ to: '/contact', children: ['Contact'] }, true)}
-        <h2>Dashboard</h2>
+        ${Link({ to: '/', children: ['Home'] }, true)}
+        <h2>String by Function</h2>
     `
 }
+
+const htmlElement = (
+	<div>
+		<Navigation />
+		<h2>HTMLElement</h2>
+	</div>
+)
+
+const documentFragment = (
+	<>
+		<Navigation />
+		<h2>DocumentFragment</h2>
+	</>
+)
+
+const String = `
+    ${Link({ to: '/', children: ['Home'] }, true)}
+    <h2>String</h2>
+`
 
 const routes = [
 	{
 		path: '/',
-		component: Home
+		component: htmlElementByFunction
 	},
 	{
-		path: '/about',
-		component: About
+		path: '/document-fragment-by-function',
+		component: documentFragmentByFunction
 	},
 	{
-		path: '/contact',
-		component: Contact
+		path: '/custom-component',
+		component: CustomComponent
 	},
 	{
-		path: '/dashboard',
-		component: Dashboard
+		path: '/string-by-function',
+		component: StringByFunction
+	},
+	{
+		path: '/html-element',
+		component: htmlElement
+	},
+	{
+		path: '/document-fragment',
+		component: documentFragment
+	},
+	{
+		path: '/string',
+		component: String
 	}
 ]
 

@@ -34,7 +34,7 @@ export default class Tunnel {
 		this.routes = this.createRoutesData(routes)
 		console.log(this.routes)
 		if (!this.routes.size) {
-			throw new Error('Tunnel::Constructor | Invalid routes configuration')
+			throw new Error('Tunnel::constructor | Invalid routes configuration')
 		}
 
 		this.onNavigate = this.onNavigate.bind(this)
@@ -53,18 +53,41 @@ export default class Tunnel {
 	}
 
 	createRoutesData(routes: Route[]): Map<string, RouteData> {
+		const inValidRoutes = routes
+			.filter((route): Boolean => !this.isValidInterface(route.component))
+			.map((route) => route.path)
+
+		if (inValidRoutes.length) {
+			throw new Error(
+				`Tunnel::createRoutesData | Invalid type for path components: "${inValidRoutes.join(
+					'", "'
+				)}". Allowed types are Function, HTMLElement, DocumentFragment, Component and String.`
+			)
+		}
+
 		return new Map(
 			routes
-				.filter((route): Boolean => route.component instanceof Function)
+				.filter((route): Boolean => this.isValidInterface(route.component))
 				.map((route: Route): any => [
 					route.path,
 					{
 						instance: route.component,
 						path: route.path,
 						component: null,
-						componentType: null
+						componentType: null,
+						isFunction: route.component instanceof Function
 					}
 				])
+		)
+	}
+
+	isValidInterface(instance: any): Boolean {
+		return !!(
+			instance instanceof Function ||
+			instance instanceof HTMLElement ||
+			instance instanceof DocumentFragment ||
+			instance instanceof Component ||
+			typeof instance === 'string'
 		)
 	}
 
@@ -104,7 +127,7 @@ export default class Tunnel {
 		if (LocationInstance) {
 			return LocationInstance
 		}
-		throw new Error(`Router :: Unknown mode "${mode}"`)
+		throw new Error(`Router::getLocationInstance | Unknown mode "${mode}"`)
 	}
 
 	addEvents() {
@@ -242,11 +265,15 @@ export default class Tunnel {
 		const route = this.routes.get(path)
 
 		if (route) {
-			if (route.instance.prototype instanceof Component) {
-				route.component = new route.instance()
-				this.setComponentInjection(route.component)
+			if (route.isFunction) {
+				if (route.instance.prototype instanceof Component) {
+					route.component = new route.instance()
+					this.setComponentInjection(route.component)
+				} else {
+					route.component = () => route.instance()
+				}
 			} else {
-				route.component = () => route.instance()
+				route.component = () => route.instance
 			}
 
 			route.componentType = this.getComponentType(route.component)
