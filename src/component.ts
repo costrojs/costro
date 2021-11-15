@@ -1,4 +1,5 @@
 import { ComponentProps } from './interface'
+import { extend } from './utils'
 
 class Component {
 	store: Map<string, object>
@@ -53,7 +54,14 @@ class Component {
 	setStore(data: any) {
 		const keys = Object.keys(data)
 		for (var i = 0, length = keys.length; i < length; i++) {
-			this.store.set(keys[i], data[keys[i]])
+			// Merge store data if key already exists
+			if (this.store.has(keys[i])) {
+				const store = this.store.get(keys[i])
+				const newStore = extend(true, store, data[keys[i]])
+				this.store.set(keys[i], newStore)
+			} else {
+				this.store.set(keys[i], data[keys[i]])
+			}
 		}
 	}
 
