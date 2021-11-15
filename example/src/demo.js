@@ -57,29 +57,6 @@ class CustomComponent extends Component {
 			</>
 		)
 	}
-
-	afterRender() {
-		this.setStore({ page: 'custom component' })
-		this.setStore({ ua: '123456-12' })
-		this.setStore({
-			obj: {
-				date: new Date(),
-				func: function (q) {
-					return 1 + q
-				},
-				num: 123,
-				text: 'asdasd',
-				array: [1, 'asd'],
-				regex: new RegExp(/aaa/i),
-				subobj: {
-					num: 234,
-					text: 'asdsaD'
-				}
-			}
-		})
-
-		this.setStore({ obj: { num: 456, date: new Date('2021-12-21') } })
-	}
 }
 
 function StringByFunction() {
