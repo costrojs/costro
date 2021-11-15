@@ -32,3 +32,13 @@ export interface RouteData {
 export interface Attributes {
 	[key: string]: string
 }
+
+export interface ComponentInjection {
+	navigate: Function
+	getExternalStore: Function
+	getPath: Function
+}
+
+export interface ComponentProps {
+	dependencies: ComponentInjection
+}

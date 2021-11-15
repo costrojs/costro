@@ -1,7 +1,7 @@
 import config from './config'
 import Hash from './location/hash'
 import History from './location/history'
-import { RouteData, interfaceLocationInstances, Route } from './interface'
+import { RouteData, interfaceLocationInstances, Route, ComponentInjection } from './interface'
 import Component from './component'
 
 const LOCATION_INSTANCES: interfaceLocationInstances = {
@@ -108,17 +108,25 @@ export default class Tunnel {
 	/**
 	 * Push new function inside step context to change the route
 	 */
-	setComponentInjection(instance: any) {
-		instance.getPath = (): null | string => {
-			return this.location.getPath()
-		}
-		instance.navigate = (path: string): void => {
-			const route = this.routes.get(path)
-			route && this.navigate(path)
-		}
-		instance.getExternalStore = (path: string): any | null => {
-			const route = this.routes.get(path)
-			return route ? route.component.getStore() : null
+	getComponentDependencies(): ComponentInjection {
+		return {
+			navigate: (path: string): void => {
+				const route = this.routes.get(path)
+				route && this.navigate(path)
+			},
+			getExternalStore: (path: string): any | null => {
+				const route = this.routes.get(path)
+
+				// Store are only available for Component type
+				if (route && route.componentType === 'Component') {
+					return route.component.getStore()
+				}
+
+				return null
+			},
+			getPath: (): null | string => {
+				return this.location.getPath()
+			}
 		}
 	}
 
@@ -267,8 +275,9 @@ export default class Tunnel {
 		if (route) {
 			if (route.isFunction) {
 				if (route.instance.prototype instanceof Component) {
-					route.component = new route.instance()
-					this.setComponentInjection(route.component)
+					route.component = new route.instance({
+						dependencies: this.getComponentDependencies()
+					})
 				} else {
 					route.component = () => route.instance()
 				}

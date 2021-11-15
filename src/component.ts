@@ -1,12 +1,23 @@
+import { ComponentProps } from './interface'
+
 class Component {
 	store: Map<string, object>
 	isReactComponent = true
+	props: ComponentProps
 
 	// @ts-ignore
 	constructor(props) {
 		// @ts-ignore
 		this.props = props
 		this.store = new Map()
+
+		// Inject functions as class property
+		const keys = Object.keys(this.props.dependencies) as string[]
+		for (let i = 0, length = keys.length; i < length; i++) {
+			const key = keys[i]
+			// @ts-ignore
+			this[keys[i]] = this.props.dependencies[keys[i]]
+		}
 	}
 
 	/**
