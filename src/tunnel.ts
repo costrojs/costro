@@ -239,21 +239,9 @@ export default class Tunnel {
 			} else if (this.#currentRoute.componentType === 'DocumentFragment') {
 				this.target.appendChild(this.#currentRoute.component())
 			} else if (this.#currentRoute.componentType === 'String') {
-				const template = document.createElement('template')
-				template.innerHTML = this.#currentRoute.component().trim()
-				const fragment = document.importNode(template.content, true)
-				const customLinks = Array.from(
-					fragment.querySelectorAll(`.${config.customLinkCssClass}`)
+				this.target.appendChild(
+					this.transformLinksInStringComponent(this.#currentRoute.component())
 				)
-				for (let i = 0, length = customLinks.length; i < length; i++) {
-					const link = customLinks[i]
-					link.classList.remove(config.customLinkCssClass)
-
-					// @ts-ignore
-					link[config.customLinkProperty] = true
-				}
-
-				this.target.appendChild(fragment)
 			}
 		}
 	}
@@ -277,6 +265,22 @@ export default class Tunnel {
 			route.componentType = this.getComponentType(route.component)
 			this.#routes.set(path, route)
 		}
+	}
+
+	transformLinksInStringComponent(component: string): DocumentFragment {
+		const template = document.createElement('template')
+		template.innerHTML = component.trim()
+		const fragment = document.importNode(template.content, true)
+		const customLinks = Array.from(fragment.querySelectorAll(`.${config.customLinkCssClass}`))
+		for (let i = 0, length = customLinks.length; i < length; i++) {
+			const link = customLinks[i]
+			link.classList.remove(config.customLinkCssClass)
+
+			// @ts-ignore
+			link[config.customLinkProperty] = true
+		}
+
+		return fragment
 	}
 
 	destroy() {
