@@ -289,4 +289,17 @@ export default class Tunnel {
 			this.routes.set(path, route)
 		}
 	}
+
+	destroy() {
+		document.removeEventListener('navigate', this.onNavigate)
+		this.target.removeEventListener('click', this.onClickOnApp)
+
+		// Delete all routes data
+		const keys = Array.from(this.routes.keys())
+		for (let i = 0, length = keys.length; i < length; i++) {
+			this.routes.delete(keys[i])
+		}
+
+		this.target.remove()
+	}
 }
