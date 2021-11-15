@@ -1,13 +1,12 @@
 export default class History {
+	#onRouteChange: Function
 	currentPath: string
 	previousPath: null | string
-	#onRouteChange: Function
 
 	constructor({ onRouteChange }: { onRouteChange: Function }) {
+		this.#onRouteChange = onRouteChange
 		this.currentPath = this.getPath()
 		this.previousPath = null
-
-		this.#onRouteChange = onRouteChange
 
 		// Set initial state
 		window.history.replaceState(
@@ -22,13 +21,7 @@ export default class History {
 		this.previousPath = this.getPath()
 		this.currentPath = path
 
-		window.history.pushState(
-			{
-				path: this.currentPath
-			},
-			'',
-			`${path}`
-		)
+		window.history.pushState({ path: this.currentPath }, '', `${path}`)
 
 		this.#onRouteChange({
 			currentPath: this.currentPath,
