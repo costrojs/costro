@@ -21,7 +21,9 @@ const plugins = [
 	})
 ]
 
-if (process.env.ENV === 'production') {
+const isProduction = process.env.ENV === 'production'
+
+if (isProduction) {
 	plugins.push(terser())
 }
 
@@ -32,8 +34,16 @@ export default [
 			{
 				file: `${outputTarget}/demo.js`,
 				format: 'umd'
+				// sourcemap: false
 			}
 		],
-		plugins
+		plugins,
+		onwarn: (warning, warn) => {
+			// Skip certain warnings
+			if (['THIS_IS_UNDEFINED', 'SOURCEMAP_ERROR'].includes(warning.code)) return
+
+			// Use default for everything else
+			warn(warning)
+		}
 	}
 ]

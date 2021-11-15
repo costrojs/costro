@@ -14,7 +14,9 @@ const plugins = [
 	})
 ]
 
-if (process.env.ENV === 'production') {
+const isProduction = process.env.ENV === 'production'
+
+if (isProduction) {
 	plugins.push(terser())
 }
 
