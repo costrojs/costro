@@ -1,13 +1,13 @@
 export default class History {
 	currentPath: string
 	previousPath: null | string
-	onRouteChange: Function
+	#onRouteChange: Function
 
 	constructor({ onRouteChange }: { onRouteChange: Function }) {
 		this.currentPath = this.getPath()
 		this.previousPath = null
 
-		this.onRouteChange = onRouteChange
+		this.#onRouteChange = onRouteChange
 
 		// Set initial state
 		window.history.replaceState(
@@ -16,8 +16,6 @@ export default class History {
 			},
 			''
 		)
-
-		this.onPopState = this.onPopState.bind(this)
 	}
 
 	setPath(path: string) {
@@ -32,7 +30,7 @@ export default class History {
 			`${path}`
 		)
 
-		this.onRouteChange({
+		this.#onRouteChange({
 			currentPath: this.currentPath,
 			previousPath: this.previousPath
 		})
@@ -43,14 +41,14 @@ export default class History {
 	}
 
 	addEvents() {
-		window.addEventListener('popstate', this.onPopState)
+		window.addEventListener('popstate', this.#onPopState)
 	}
 
-	onPopState() {
+	#onPopState = () => {
 		this.previousPath = this.currentPath
 		this.currentPath = this.getPath()
 
-		this.onRouteChange({
+		this.#onRouteChange({
 			currentPath: this.currentPath,
 			previousPath: this.previousPath
 		})

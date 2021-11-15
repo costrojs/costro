@@ -12,10 +12,10 @@ const LOCATION_INSTANCES: interfaceLocationInstances = {
 export default class Tunnel {
 	target: HTMLElement
 	mode: string
-	routes: Map<string, RouteData>
+	#routes: Map<string, RouteData>
 	location: any
-	currentRoute: undefined | RouteData
-	previousRoute: undefined | RouteData
+	#currentRoute: undefined | RouteData
+	#previousRoute: undefined | RouteData
 
 	constructor({
 		target,
@@ -28,17 +28,14 @@ export default class Tunnel {
 	}) {
 		this.mode = mode
 		this.target = target
-		this.currentRoute = undefined
-		this.previousRoute = undefined
+		this.#currentRoute = undefined
+		this.#previousRoute = undefined
 
-		this.routes = this.createRoutesData(routes)
-		console.log(this.routes)
-		if (!this.routes.size) {
+		this.#routes = this.createRoutesData(routes)
+		console.log(this.#routes)
+		if (!this.#routes.size) {
 			throw new Error('Tunnel::constructor | Invalid routes configuration')
 		}
-
-		this.onNavigate = this.onNavigate.bind(this)
-		this.onClickOnApp = this.onClickOnApp.bind(this)
 
 		const LocationInstance = this.getLocationInstance(mode)
 		this.location = new LocationInstance({
@@ -111,11 +108,11 @@ export default class Tunnel {
 	getComponentDependencies(): ComponentInjection {
 		return {
 			navigate: (path: string): void => {
-				const route = this.routes.get(path)
+				const route = this.#routes.get(path)
 				route && this.navigate(path)
 			},
 			getExternalStore: (path: string): any | null => {
-				const route = this.routes.get(path)
+				const route = this.#routes.get(path)
 
 				// Store are only available for Component type
 				if (route && route.componentType === 'Component') {
@@ -139,11 +136,11 @@ export default class Tunnel {
 	}
 
 	addEvents() {
-		document.addEventListener('navigate', this.onNavigate)
-		this.target.addEventListener('click', this.onClickOnApp)
+		document.addEventListener('navigate', this.#onNavigate)
+		this.target.addEventListener('click', this.#onClickOnApp)
 	}
 
-	onNavigate(e: Event) {
+	#onNavigate = (e: Event) => {
 		const { to } = (<CustomEvent>e).detail
 		typeof to === 'string' && this.navigate(to)
 	}
@@ -152,7 +149,7 @@ export default class Tunnel {
 		this.location.setPath(path)
 	}
 
-	onClickOnApp(e: Event) {
+	#onClickOnApp = (e: Event) => {
 		const target = e.target as HTMLElement
 
 		// @ts-ignore
@@ -176,17 +173,17 @@ export default class Tunnel {
 		previousPath?: null | string
 	}) {
 		// Route is already active
-		if (this.currentRoute && this.currentRoute.path == currentPath) {
+		if (this.#currentRoute && this.#currentRoute.path == currentPath) {
 			return
 		}
 
-		this.currentRoute = this.routes.get(currentPath)
+		this.#currentRoute = this.#routes.get(currentPath)
 
 		// Check if route exist
-		if (this.currentRoute) {
+		if (this.#currentRoute) {
 			if (previousPath) {
-				this.previousRoute = this.routes.get(previousPath)
-				if (this.previousRoute) {
+				this.#previousRoute = this.#routes.get(previousPath)
+				if (this.#previousRoute) {
 					this.updatePreviousRoute(previousPath)
 				}
 			}
@@ -198,14 +195,14 @@ export default class Tunnel {
 	}
 
 	updatePreviousRoute(path: string) {
-		if (this.previousRoute && this.previousRoute.component === null) {
+		if (this.#previousRoute && this.#previousRoute.component === null) {
 			this.createInstanceInCache(path)
 		}
 		this.destroyComponent(path)
 	}
 
 	updateCurrentRoute(path: string) {
-		if (this.currentRoute && this.currentRoute.component === null) {
+		if (this.#currentRoute && this.#currentRoute.component === null) {
 			this.createInstanceInCache(path)
 		}
 		this.createComponent(path)
@@ -216,11 +213,11 @@ export default class Tunnel {
 	 * @param {String} path Route
 	 */
 	destroyComponent(path: string) {
-		if (this.previousRoute) {
-			if (this.previousRoute.componentType === 'Component') {
-				this.previousRoute.component.beforeDestroy()
+		if (this.#previousRoute) {
+			if (this.#previousRoute.componentType === 'Component') {
+				this.#previousRoute.component.beforeDestroy()
 				this.target.replaceChildren()
-				this.previousRoute.component.afterDestroy()
+				this.#previousRoute.component.afterDestroy()
 			} else {
 				this.target.replaceChildren()
 			}
@@ -232,18 +229,18 @@ export default class Tunnel {
 	 * @param {String} path Route
 	 */
 	createComponent(path: string) {
-		if (this.currentRoute) {
-			if (this.currentRoute.componentType === 'Component') {
-				this.currentRoute.component.beforeRender()
-				this.target.appendChild(this.currentRoute.component.render())
-				this.currentRoute.component.afterRender()
-			} else if (this.currentRoute.componentType === 'HTMLElement') {
-				this.target.appendChild(this.currentRoute.component())
-			} else if (this.currentRoute.componentType === 'DocumentFragment') {
-				this.target.appendChild(this.currentRoute.component())
-			} else if (this.currentRoute.componentType === 'String') {
+		if (this.#currentRoute) {
+			if (this.#currentRoute.componentType === 'Component') {
+				this.#currentRoute.component.beforeRender()
+				this.target.appendChild(this.#currentRoute.component.render())
+				this.#currentRoute.component.afterRender()
+			} else if (this.#currentRoute.componentType === 'HTMLElement') {
+				this.target.appendChild(this.#currentRoute.component())
+			} else if (this.#currentRoute.componentType === 'DocumentFragment') {
+				this.target.appendChild(this.#currentRoute.component())
+			} else if (this.#currentRoute.componentType === 'String') {
 				const template = document.createElement('template')
-				template.innerHTML = this.currentRoute.component().trim()
+				template.innerHTML = this.#currentRoute.component().trim()
 				const fragment = document.importNode(template.content, true)
 
 				// Transform .customLink CSS class to a Node property for the event delegation of the router
@@ -270,7 +267,7 @@ export default class Tunnel {
 	}
 
 	createInstanceInCache(path: string) {
-		const route = this.routes.get(path)
+		const route = this.#routes.get(path)
 
 		if (route) {
 			if (route.isFunction) {
@@ -286,18 +283,18 @@ export default class Tunnel {
 			}
 
 			route.componentType = this.getComponentType(route.component)
-			this.routes.set(path, route)
+			this.#routes.set(path, route)
 		}
 	}
 
 	destroy() {
-		document.removeEventListener('navigate', this.onNavigate)
-		this.target.removeEventListener('click', this.onClickOnApp)
+		document.removeEventListener('navigate', this.#onNavigate)
+		this.target.removeEventListener('click', this.#onClickOnApp)
 
 		// Delete all routes data
-		const keys = Array.from(this.routes.keys())
+		const keys = Array.from(this.#routes.keys())
 		for (let i = 0, length = keys.length; i < length; i++) {
-			this.routes.delete(keys[i])
+			this.#routes.delete(keys[i])
 		}
 
 		this.target.remove()
