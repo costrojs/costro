@@ -3,13 +3,13 @@ export interface Constructable<T> {
 }
 
 export interface Component {
-	beforeRender: Function
-	afterRender: Function
-	beforeDestroy: Function
-	afterDestroy: Function
-	render: Function
-	setStore: Function
-	getStore: Function
+	beforeRender: () => void
+	afterRender: () => void
+	beforeDestroy: () => void
+	afterDestroy: () => void
+	render: () => void
+	setStore: (data: any) => void
+	getStore: (key: string) => object | undefined | Map<string, object>
 }
 
 export interface interfaceLocationInstances {
@@ -18,13 +18,15 @@ export interface interfaceLocationInstances {
 
 export interface Route {
 	path: string
-	component: Constructable<Component> | Function | any // Multi types with constructor and function fails
+	component: Constructable<Component> | (() => void) | any // Multi types with constructor and function fails
+	props: any
 }
 
 export interface RouteData {
+	props: any
 	instance: any
 	path: string
-	isFunction: Boolean
+	isFunction: boolean
 	component: any | null
 	interfaceType: string | null
 }
@@ -34,7 +36,15 @@ export interface Attributes {
 }
 
 export interface ComponentInjection {
-	navigate: Function
-	getExternalStore: Function
-	getPath: Function
+	getExternalStore: (path: string) => any | null
+	getPath: () => null | string
+	navigate: (path: string) => void
 }
+
+export type onRouteChangeFunction = ({
+	currentPath,
+	previousPath
+}: {
+	currentPath: string
+	previousPath: null | string
+}) => void

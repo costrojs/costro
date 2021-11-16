@@ -1,7 +1,7 @@
 import { extend } from './utils'
 
 // TODO?
-const LIFECYCLE_HOOKS = ['beforeRender', 'afterRender', 'beforeDestroy', 'afterDestroy']
+// const LIFECYCLE_HOOKS = ['beforeRender', 'afterRender', 'beforeDestroy', 'afterDestroy']
 
 class Component {
 	#store: Map<string, object>
@@ -17,22 +17,30 @@ class Component {
 	/**
 	 * Life cycle hook
 	 */
-	beforeRender() {}
+	beforeRender() {
+		// Lifecycle hook: before rendering the component
+	}
 
 	/**
 	 * Life cycle hook
 	 */
-	afterRender() {}
+	afterRender() {
+		// Lifecycle hook: after rendering the component
+	}
 
 	/**
 	 * Life cycle hook
 	 */
-	beforeDestroy() {}
+	beforeDestroy() {
+		// Lifecycle hook: before the component is destroyed
+	}
 
 	/**
 	 * Life cycle hook
 	 */
-	afterDestroy() {}
+	afterDestroy() {
+		// Lifecycle hook: after the destruction of the component
+	}
 
 	/**
 	 * Required function in the child class
@@ -43,7 +51,7 @@ class Component {
 
 	setStore(data: any) {
 		const keys = Object.keys(data) as string[]
-		for (var i = 0, length = keys.length; i < length; i++) {
+		for (let i = 0, length = keys.length; i < length; i++) {
 			// Merge store data if key already exists
 			if (this.#store.has(keys[i])) {
 				const store = this.#store.get(keys[i])
@@ -55,7 +63,7 @@ class Component {
 		}
 	}
 
-	getStore(key: string) {
+	getStore(key: string): object | undefined | Map<string, object> {
 		return key ? this.#store.get(key) : this.#store
 	}
 }

@@ -12,9 +12,9 @@ const plugins = [
 		include: ['node_modules/**', 'dist/**'] // Include the library development dist directory
 	}),
 	sucrase({
-		transforms: ['jsx'],
+		jsxFragmentPragma: 'Fragment',
 		jsxPragma: 'createElement',
-		jsxFragmentPragma: 'Fragment'
+		transforms: ['jsx']
 	}),
 	buble({
 		exclude: ['node_modules/jsx-dom/**'] // Exclude transpilation from jsx-dom
@@ -30,6 +30,13 @@ if (isProduction) {
 export default [
 	{
 		input: path.resolve(__dirname, './src/demo.js'),
+		onwarn: (warning, warn) => {
+			// Skip certain warnings
+			if (['THIS_IS_UNDEFINED', 'SOURCEMAP_ERROR'].includes(warning.code)) return
+
+			// Use default for everything else
+			warn(warning)
+		},
 		output: [
 			{
 				file: `${outputTarget}/demo.js`,
@@ -37,13 +44,6 @@ export default [
 				// sourcemap: false
 			}
 		],
-		plugins,
-		onwarn: (warning, warn) => {
-			// Skip certain warnings
-			if (['THIS_IS_UNDEFINED', 'SOURCEMAP_ERROR'].includes(warning.code)) return
-
-			// Use default for everything else
-			warn(warning)
-		}
+		plugins
 	}
 ]

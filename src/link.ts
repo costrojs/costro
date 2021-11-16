@@ -11,7 +11,7 @@ export default function Link(
 		children: any[]
 		attrs: Attributes
 	},
-	isHTML: Boolean = false
+	isHTML = false
 ) {
 	const element = document.createElement('a')
 	element.setAttribute('href', to)

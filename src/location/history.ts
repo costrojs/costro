@@ -1,9 +1,11 @@
+import { onRouteChangeFunction } from '../interface'
+
 export default class History {
-	#onRouteChange: Function
+	#onRouteChange: onRouteChangeFunction
 	currentPath: string
 	previousPath: null | string
 
-	constructor({ onRouteChange }: { onRouteChange: Function }) {
+	constructor({ onRouteChange }: { onRouteChange: onRouteChangeFunction }) {
 		this.#onRouteChange = onRouteChange
 		this.currentPath = this.getPath()
 		this.previousPath = null

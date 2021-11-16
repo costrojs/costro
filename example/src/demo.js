@@ -61,7 +61,7 @@ class CustomComponent extends Component {
 
 function StringByFunction() {
 	return `
-        ${Link({ to: '/', children: ['Home'] }, true)}
+        ${Link({ children: ['Home'], to: '/' }, true)}
         <h2>String by Function</h2>
     `
 }
@@ -82,46 +82,46 @@ const documentFragment = (
 )
 
 const String = `
-    ${Link({ to: '/', children: ['Home'] }, true)}
+    ${Link({ children: ['Home'], to: '/' }, true)}
     <h2>String</h2>
 `
 
 const routes = [
 	{
-		path: '/',
-		component: htmlElementByFunction
+		component: htmlElementByFunction,
+		path: '/'
 	},
 	{
-		path: '/document-fragment-by-function',
-		component: documentFragmentByFunction
+		component: documentFragmentByFunction,
+		path: '/document-fragment-by-function'
 	},
 	{
-		path: '/custom-component',
-		component: CustomComponent // Don't call <CustomComponent isConnected={true} />
+		component: CustomComponent, // Don't call <CustomComponent isConnected={true} />
+		path: '/custom-component'
 	},
 	{
-		path: '/string-by-function',
-		component: StringByFunction
+		component: StringByFunction,
+		path: '/string-by-function'
 	},
 	{
-		path: '/html-element',
-		component: htmlElement
+		component: htmlElement,
+		path: '/html-element'
 	},
 	{
-		path: '/document-fragment',
-		component: documentFragment
+		component: documentFragment,
+		path: '/document-fragment'
 	},
 	{
-		path: '/string',
-		component: String
+		component: String,
+		path: '/string'
 	}
 ]
 
 // eslint-disable-next-line no-unused-vars
 const app = new Tunnel({
-	target: document.querySelector('#app'),
 	mode: 'history',
-	routes
+	routes,
+	target: document.querySelector('#app')
 })
 
 window.app = app

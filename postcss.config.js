@@ -1,16 +1,21 @@
-module.exports = {
+import postcssImport from 'postcss-import'
+import postcssPresetEnv from 'postcss-preset-env'
+import postcssNested from 'postcss-nested'
+import postcssCustomMedia from 'postcss-custom-media'
+
+export default {
 	plugins: [
-		require('postcss-import')(),
-		require('postcss-preset-env')({
-			stage: 2,
+		postcssImport(),
+		postcssPresetEnv({
 			features: {
 				'custom-properties': {
-					warnings: true,
-					preserve: false
+					preserve: false,
+					warnings: true
 				}
-			}
+			},
+			stage: 2
 		}),
-		require('postcss-nested')(),
-		require('postcss-custom-media')()
+		postcssNested(),
+		postcssCustomMedia()
 	]
 }

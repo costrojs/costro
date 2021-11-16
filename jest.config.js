@@ -1,5 +1,5 @@
 module.exports = {
-	verbose: true,
 	moduleFileExtensions: ['js', 'css'],
-	resetModules: true
+	resetModules: true,
+	verbose: true
 }

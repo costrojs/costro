@@ -1,19 +1,14 @@
 module.exports = {
-	printWidth: 100,
-	useTabs: true,
-	semi: false,
-	trailingComma: 'none',
-	singleQuote: true,
 	arrowParens: 'always',
 	overrides: [
 		{
 			files: '*.md',
 			options: {
 				proseWrap: 'preserve',
-				tabWidth: 2,
-				useTabs: false,
+				semi: true,
 				singleQuote: true,
-				semi: true
+				tabWidth: 2,
+				useTabs: false
 			}
 		},
 		{
@@ -22,5 +17,10 @@ module.exports = {
 				printWidth: 500
 			}
 		}
-	]
+	],
+	printWidth: 100,
+	semi: false,
+	singleQuote: true,
+	trailingComma: 'none',
+	useTabs: true
 }

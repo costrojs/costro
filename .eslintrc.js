@@ -1,48 +1,57 @@
 module.exports = {
-	parser: '@babel/eslint-parser',
-	parserOptions: {
-		ecmaVersion: 6,
-		ecmaFeatures: {
-			impliedStrict: true,
-			experimentalObjectRestSpread: true,
-			jsx: true
-		},
-		sourceType: 'module'
-	},
-
 	env: {
 		browser: true,
-		node: true,
 		es6: true,
-		jest: true
+		jest: true,
+		node: true
 	},
 
-	extends: ['standard', 'plugin:react/recommended', 'plugin:prettier/recommended'],
-
-	plugins: ['prettier'],
-
-	rules: {
-		indent: ['error', 'tab', { ignoredNodes: ['TemplateLiteral > *'] }],
-		'no-tabs': 0,
-		'no-console': 0,
-		'space-before-function-paren': [
-			'error',
-			{ anonymous: 'never', named: 'never', asyncArrow: 'always' }
-		],
-		'react/prop-types': 0,
-		'react/display-name': 0,
-		'react/jsx-key': 0
-	},
+	extends: [
+		'standard',
+		'plugin:react/recommended',
+		'plugin:prettier/recommended',
+		'plugin:@typescript-eslint/recommended'
+	],
 
 	globals: {
 		document: false,
 		window: false
 	},
 
+	// parser: '@babel/eslint-parser',
+	parser: '@typescript-eslint/parser',
+	parserOptions: {
+		ecmaFeatures: {
+			experimentalObjectRestSpread: true,
+			impliedStrict: true,
+			jsx: true
+		},
+		ecmaVersion: 6,
+		sourceType: 'module'
+	},
+
+	plugins: ['prettier', '@typescript-eslint'],
+
+	rules: {
+		'@typescript-eslint/ban-ts-comment': 'off',
+		'@typescript-eslint/no-explicit-any': 'off',
+		indent: ['error', 'tab', { ignoredNodes: ['TemplateLiteral > *'] }],
+		'no-console': 0,
+		'no-tabs': 0,
+		'react/display-name': 0,
+		'react/jsx-key': 0,
+		'react/prop-types': 0,
+		'sort-keys': ['error', 'asc', { caseSensitive: true, minKeys: 2, natural: true }],
+		'space-before-function-paren': [
+			'error',
+			{ anonymous: 'never', asyncArrow: 'always', named: 'never' }
+		]
+	},
+
 	settings: {
 		react: {
-			pragma: 'createElement',
 			fragment: 'Fragment',
+			pragma: 'createElement',
 			version: '0' // Remove the warning of the missing React package
 		}
 	}

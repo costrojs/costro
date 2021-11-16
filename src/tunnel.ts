@@ -51,34 +51,34 @@ export default class Tunnel {
 
 	createRoutesData(routes: Route[]): Map<string, RouteData> {
 		const inValidRoutes = routes
-			.filter((route): Boolean => !this.isInterfaceTypeGranted(route.component))
+			.filter((route): boolean => !this.isInterfaceTypeGranted(route.component))
 			.map((route) => route.path)
 
 		if (inValidRoutes.length) {
 			throw new Error(
 				`Tunnel::createRoutesData | Invalid type for path components: "${inValidRoutes.join(
 					'", "'
-				)}". Allowed types are Function, HTMLElement, DocumentFragment, Component and String.`
+				)}". Allowed types are function, HTMLElement, DocumentFragment, Component and String.`
 			)
 		}
 
 		return new Map(
 			routes
-				.filter((route): Boolean => this.isInterfaceTypeGranted(route.component))
+				.filter((route): boolean => this.isInterfaceTypeGranted(route.component))
 				.map((route: Route): any => [
 					route.path,
 					{
-						instance: route.component,
-						path: route.path,
 						component: null,
+						instance: route.component,
 						interfaceType: null,
-						isFunction: route.component instanceof Function
+						isFunction: route.component instanceof Function,
+						path: route.path
 					}
 				])
 		)
 	}
 
-	isInterfaceTypeGranted(instance: any): Boolean {
+	isInterfaceTypeGranted(instance: any): boolean {
 		return !!(
 			instance instanceof Function ||
 			instance instanceof HTMLElement ||
@@ -130,7 +130,7 @@ export default class Tunnel {
 		previousPath?: null | string
 	}) {
 		// Route is already active
-		if (this.#currentRoute && this.#currentRoute.path == currentPath) {
+		if (this.#currentRoute && this.#currentRoute.path === currentPath) {
 			return
 		}
 
@@ -155,21 +155,20 @@ export default class Tunnel {
 		if (this.#previousRoute && this.#previousRoute.component === null) {
 			this.createInstanceInCache(path)
 		}
-		this.destroyComponent(path)
+		this.destroyComponent()
 	}
 
 	updateCurrentRoute(path: string) {
 		if (this.#currentRoute && this.#currentRoute.component === null) {
 			this.createInstanceInCache(path)
 		}
-		this.createComponent(path)
+		this.createComponent()
 	}
 
 	/**
 	 * Destroy the component
-	 * @param {String} path Route
 	 */
-	destroyComponent(path: string) {
+	destroyComponent() {
 		if (this.#previousRoute) {
 			if (this.#previousRoute.interfaceType === 'Component') {
 				this.#previousRoute.component.beforeDestroy()
@@ -183,9 +182,8 @@ export default class Tunnel {
 
 	/**
 	 * Create the component
-	 * @param {String} path Route
 	 */
-	createComponent(path: string) {
+	createComponent() {
 		if (this.#currentRoute) {
 			if (this.#currentRoute.interfaceType === 'Component') {
 				this.#currentRoute.component.beforeRender()
@@ -231,9 +229,10 @@ export default class Tunnel {
 					for (let i = 0, length = keys.length; i < length; i++) {
 						const key = keys[i]
 						// @ts-ignore
-						route.instance.prototype[keys[i]] = helpers[keys[i]]
+						route.instance.prototype[key] = helpers[key]
 					}
 
+					// eslint-disable-next-line new-cap
 					route.component = new route.instance()
 				} else {
 					route.component = () => route.instance()
@@ -252,10 +251,6 @@ export default class Tunnel {
 	 */
 	getComponentHelpers(): ComponentInjection {
 		return {
-			navigate: (path: string): void => {
-				const route = this.#routes.get(path)
-				route && this.location.setPath(path)
-			},
 			getExternalStore: (path: string): any | null => {
 				const route = this.#routes.get(path)
 
@@ -268,6 +263,10 @@ export default class Tunnel {
 			},
 			getPath: (): null | string => {
 				return this.location.getPath()
+			},
+			navigate: (path: string): void => {
+				const route = this.#routes.get(path)
+				route && this.location.setPath(path)
 			}
 		}
 	}

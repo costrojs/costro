@@ -26,21 +26,21 @@ export default [
 		output: [
 			// CommonJS for bundlers
 			{
-				name: 'Tunnel',
 				file: `${outputTarget}/tunnel.cjs.js`,
-				format: 'cjs'
+				format: 'cjs',
+				name: 'Tunnel'
 			},
 			// ES module for bundlers
 			{
-				name: 'Tunnel',
 				file: `${outputTarget}/tunnel.esm.js`,
-				format: 'es'
+				format: 'es',
+				name: 'Tunnel'
 			},
 			// Browser
 			{
-				name: 'Tunnel',
 				file: `${outputTarget}/tunnel.js`,
-				format: 'umd'
+				format: 'umd',
+				name: 'Tunnel'
 			}
 		],
 		plugins

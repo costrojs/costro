@@ -4,7 +4,7 @@
  * @param {Array<Object>} objects List of objects to merged
  * @returns Merged object
  */
-function extend(deep: Boolean = false, ...objects: any[]): any {
+function extend(deep = false, ...objects: any[]): any {
 	const extended = {}
 
 	// Merge the object into the extended object

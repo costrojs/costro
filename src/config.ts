@@ -1,4 +1,4 @@
 export default {
-	customLinkProperty: '__customLink',
-	customLinkCssClass: 'customLink'
+	customLinkCssClass: 'customLink',
+	customLinkProperty: '__customLink'
 }

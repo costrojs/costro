@@ -1,10 +1,12 @@
+import { onRouteChangeFunction } from '../interface'
+
 export default class Hash {
 	#defaultHash: string
 	currentPath: string
 	previousPath: null | string
-	#onRouteChange: Function
+	#onRouteChange: onRouteChangeFunction
 
-	constructor({ onRouteChange }: { onRouteChange: Function }) {
+	constructor({ onRouteChange }: { onRouteChange: onRouteChangeFunction }) {
 		this.#onRouteChange = onRouteChange
 
 		// Get path can returns an empty string and not matched the "/" path
@@ -26,7 +28,7 @@ export default class Hash {
 	getPath(): string {
 		// Get the path differently according to the Firefox bug
 		// https://bugzilla.mozilla.org/show_bug.cgi?id=378962
-		let href = window.location.href
+		const href = window.location.href
 		const index = href.indexOf('#')
 
 		return index >= 0 ? href.slice(index + 1) : this.#defaultHash
