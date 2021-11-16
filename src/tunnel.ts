@@ -38,10 +38,8 @@ export default class Tunnel {
 		}
 
 		const LocationInstance = this.getLocationInstance(mode)
-		this.location = new LocationInstance({
-			onRouteChange: this.onRouteChange.bind(this)
-		})
-		this.location.addEvents()
+		this.location = new LocationInstance(this.onRouteChange.bind(this))
+		this.location.init()
 
 		this.addEvents()
 		this.onRouteChange({
