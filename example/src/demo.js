@@ -54,6 +54,7 @@ class CustomComponent extends Component {
 			<>
 				<Navigation />
 				<h2>Custom Component by Function</h2>
+				<p>{this.props.title}</p>
 			</>
 		)
 	}
@@ -97,7 +98,10 @@ const routes = [
 	},
 	{
 		component: CustomComponent, // Don't call <CustomComponent isConnected={true} />
-		path: '/custom-component'
+		path: '/custom-component',
+		props: {
+			title: 'home'
+		}
 	},
 	{
 		component: StringByFunction,

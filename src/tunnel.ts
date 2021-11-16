@@ -18,13 +18,13 @@ export default class Tunnel {
 	#previousRoute: undefined | RouteData
 
 	constructor({
-		target,
 		mode = 'hash',
-		routes
+		routes,
+		target
 	}: {
-		target: HTMLElement
 		mode: string
 		routes: Route[]
+		target: HTMLElement
 	}) {
 		this.mode = mode
 		this.target = target
@@ -72,7 +72,8 @@ export default class Tunnel {
 						instance: route.component,
 						interfaceType: null,
 						isFunction: route.component instanceof Function,
-						path: route.path
+						path: route.path,
+						props: route.props
 					}
 				])
 		)
@@ -233,7 +234,7 @@ export default class Tunnel {
 					}
 
 					// eslint-disable-next-line new-cap
-					route.component = new route.instance()
+					route.component = new route.instance(route.props)
 				} else {
 					route.component = () => route.instance()
 				}

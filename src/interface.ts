@@ -28,6 +28,7 @@ export interface RouteData {
 	interfaceType: string | null
 	isFunction: boolean
 	path: string
+	props: any
 }
 
 export interface Attributes {
