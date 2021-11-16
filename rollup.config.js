@@ -3,46 +3,46 @@ import typescript from '@rollup/plugin-typescript'
 import buble from '@rollup/plugin-buble'
 import { terser } from 'rollup-plugin-terser'
 
+const isProduction = process.env.ENV === 'production'
 const outputTarget = path.resolve(__dirname, './dist')
 const plugins = [
 	typescript({
 		include: 'src/**',
 		typescript: require('typescript')
-	}),
-	buble({
-		// transforms: { spreadRest: false }
 	})
 ]
 
-const isProduction = process.env.ENV === 'production'
+isProduction && plugins.push(terser())
 
-if (isProduction) {
-	plugins.push(terser())
+const builds = {
+	'cjs-bundlers': {
+		file: `${outputTarget}/tunnel.cjs.js`,
+		format: 'cjs'
+	},
+	'esm-bundlers': {
+		file: `${outputTarget}/tunnel.esm.js`,
+		format: 'es'
+	},
+	'esm-browsers': {
+		file: `${outputTarget}/tunnel.esm.browser.js`,
+		format: 'es'
+	},
+	'umd-browsers': {
+		file: `${outputTarget}/tunnel.js`,
+		format: 'umd',
+		name: 'Tunnel'
+	}
 }
 
-export default [
-	{
-		input: 'src/index.ts',
-		output: [
-			// CommonJS for bundlers
-			{
-				file: `${outputTarget}/tunnel.cjs.js`,
-				format: 'cjs',
-				name: 'Tunnel'
-			},
-			// ES module for bundlers
-			{
-				file: `${outputTarget}/tunnel.esm.js`,
-				format: 'es',
-				name: 'Tunnel'
-			},
-			// Browser
-			{
-				file: `${outputTarget}/tunnel.js`,
-				format: 'umd',
-				name: 'Tunnel'
-			}
-		],
-		plugins
-	}
-]
+const target = isProduction ? Object.keys(builds) : ['umd-browsers']
+const selectedTargets = Object.keys(builds).filter((key) => target.includes(key))
+export default selectedTargets.map((key) => ({
+	input: 'src/index.ts',
+	output: builds[key],
+	plugins: [
+		typescript({
+			include: 'src/**',
+			typescript: require('typescript')
+		})
+	].concat(key !== 'esm-browsers' ? [buble()] : [])
+}))
