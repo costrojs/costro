@@ -8,7 +8,7 @@ export default function Link(
 		...attrs
 	}: {
 		to: string
-		children: Array<any>
+		children: any[]
 		attrs: Attributes
 	},
 	isHTML: Boolean = false
@@ -36,7 +36,7 @@ export default function Link(
 	element.appendChild(fragment)
 
 	// Insert all attributes of the element
-	const keys = Object.keys(attrs)
+	const keys = Object.keys(attrs) as string[]
 	for (let i = 0, length = keys.length; i < length; i++) {
 		const key = keys[i]
 

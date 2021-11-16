@@ -1,24 +1,17 @@
-import { ComponentProps } from './interface'
 import { extend } from './utils'
 
+// TODO?
+const LIFECYCLE_HOOKS = ['beforeRender', 'afterRender', 'beforeDestroy', 'afterDestroy']
+
 class Component {
-	store: Map<string, object>
-	isReactComponent = true
-	props: ComponentProps
+	#store: Map<string, object>
+	props: any
 
 	// @ts-ignore
 	constructor(props) {
 		// @ts-ignore
 		this.props = props
-		this.store = new Map()
-
-		// Inject functions as class property
-		const keys = Object.keys(this.props.dependencies) as string[]
-		for (let i = 0, length = keys.length; i < length; i++) {
-			const key = keys[i]
-			// @ts-ignore
-			this[keys[i]] = this.props.dependencies[keys[i]]
-		}
+		this.#store = new Map()
 	}
 
 	/**
@@ -48,25 +41,22 @@ class Component {
 		throw new Error('You have to implement the function "render" for the component.')
 	}
 
-	/**
-	 * Required function in the child class
-	 */
 	setStore(data: any) {
-		const keys = Object.keys(data)
+		const keys = Object.keys(data) as string[]
 		for (var i = 0, length = keys.length; i < length; i++) {
 			// Merge store data if key already exists
-			if (this.store.has(keys[i])) {
-				const store = this.store.get(keys[i])
+			if (this.#store.has(keys[i])) {
+				const store = this.#store.get(keys[i])
 				const newStore = extend(true, store, data[keys[i]])
-				this.store.set(keys[i], newStore)
+				this.#store.set(keys[i], newStore)
 			} else {
-				this.store.set(keys[i], data[keys[i]])
+				this.#store.set(keys[i], data[keys[i]])
 			}
 		}
 	}
 
 	getStore(key: string) {
-		return key ? this.store.get(key) : this.store
+		return key ? this.#store.get(key) : this.#store
 	}
 }
 

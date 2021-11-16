@@ -70,6 +70,7 @@ const htmlElement = (
 	<div>
 		<Navigation />
 		<h2>HTMLElement</h2>
+		{/* <CustomComponent isConnected={true} data={{ name: 'John' }} /> */}
 	</div>
 )
 
@@ -96,7 +97,7 @@ const routes = [
 	},
 	{
 		path: '/custom-component',
-		component: CustomComponent
+		component: CustomComponent // Don't call <CustomComponent isConnected={true} />
 	},
 	{
 		path: '/string-by-function',

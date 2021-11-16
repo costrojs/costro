@@ -51,7 +51,7 @@ export default class Tunnel {
 
 	createRoutesData(routes: Route[]): Map<string, RouteData> {
 		const inValidRoutes = routes
-			.filter((route): Boolean => !this.isValidInterface(route.component))
+			.filter((route): Boolean => !this.isInterfaceTypeGranted(route.component))
 			.map((route) => route.path)
 
 		if (inValidRoutes.length) {
@@ -64,21 +64,21 @@ export default class Tunnel {
 
 		return new Map(
 			routes
-				.filter((route): Boolean => this.isValidInterface(route.component))
+				.filter((route): Boolean => this.isInterfaceTypeGranted(route.component))
 				.map((route: Route): any => [
 					route.path,
 					{
 						instance: route.component,
 						path: route.path,
 						component: null,
-						componentType: null,
+						interfaceType: null,
 						isFunction: route.component instanceof Function
 					}
 				])
 		)
 	}
 
-	isValidInterface(instance: any): Boolean {
+	isInterfaceTypeGranted(instance: any): Boolean {
 		return !!(
 			instance instanceof Function ||
 			instance instanceof HTMLElement ||
@@ -86,45 +86,6 @@ export default class Tunnel {
 			instance instanceof Component ||
 			typeof instance === 'string'
 		)
-	}
-
-	getComponentType(instance: any): string | null {
-		if (Object.getPrototypeOf(instance) instanceof Component) {
-			return 'Component'
-		} else if (instance() instanceof HTMLElement) {
-			return 'HTMLElement'
-		} else if (instance() instanceof DocumentFragment) {
-			return 'DocumentFragment'
-		} else if (typeof instance() === 'string') {
-			return 'String'
-		}
-
-		return null
-	}
-
-	/**
-	 * Push new function inside step context to change the route
-	 */
-	getComponentDependencies(): ComponentInjection {
-		return {
-			navigate: (path: string): void => {
-				const route = this.#routes.get(path)
-				route && this.navigate(path)
-			},
-			getExternalStore: (path: string): any | null => {
-				const route = this.#routes.get(path)
-
-				// Store are only available for Component type
-				if (route && route.componentType === 'Component') {
-					return route.component.getStore()
-				}
-
-				return null
-			},
-			getPath: (): null | string => {
-				return this.location.getPath()
-			}
-		}
 	}
 
 	getLocationInstance(mode: string): any {
@@ -142,11 +103,7 @@ export default class Tunnel {
 
 	#onNavigate = (e: Event) => {
 		const { to } = (<CustomEvent>e).detail
-		typeof to === 'string' && this.navigate(to)
-	}
-
-	navigate(path: string) {
-		this.location.setPath(path)
+		typeof to === 'string' && this.location.setPath(to)
 	}
 
 	#onClickOnApp = (e: Event) => {
@@ -157,7 +114,7 @@ export default class Tunnel {
 			e.preventDefault()
 
 			const href = target.getAttribute('href')
-			href && this.navigate(href)
+			href && this.location.setPath(href)
 		}
 	}
 
@@ -214,7 +171,7 @@ export default class Tunnel {
 	 */
 	destroyComponent(path: string) {
 		if (this.#previousRoute) {
-			if (this.#previousRoute.componentType === 'Component') {
+			if (this.#previousRoute.interfaceType === 'Component') {
 				this.#previousRoute.component.beforeDestroy()
 				this.target.replaceChildren()
 				this.#previousRoute.component.afterDestroy()
@@ -230,40 +187,19 @@ export default class Tunnel {
 	 */
 	createComponent(path: string) {
 		if (this.#currentRoute) {
-			if (this.#currentRoute.componentType === 'Component') {
+			if (this.#currentRoute.interfaceType === 'Component') {
 				this.#currentRoute.component.beforeRender()
 				this.target.appendChild(this.#currentRoute.component.render())
 				this.#currentRoute.component.afterRender()
-			} else if (this.#currentRoute.componentType === 'HTMLElement') {
+			} else if (this.#currentRoute.interfaceType === 'HTMLElement') {
 				this.target.appendChild(this.#currentRoute.component())
-			} else if (this.#currentRoute.componentType === 'DocumentFragment') {
+			} else if (this.#currentRoute.interfaceType === 'DocumentFragment') {
 				this.target.appendChild(this.#currentRoute.component())
-			} else if (this.#currentRoute.componentType === 'String') {
+			} else if (this.#currentRoute.interfaceType === 'String') {
 				this.target.appendChild(
 					this.transformLinksInStringComponent(this.#currentRoute.component())
 				)
 			}
-		}
-	}
-
-	createInstanceInCache(path: string) {
-		const route = this.#routes.get(path)
-
-		if (route) {
-			if (route.isFunction) {
-				if (route.instance.prototype instanceof Component) {
-					route.component = new route.instance({
-						dependencies: this.getComponentDependencies()
-					})
-				} else {
-					route.component = () => route.instance()
-				}
-			} else {
-				route.component = () => route.instance
-			}
-
-			route.componentType = this.getComponentType(route.component)
-			this.#routes.set(path, route)
 		}
 	}
 
@@ -281,6 +217,73 @@ export default class Tunnel {
 		}
 
 		return fragment
+	}
+
+	createInstanceInCache(path: string) {
+		const route = this.#routes.get(path)
+
+		if (route) {
+			if (route.isFunction) {
+				if (route.instance.prototype instanceof Component) {
+					// Inject helpers on the class prototype
+					const helpers = this.getComponentHelpers()
+					const keys = Object.keys(helpers) as string[]
+					for (let i = 0, length = keys.length; i < length; i++) {
+						const key = keys[i]
+						// @ts-ignore
+						route.instance.prototype[keys[i]] = helpers[keys[i]]
+					}
+
+					route.component = new route.instance()
+				} else {
+					route.component = () => route.instance()
+				}
+			} else {
+				route.component = () => route.instance
+			}
+
+			route.interfaceType = this.getInterfaceType(route.component)
+			this.#routes.set(path, route)
+		}
+	}
+
+	/**
+	 * Push new function inside step context to change the route
+	 */
+	getComponentHelpers(): ComponentInjection {
+		return {
+			navigate: (path: string): void => {
+				const route = this.#routes.get(path)
+				route && this.location.setPath(path)
+			},
+			getExternalStore: (path: string): any | null => {
+				const route = this.#routes.get(path)
+
+				// Store are only available for Component type
+				if (route && route.interfaceType === 'Component') {
+					return route.component.getStore()
+				}
+
+				return null
+			},
+			getPath: (): null | string => {
+				return this.location.getPath()
+			}
+		}
+	}
+
+	getInterfaceType(instance: any): string | null {
+		if (Object.getPrototypeOf(instance) instanceof Component) {
+			return 'Component'
+		} else if (instance() instanceof HTMLElement) {
+			return 'HTMLElement'
+		} else if (instance() instanceof DocumentFragment) {
+			return 'DocumentFragment'
+		} else if (typeof instance() === 'string') {
+			return 'String'
+		}
+
+		return null
 	}
 
 	destroy() {

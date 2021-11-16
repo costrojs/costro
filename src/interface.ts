@@ -26,7 +26,7 @@ export interface RouteData {
 	path: string
 	isFunction: Boolean
 	component: any | null
-	componentType: string | null
+	interfaceType: string | null
 }
 
 export interface Attributes {
@@ -37,8 +37,4 @@ export interface ComponentInjection {
 	navigate: Function
 	getExternalStore: Function
 	getPath: Function
-}
-
-export interface ComponentProps {
-	dependencies: ComponentInjection
 }

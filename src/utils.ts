@@ -1,3 +1,9 @@
+/**
+ * Deep clone for multiple objects
+ * @param {Boolean} deep Deep clone
+ * @param {Array<Object>} objects List of objects to merged
+ * @returns Merged object
+ */
 function extend(deep: Boolean = false, ...objects: any[]): any {
 	const extended = {}
 
