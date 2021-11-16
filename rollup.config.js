@@ -19,12 +19,12 @@ const builds = {
 		file: `${outputTarget}/tunnel.cjs.js`,
 		format: 'cjs'
 	},
-	'esm-bundlers': {
-		file: `${outputTarget}/tunnel.esm.js`,
-		format: 'es'
-	},
 	'esm-browsers': {
 		file: `${outputTarget}/tunnel.esm.browser.js`,
+		format: 'es'
+	},
+	'esm-bundlers': {
+		file: `${outputTarget}/tunnel.esm.js`,
 		format: 'es'
 	},
 	'umd-browsers': {
