@@ -10,7 +10,8 @@ module.exports = {
 		'standard',
 		'plugin:react/recommended',
 		'plugin:prettier/recommended',
-		'plugin:@typescript-eslint/recommended'
+		'plugin:@typescript-eslint/recommended',
+		'plugin:typescript-sort-keys/recommended'
 	],
 
 	globals: {
@@ -45,6 +46,11 @@ module.exports = {
 		'space-before-function-paren': [
 			'error',
 			{ anonymous: 'never', asyncArrow: 'always', named: 'never' }
+		],
+		'typescript-sort-keys/interface': [
+			'error',
+			'asc',
+			{ caseSensitive: true, natural: true, requiredFirst: false }
 		]
 	},
 

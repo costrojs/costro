@@ -3,13 +3,13 @@ export interface Constructable<T> {
 }
 
 export interface Component {
-	beforeRender: () => void
+	afterDestroy: () => void
 	afterRender: () => void
 	beforeDestroy: () => void
-	afterDestroy: () => void
+	beforeRender: () => void
+	getStore: (key: string) => object | undefined | Map<string, object>
 	render: () => void
 	setStore: (data: any) => void
-	getStore: (key: string) => object | undefined | Map<string, object>
 }
 
 export interface interfaceLocationInstances {
@@ -17,18 +17,17 @@ export interface interfaceLocationInstances {
 }
 
 export interface Route {
-	path: string
 	component: Constructable<Component> | (() => void) | any // Multi types with constructor and function fails
+	path: string
 	props: any
 }
 
 export interface RouteData {
-	props: any
-	instance: any
-	path: string
-	isFunction: boolean
 	component: any | null
+	instance: any
 	interfaceType: string | null
+	isFunction: boolean
+	path: string
 }
 
 export interface Attributes {

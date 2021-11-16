@@ -7,9 +7,9 @@ export default function Link(
 		children = [],
 		...attrs
 	}: {
-		to: string
-		children: any[]
 		attrs: Attributes
+		children: any[]
+		to: string
 	},
 	isHTML = false
 ) {
