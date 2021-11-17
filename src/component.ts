@@ -1,11 +1,10 @@
 import { extend } from './utils'
-
-// TODO?
-// const LIFECYCLE_HOOKS = ['beforeRender', 'afterRender', 'beforeDestroy', 'afterDestroy']
+import { privateGetExternalStore } from './interface'
 
 class Component {
 	#store: Map<string, object>
 	props: any
+	__getExternalStore!: privateGetExternalStore
 
 	// @ts-ignore
 	constructor(props) {
@@ -63,8 +62,16 @@ class Component {
 		}
 	}
 
-	getStore(key: string): object | undefined | Map<string, object> {
-		return key ? this.#store.get(key) : this.#store
+	getStore(key: string, path?: string): object | undefined | null {
+		if (key) {
+			if (path) {
+				return this.__getExternalStore(key, path)
+			}
+
+			return this.#store.get(key)
+		}
+
+		return null
 	}
 }
 

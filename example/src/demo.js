@@ -12,7 +12,10 @@ function Navigation() {
 				<Link to="/document-fragment-by-function">documentFragmentByFunction</Link>
 			</li>
 			<li>
-				<Link to="/custom-component">CustomComponent</Link>
+				<Link to="/custom-component-1">CustomComponent 1</Link>
+			</li>
+			<li>
+				<Link to="/custom-component-2">CustomComponent 2</Link>
 			</li>
 			<li>
 				<Link to="/string-by-function">StringByFunction</Link>
@@ -48,15 +51,36 @@ function documentFragmentByFunction() {
 	)
 }
 
-class CustomComponent extends Component {
+class CustomComponent1 extends Component {
 	render() {
 		return (
 			<>
 				<Navigation />
-				<h2>Custom Component by Function</h2>
+				<h2>Custom Component 1 by Function</h2>
 				<p>{this.props.title}</p>
 			</>
 		)
+	}
+
+	afterRender() {
+		this.setStore({
+			name: this.props.title
+		})
+	}
+}
+
+class CustomComponent2 extends Component {
+	render() {
+		return (
+			<>
+				<Navigation />
+				<h2>Custom Component 2 by Function</h2>
+			</>
+		)
+	}
+
+	afterRender() {
+		console.log(this.getStore('name', '/custom-component-1'))
 	}
 }
 
@@ -97,11 +121,15 @@ const routes = [
 		path: '/document-fragment-by-function'
 	},
 	{
-		component: CustomComponent, // Don't call <CustomComponent isConnected={true} />
-		path: '/custom-component',
+		component: CustomComponent1, // Don't call <CustomComponent isConnected={true} />
+		path: '/custom-component-1',
 		props: {
 			title: 'home'
 		}
+	},
+	{
+		component: CustomComponent2, // Don't call <CustomComponent isConnected={true} />
+		path: '/custom-component-2'
 	},
 	{
 		component: StringByFunction,

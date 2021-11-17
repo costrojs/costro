@@ -36,12 +36,6 @@ export interface Attributes {
 	[key: string]: string
 }
 
-export interface ComponentInjection {
-	getExternalStore: (path: string) => any | null
-	getPath: () => null | string
-	navigate: (path: string) => void
-}
-
 export type onRouteChangeFunction = ({
 	currentPath,
 	previousPath
@@ -49,3 +43,11 @@ export type onRouteChangeFunction = ({
 	currentPath: string
 	previousPath: null | string
 }) => void
+
+export type privateGetExternalStore = (key: string, path: string) => object | undefined | null
+
+export interface ComponentInjection {
+	__getExternalStore: privateGetExternalStore
+	getPath: () => null | string
+	navigate: (path: string) => void
+}

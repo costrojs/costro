@@ -259,12 +259,12 @@ export default class Tunnel {
 	 */
 	getComponentHelpers(): ComponentInjection {
 		return {
-			getExternalStore: (path: string): any | null => {
+			__getExternalStore: (key: string, path: string): object | undefined | null => {
 				const route = this.#routes.get(path)
 
 				// Store are only available for Component type
-				if (route && route.isComponent) {
-					return route.component.getStore()
+				if (route && route.isComponent && route.component) {
+					return route.component.getStore(key)
 				}
 
 				return null
