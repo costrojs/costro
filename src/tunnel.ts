@@ -49,7 +49,7 @@ export default class Tunnel {
 
 	createRoutesData(routes: Route[]): Map<string, RouteData> {
 		const inValidRoutes = routes
-			.filter((route): boolean => !this.isInterfaceTypeGranted(route.component))
+			.filter((route): boolean => !this.isInterfaceTypeFromInputGranted(route.component))
 			.map((route) => route.path)
 
 		if (inValidRoutes.length) {
@@ -62,7 +62,7 @@ export default class Tunnel {
 
 		return new Map(
 			routes
-				.filter((route): boolean => this.isInterfaceTypeGranted(route.component))
+				.filter((route): boolean => this.isInterfaceTypeFromInputGranted(route.component))
 				.map((route: Route): any => [
 					route.path,
 					{
@@ -77,7 +77,7 @@ export default class Tunnel {
 		)
 	}
 
-	isInterfaceTypeGranted(instance: any): boolean {
+	isInterfaceTypeFromInputGranted(instance: any): boolean {
 		return !!(
 			instance instanceof Function ||
 			instance instanceof HTMLElement ||
@@ -244,7 +244,7 @@ export default class Tunnel {
 				route.component = () => route.instance
 			}
 
-			route.interfaceType = this.getInterfaceType(route.component)
+			route.interfaceType = this.getInterfaceTypeFromOutput(route.component)
 			this.#routes.set(path, route)
 		}
 	}
@@ -274,14 +274,14 @@ export default class Tunnel {
 		}
 	}
 
-	getInterfaceType(instance: any): string | null {
-		if (Object.getPrototypeOf(instance) instanceof Component) {
+	getInterfaceTypeFromOutput(component: any): string | null {
+		if (component instanceof Component) {
 			return 'Component'
-		} else if (instance() instanceof HTMLElement) {
+		} else if (component() instanceof HTMLElement) {
 			return 'HTMLElement'
-		} else if (instance() instanceof DocumentFragment) {
+		} else if (component() instanceof DocumentFragment) {
 			return 'DocumentFragment'
-		} else if (typeof instance() === 'string') {
+		} else if (typeof component() === 'string') {
 			return 'String'
 		}
 
@@ -293,9 +293,8 @@ export default class Tunnel {
 		document.removeEventListener('navigate', this.#onNavigate)
 		this.target.removeEventListener('click', this.#onClickOnApp)
 
-		this.mode = null
-		this.#currentRoute = null
-		this.#previousRoute = null
+		this.#currentRoute = undefined
+		this.#previousRoute = undefined
 
 		this.#routes.clear()
 		this.target.replaceChildren()
