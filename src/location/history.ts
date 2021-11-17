@@ -2,7 +2,7 @@ import { onRouteChangeFunction } from '../interface'
 
 export default class History {
 	#onRouteChange: onRouteChangeFunction
-	currentPath: string
+	currentPath: null | string
 	previousPath: null | string
 
 	constructor(onRouteChange: onRouteChangeFunction) {
@@ -51,5 +51,11 @@ export default class History {
 			currentPath: this.currentPath,
 			previousPath: this.previousPath
 		})
+	}
+
+	destroy() {
+		window.removeEventListener('popstate', this.#onPopState)
+		this.currentPath = null
+		this.previousPath = null
 	}
 }

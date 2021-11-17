@@ -2,7 +2,7 @@ import { onRouteChangeFunction } from '../interface'
 
 export default class Hash {
 	#defaultHash: string
-	currentPath: string
+	currentPath: null | string
 	previousPath: null | string
 	#onRouteChange: onRouteChangeFunction
 
@@ -57,5 +57,11 @@ export default class Hash {
 		this.currentPath = path
 
 		window.location.hash = path
+	}
+
+	destroy() {
+		window.removeEventListener('hashchange', this.#hashChanged)
+		this.currentPath = null
+		this.previousPath = null
 	}
 }
