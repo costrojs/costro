@@ -203,8 +203,10 @@ export default class Tunnel {
 	transformLinksInStringComponent(component: string): DocumentFragment {
 		const template = document.createElement('template')
 		template.innerHTML = component.trim()
+
 		const fragment = document.importNode(template.content, true)
 		const customLinks = Array.from(fragment.querySelectorAll(`.${config.customLinkCssClass}`))
+
 		for (let i = 0, length = customLinks.length; i < length; i++) {
 			const link = customLinks[i]
 			link.classList.remove(config.customLinkCssClass)
@@ -212,6 +214,8 @@ export default class Tunnel {
 			// @ts-ignore
 			link[config.customLinkProperty] = true
 		}
+
+		template.remove()
 
 		return fragment
 	}
@@ -285,15 +289,15 @@ export default class Tunnel {
 	}
 
 	destroy() {
+		this.location.destroy()
 		document.removeEventListener('navigate', this.#onNavigate)
 		this.target.removeEventListener('click', this.#onClickOnApp)
 
-		// Delete all routes data
-		const keys = Array.from(this.#routes.keys())
-		for (let i = 0, length = keys.length; i < length; i++) {
-			this.#routes.delete(keys[i])
-		}
+		this.mode = null
+		this.#currentRoute = null
+		this.#previousRoute = null
 
-		this.target.remove()
+		this.#routes.clear()
+		this.target.replaceChildren()
 	}
 }
