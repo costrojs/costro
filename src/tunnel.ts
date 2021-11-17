@@ -69,6 +69,7 @@ export default class Tunnel {
 						component: null,
 						instance: route.component,
 						interfaceType: null,
+						isComponent: route.component.prototype instanceof Component,
 						isFunction: route.component instanceof Function,
 						path: route.path,
 						props: route.props
@@ -169,13 +170,9 @@ export default class Tunnel {
 	 */
 	destroyComponent() {
 		if (this.#previousRoute) {
-			if (this.#previousRoute.interfaceType === 'Component') {
-				this.#previousRoute.component.beforeDestroy()
-				this.target.replaceChildren()
-				this.#previousRoute.component.afterDestroy()
-			} else {
-				this.target.replaceChildren()
-			}
+			this.#previousRoute.isComponent && this.#previousRoute.component.beforeDestroy()
+			this.target.replaceChildren()
+			this.#previousRoute.isComponent && this.#previousRoute.component.afterDestroy()
 		}
 	}
 
@@ -184,9 +181,15 @@ export default class Tunnel {
 	 */
 	createComponent() {
 		if (this.#currentRoute) {
-			if (this.#currentRoute.interfaceType === 'Component') {
+			if (this.#currentRoute.isComponent) {
 				this.#currentRoute.component.beforeRender()
-				this.target.appendChild(this.#currentRoute.component.render())
+				if (this.#currentRoute.interfaceType === 'String') {
+					this.target.appendChild(
+						this.transformLinksInStringComponent(this.#currentRoute.component.render())
+					)
+				} else {
+					this.target.appendChild(this.#currentRoute.component.render())
+				}
 				this.#currentRoute.component.afterRender()
 			} else if (this.#currentRoute.interfaceType === 'HTMLElement') {
 				this.target.appendChild(this.#currentRoute.component())
@@ -225,7 +228,7 @@ export default class Tunnel {
 
 		if (route) {
 			if (route.isFunction) {
-				if (route.instance.prototype instanceof Component) {
+				if (route.isComponent) {
 					// Inject helpers on the class prototype
 					const helpers = this.getComponentHelpers()
 					const keys = Object.keys(helpers) as string[]
@@ -237,14 +240,16 @@ export default class Tunnel {
 
 					// eslint-disable-next-line new-cap
 					route.component = new route.instance(route.props)
+					route.interfaceType = this.getInterfaceTypeFromOutput(route.component.render())
 				} else {
 					route.component = () => route.instance()
+					route.interfaceType = this.getInterfaceTypeFromOutput(route.component())
 				}
 			} else {
 				route.component = () => route.instance
+				route.interfaceType = this.getInterfaceTypeFromOutput(route.component())
 			}
 
-			route.interfaceType = this.getInterfaceTypeFromOutput(route.component)
 			this.#routes.set(path, route)
 		}
 	}
@@ -258,7 +263,7 @@ export default class Tunnel {
 				const route = this.#routes.get(path)
 
 				// Store are only available for Component type
-				if (route && route.interfaceType === 'Component') {
+				if (route && route.isComponent) {
 					return route.component.getStore()
 				}
 
@@ -275,13 +280,11 @@ export default class Tunnel {
 	}
 
 	getInterfaceTypeFromOutput(component: any): string | null {
-		if (component instanceof Component) {
-			return 'Component'
-		} else if (component() instanceof HTMLElement) {
+		if (component instanceof HTMLElement) {
 			return 'HTMLElement'
-		} else if (component() instanceof DocumentFragment) {
+		} else if (component instanceof DocumentFragment) {
 			return 'DocumentFragment'
-		} else if (typeof component() === 'string') {
+		} else if (typeof component === 'string') {
 			return 'String'
 		}
 

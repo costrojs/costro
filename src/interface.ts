@@ -26,6 +26,7 @@ export interface RouteData {
 	component: any | null
 	instance: any
 	interfaceType: string | null
+	isComponent: boolean
 	isFunction: boolean
 	path: string
 	props: any
