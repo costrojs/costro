@@ -1,4 +1,15 @@
 /**
+ * Check whether an object has the property
+ *
+ * @param {Object} obj Object reference
+ * @param {String} key Object property key inside the object
+ * @returns {Boolean} Object has the property key
+ */
+function hasOwn(obj: any, key: string): any {
+	return Object.prototype.hasOwnProperty.call(obj, key)
+}
+
+/**
  * Deep clone for multiple objects
  * @param {Boolean} deep Deep clone
  * @param {Array<Object>} objects List of objects to merged
@@ -12,7 +23,7 @@ function extend(deep = false, ...objects: any[]): any {
 		const keys = obj ? Object.keys(obj) : []
 		for (let i = 0, length = keys.length; i < length; i++) {
 			const key = keys[i]
-			if (Object.prototype.hasOwnProperty.call(obj, key)) {
+			if (hasOwn(obj, key)) {
 				// If deep merge and property is an object, merge properties
 				if (deep && Object.prototype.toString.call(obj[key]) === '[object Object]') {
 					// @ts-ignore
@@ -33,4 +44,4 @@ function extend(deep = false, ...objects: any[]): any {
 	return extended
 }
 
-export { extend }
+export { extend, hasOwn }

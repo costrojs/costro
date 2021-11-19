@@ -82,6 +82,7 @@ export default class Tunnel {
 		return !!(
 			instance instanceof Function ||
 			instance instanceof HTMLElement ||
+			instance instanceof SVGElement ||
 			instance instanceof DocumentFragment ||
 			instance instanceof Component ||
 			typeof instance === 'string'
@@ -191,7 +192,9 @@ export default class Tunnel {
 					this.target.appendChild(this.#currentRoute.component.render())
 				}
 				this.#currentRoute.component.afterRender()
-			} else if (this.#currentRoute.interfaceType === 'HTMLElement') {
+			} else if (
+				['HTMLElement', 'SVGElement'].includes(this.#currentRoute.interfaceType as string)
+			) {
 				this.target.appendChild(this.#currentRoute.component())
 			} else if (this.#currentRoute.interfaceType === 'DocumentFragment') {
 				this.target.appendChild(this.#currentRoute.component())
@@ -243,7 +246,7 @@ export default class Tunnel {
 					route.interfaceType = this.getInterfaceTypeFromOutput(route.component.render())
 				} else {
 					route.component = () => route.instance()
-					route.interfaceType = this.getInterfaceTypeFromOutput(route.component())
+					route.interfaceType = this.getInterfaceTypeFromOutput(route.component()) // TODO: le render est appelé deux fois !
 				}
 			} else {
 				route.component = () => route.instance
@@ -284,6 +287,8 @@ export default class Tunnel {
 			return 'HTMLElement'
 		} else if (component instanceof DocumentFragment) {
 			return 'DocumentFragment'
+		} else if (component instanceof SVGElement) {
+			return 'SVGElement'
 		} else if (typeof component === 'string') {
 			return 'String'
 		}
