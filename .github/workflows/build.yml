@@ -32,7 +32,7 @@ jobs:
         run: npm ci
 
       - name: Install dependencies for example
-        run: cd ./example && npm ci
+        run: cd ./example && npm ci && cd ..
 
       - name: Test ESLint
         run: npm run test:eslint
