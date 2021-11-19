@@ -46,4 +46,4 @@ jobs:
       - name: Build
         run: |
           npm run build
-          npm run build:example
+          cd example && npm run build:example && cd ..
