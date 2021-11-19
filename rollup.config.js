@@ -4,53 +4,49 @@ import buble from '@rollup/plugin-buble'
 import { terser } from 'rollup-plugin-terser'
 
 const isProduction = process.env.ENV === 'production'
-const outputTarget = path.resolve(__dirname, './dist')
-const plugins = [
-	typescript({
-		include: 'src/**',
-		typescript: require('typescript')
-	})
-]
+const dir = path.resolve(__dirname, './dist')
 
-isProduction && plugins.push(terser())
-
-const builds = {
-	'cjs-bundlers': {
-		file: `${outputTarget}/tunnel.cjs.js`,
-		format: 'cjs'
+export default [
+	{
+		input: 'src/index.ts',
+		output: [
+			{
+				file: `${dir}/tunnel.js`,
+				format: 'umd',
+				name: 'Tunnel'
+			},
+			{
+				file: `${dir}/tunnel.esm-bundlers.js`,
+				format: 'es'
+			},
+			{
+				file: `${dir}/tunnel.cjs-bundlers.js`,
+				format: 'cjs'
+			}
+		],
+		plugins: [
+			typescript({
+				include: 'src/**',
+				typescript: require('typescript')
+			}),
+			buble()
+		].concat(isProduction ? [terser()] : [])
 	},
-	'esm-browsers': {
-		file: `${outputTarget}/tunnel.esm.browser.js`,
-		format: 'es'
-	},
-	'esm-bundlers': {
-		file: `${outputTarget}/tunnel.esm.js`,
-		format: 'es'
-	},
-	'umd-browsers': {
-		file: `${outputTarget}/tunnel.js`,
-		format: 'umd',
-		name: 'Tunnel'
+	{
+		input: 'src/jsx.js',
+		output: [
+			{
+				file: `${dir}/jsx.js`,
+				format: 'umd',
+				name: 'JSX'
+			}
+		],
+		plugins: [
+			typescript({
+				include: 'src/**',
+				typescript: require('typescript')
+			}),
+			buble({ objectAssign: 'Object.assign' })
+		].concat(isProduction ? [terser()] : [])
 	}
-}
-
-const target = isProduction ? Object.keys(builds) : ['umd-browsers']
-const selectedTargets = Object.keys(builds).filter((key) => target.includes(key))
-export default selectedTargets.map((key) => ({
-	input: 'src/index.ts',
-	output: builds[key],
-	plugins: [
-		typescript({
-			include: 'src/**',
-			typescript: require('typescript')
-		})
-	].concat(
-		key !== 'esm-browsers'
-			? [
-					buble({
-						transforms: { forOf: false }
-					})
-			  ]
-			: []
-	)
-}))
+]

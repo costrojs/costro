@@ -10,8 +10,8 @@
 	"main": "",
 	"files": [],
 	"scripts": {
-		"build": "rm -rf ./example/dist/ && webpack --mode=production",
-		"start": "rm -rf ./example/dist/ && webpack --mode=development",
+		"build": "rm -rf ./dist/ && webpack --mode=production",
+		"start": "rm -rf ./dist/ && webpack --mode=development",
 		"test:eslint": "eslint . --ignore-pattern dist",
 		"test:markdown": "markdownlint '**/*.md' --ignore node_modules",
 		"test:stylelint": "stylelint './src/**/*.css' './example/src/**/*.css' --config ./stylelint.config.js"
