@@ -44,5 +44,13 @@ export default selectedTargets.map((key) => ({
 			include: 'src/**',
 			typescript: require('typescript')
 		})
-	].concat(key !== 'esm-browsers' ? [buble()] : [])
+	].concat(
+		key !== 'esm-browsers'
+			? [
+					buble({
+						transforms: { forOf: false }
+					})
+			  ]
+			: []
+	)
 }))

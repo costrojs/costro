@@ -11,12 +11,11 @@ module.exports = (api) => {
 	]
 
 	const plugins = [
-		// '@babel/plugin-proposal-class-properties',
 		[
 			'@babel/plugin-transform-react-jsx',
 			{
 				pragma: 'createElement',
-				pragmaFrag: 'Fragment'
+				pragmaFrag: '"fragment"'
 			}
 		]
 	]
