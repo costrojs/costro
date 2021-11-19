@@ -1,6 +1,6 @@
-import { Tunnel, Link, Component, createElement } from '../../dist/tunnel'
-// import { createElement, Fragment } from 'jsx-dom'
-console.log(createElement)
+import { Tunnel, Link, Component } from '../../dist/tunnel'
+import { createElement, Fragment } from '../../dist/jsx'
+
 function Navigation() {
 	return (
 		<ul>
@@ -8,9 +8,9 @@ function Navigation() {
 				<Link to="/">htmlElementByFunction</Link>
 				{/* <button onClick={() => navigate('/')}>Home</button> */}
 			</li>
-			{/* <li>
+			<li>
 				<Link to="/document-fragment-by-function">documentFragmentByFunction</Link>
-			</li> */}
+			</li>
 			<li>
 				<Link to="/custom-component-1">CustomComponent 1</Link>
 			</li>
@@ -23,9 +23,9 @@ function Navigation() {
 			<li>
 				<Link to="/html-element">htmlElement</Link>
 			</li>
-			{/* <li>
+			<li>
 				<Link to="/document-fragment">documentFragment</Link>
-			</li> */}
+			</li>
 			<li>
 				<Link to="/string">string</Link>
 			</li>
@@ -125,9 +125,9 @@ const svgHtmlElement = (
 		height="50px"
 	>
 		<g>
-			<circle id="Oval" class="st0" cx="24" cy="24" r="24" fill="#fbd971" />
+			<circle id="Oval" className="st0" cx="24" cy="24" r="24" fill="#fbd971" />
 			<path
-				class="st1"
+				className="st1"
 				d="M24 41.1c-7.6 0-13.7-6.2-13.7-13.7 0-.6.5-1.1 1.1-1.1.6 0 1.1.5 1.1 1.1 0 6.3 5.1 11.4 11.4 11.4s11.4-5.1 11.4-11.4c0-.6.5-1.1 1.1-1.1.6 0 1.1.5 1.1 1.1.2 7.6-5.9 13.7-13.5 13.7z"
 				fill="#d8b11a"
 			/>
@@ -148,10 +148,10 @@ const routes = [
 		component: htmlElementByFunction,
 		path: '/'
 	},
-	// {
-	// 	component: documentFragmentByFunction,
-	// 	path: '/document-fragment-by-function'
-	// },
+	{
+		component: documentFragmentByFunction,
+		path: '/document-fragment-by-function'
+	},
 	{
 		component: CustomComponent1, // Don't call <CustomComponent isConnected={true} />
 		path: '/custom-component-1',
@@ -171,10 +171,10 @@ const routes = [
 		component: htmlElement,
 		path: '/html-element'
 	},
-	// {
-	// 	component: documentFragment,
-	// 	path: '/document-fragment'
-	// },
+	{
+		component: documentFragment,
+		path: '/document-fragment'
+	},
 	{
 		component: String,
 		path: '/string'

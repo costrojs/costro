@@ -36,6 +36,7 @@ module.exports = {
 	rules: {
 		'@typescript-eslint/ban-ts-comment': 'off',
 		'@typescript-eslint/no-explicit-any': 'off',
+		'@typescript-eslint/no-var-requires': 'off',
 		indent: ['error', 'tab', { ignoredNodes: ['TemplateLiteral > *'] }],
 		'no-console': 0,
 		'no-tabs': 0,

@@ -4,9 +4,9 @@ const element = (
 	<>
 		<span>ok</span>
 		<button
-			style={{ color: 'red', backgroundColor: 'blue' }}
-			dataset={{ user: 'guest', isLoggedIn: false }}
-			class="btn btn-success"
+			style={{ backgroundColor: 'blue', color: 'red' }}
+			dataset={{ isLoggedIn: false, user: 'guest' }}
+			className="btn btn-success"
 			onClick={(e) => {
 				e.preventDefault()
 				console.log('Clicked !')
@@ -20,7 +20,7 @@ const element = (
 					Hello 2<em data-id>22</em>
 				</i>
 				<i>
-					Hello 3<b class="b">33</b>
+					Hello 3<b className="b">33</b>
 				</i>
 			</span>
 			<div />
@@ -40,7 +40,7 @@ const element = (
 			height="50px"
 		>
 			<g>
-				<circle id="Oval" class="st0" cx="24" cy="24" r="24" fill="#fbd971" />
+				<circle id="Oval" className="st0" cx="24" cy="24" r="24" fill="#fbd971" />
 				<path
 					d="M24 41.1c-7.6 0-13.7-6.2-13.7-13.7 0-.6.5-1.1 1.1-1.1.6 0 1.1.5 1.1 1.1 0 6.3 5.1 11.4 11.4 11.4s11.4-5.1 11.4-11.4c0-.6.5-1.1 1.1-1.1.6 0 1.1.5 1.1 1.1.2 7.6-5.9 13.7-13.5 13.7z"
 					fill="#d8b11a"

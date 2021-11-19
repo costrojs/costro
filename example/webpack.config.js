@@ -8,25 +8,16 @@ module.exports = (env, argv) => {
 	const isProduction = argv.mode === 'production'
 
 	return {
-		watch: !isProduction,
+		devtool: isProduction ? false : 'source-map',
 		entry: {
 			demo: `${path.resolve(__dirname, './src/demo.js')}`,
 			jsx: `${path.resolve(__dirname, './src/jsx.js')}`
 		},
-		watchOptions: {
-			ignored: /node_modules/
-		},
-		devtool: isProduction ? false : 'source-map',
-		output: {
-			path: path.resolve(__dirname, './dist'),
-			filename: '[name].js',
-			sourceMapFilename: '[file].map'
-		},
 		module: {
 			rules: [
 				{
-					test: /\.js$/,
 					include: [path.resolve(__dirname, './')],
+					test: /\.js$/,
 					use: [
 						{
 							loader: 'babel-loader'
@@ -34,8 +25,8 @@ module.exports = (env, argv) => {
 					]
 				},
 				{
-					test: /\.css$/,
 					include: [path.resolve(__dirname, './')],
+					test: /\.css$/,
 					use: [
 						MiniCssExtractPlugin.loader,
 						{
@@ -53,28 +44,9 @@ module.exports = (env, argv) => {
 				}
 			]
 		},
-		plugins: [
-			new webpack.ProgressPlugin(),
-			new MiniCssExtractPlugin({
-				filename: '[name].css',
-				chunkFilename: '[name].css'
-			}),
-			new webpack.optimize.ModuleConcatenationPlugin()
-		],
-		stats: {
-			assets: true,
-			colors: true,
-			hash: false,
-			timings: true,
-			chunks: false,
-			chunkModules: false,
-			modules: false,
-			children: false,
-			entrypoints: false,
-			excludeAssets: /.map$/,
-			assetsSort: '!size'
-		},
 		optimization: {
+			chunkIds: 'deterministic', // or 'named'
+			mergeDuplicateChunks: true,
 			minimizer: [
 				new TerserPlugin({
 					extractComments: false,
@@ -89,12 +61,40 @@ module.exports = (env, argv) => {
 				}),
 				new CssMinimizerPlugin()
 			],
-			chunkIds: 'deterministic', // or 'named'
+			providedExports: false,
 			removeAvailableModules: true,
 			removeEmptyChunks: true,
-			mergeDuplicateChunks: true,
-			providedExports: false,
 			splitChunks: false
+		},
+		output: {
+			filename: '[name].js',
+			path: path.resolve(__dirname, './dist'),
+			sourceMapFilename: '[file].map'
+		},
+		plugins: [
+			new webpack.ProgressPlugin(),
+			new MiniCssExtractPlugin({
+				chunkFilename: '[name].css',
+				filename: '[name].css'
+			}),
+			new webpack.optimize.ModuleConcatenationPlugin()
+		],
+		stats: {
+			assets: true,
+			assetsSort: '!size',
+			children: false,
+			chunkModules: false,
+			chunks: false,
+			colors: true,
+			entrypoints: false,
+			excludeAssets: /.map$/,
+			hash: false,
+			modules: false,
+			timings: true
+		},
+		watch: !isProduction,
+		watchOptions: {
+			ignored: /node_modules/
 		}
 	}
 }
