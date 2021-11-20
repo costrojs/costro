@@ -16,7 +16,9 @@
 		"test:markdown": "markdownlint '**/*.md' --ignore node_modules",
 		"test:stylelint": "stylelint './src/**/*.css' './example/src/**/*.css' --config ./stylelint.config.js"
 	},
-	"dependencies": {},
+	"dependencies": {
+		"router2": "file:../router2-1.0.0.tgz"
+	},
 	"devDependencies": {
 		"@babel/core": "^7.16.0",
 		"@babel/eslint-parser": "^7.16.3",
