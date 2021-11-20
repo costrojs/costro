@@ -1,5 +1,13 @@
-import { createElement, Fragment } from '../../dist/jsx'
+import { h, F } from 'router2/jsx'
 
+const InputComponent = (props) => (
+	<input
+		type="text"
+		data-name={props.name}
+		value={props.name}
+		onKeyup={(e) => console.log(e.target.value)}
+	/>
+)
 const element = (
 	<>
 		<span>ok</span>
@@ -55,6 +63,7 @@ const element = (
 				/>
 			</g>
 		</svg>
+		<InputComponent name="John" />
 	</>
 )
 
