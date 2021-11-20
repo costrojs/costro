@@ -51,13 +51,14 @@ class Component {
 	setStore(data: any) {
 		const keys = Object.keys(data) as string[]
 		for (let i = 0, length = keys.length; i < length; i++) {
+			const key = keys[i]
 			// Merge store data if key already exists
-			if (this.#store.has(keys[i])) {
-				const store = this.#store.get(keys[i])
-				const newStore = extend(true, store, data[keys[i]])
-				this.#store.set(keys[i], newStore)
+			if (this.#store.has(key)) {
+				const value = this.#store.get(key)
+				const newValue = extend(true, { [key]: value }, { [key]: data[key] })
+				this.#store.set(key, newValue[key])
 			} else {
-				this.#store.set(keys[i], data[keys[i]])
+				this.#store.set(key, data[key])
 			}
 		}
 	}
