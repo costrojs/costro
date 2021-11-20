@@ -1,5 +1,5 @@
-import { Tunnel, Link, Component } from '../../dist/tunnel'
-import { createElement, Fragment } from '../../dist/jsx'
+import { App, Link, Component } from '../../dist/tunnel'
+import { h, F } from '../../dist/jsx'
 
 function Navigation() {
 	return (
@@ -65,7 +65,7 @@ class CustomComponent1 extends Component {
 		)
 	}
 
-	afterRender() {
+	beforeRender() {
 		this.setStore({
 			name: this.props.title
 		})
@@ -78,12 +78,13 @@ class CustomComponent2 extends Component {
 			<>
 				<Navigation />
 				<h2>Custom Component 2 by Function</h2>
+				<p>{this.name}</p>
 			</>
 		)
 	}
 
-	afterRender() {
-		console.log(this.getStore('name', '/custom-component-1'))
+	beforeRender() {
+		this.name = this.getStore('name', '/custom-component-1')
 	}
 }
 
@@ -186,7 +187,7 @@ const routes = [
 ]
 
 // eslint-disable-next-line no-unused-vars
-const app = new Tunnel({
+const app = new App({
 	mode: 'history',
 	routes,
 	target: document.querySelector('#app')

@@ -16,7 +16,7 @@ module.exports = (env, argv) => {
 		module: {
 			rules: [
 				{
-					include: [path.resolve(__dirname, './')],
+					include: [path.resolve(__dirname, './src')],
 					test: /\.js$/,
 					use: [
 						{
@@ -25,7 +25,7 @@ module.exports = (env, argv) => {
 					]
 				},
 				{
-					include: [path.resolve(__dirname, './')],
+					include: [path.resolve(__dirname, './src')],
 					test: /\.css$/,
 					use: [
 						MiniCssExtractPlugin.loader,
@@ -41,6 +41,14 @@ module.exports = (env, argv) => {
 							}
 						}
 					]
+				},
+				{
+					test: /\.svg$/i,
+					include: path.resolve(__dirname, './src/'),
+					type: 'asset/source',
+					generator: {
+						filename: '[name][ext]'
+					}
 				}
 			]
 		},
