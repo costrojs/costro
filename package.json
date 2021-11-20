@@ -1,15 +1,28 @@
 {
-	"name": "",
-	"version": "",
+	"name": "router2",
+	"version": "1.0.0",
 	"description": "",
 	"keywords": [],
 	"homepage": "",
 	"bugs": "",
 	"repository": "",
 	"author": "Yoriiis aka Joris DANIEL",
+	"exports": {
+		".": {
+			"import": "./dist/tunnel.esm.js",
+			"require": "./dist/tunnel.cjs.js",
+			"default": "./dist/tunnel.js"
+		},
+		"./jsx": {
+			"import": "./dist/jsx.esm.js",
+			"require": "./dist/jsx.cjs.js",
+			"default": "./dist/jsx.js"
+		}
+	},
 	"main": "dist/tunnel.cjs.js",
-	"module": "dist/tunnel.esm.js",
-	"files": [],
+	"files": [
+		"dist/*.js"
+	],
 	"scripts": {
 		"build": "rm -rf ./dist/ && rollup --config --environment ENV:production",
 		"build:all": "npm run build && npm run build:example",
@@ -68,6 +81,6 @@
 		"typescript": "^4.4.4"
 	},
 	"engines": {
-		"node": ">=8.11.2"
+		"node": ">= 12"
 	}
 }

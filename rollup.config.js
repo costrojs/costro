@@ -16,11 +16,11 @@ export default [
 				name: 'Tunnel'
 			},
 			{
-				file: `${dir}/tunnel.esm-bundlers.js`,
+				file: `${dir}/tunnel.esm.js`,
 				format: 'es'
 			},
 			{
-				file: `${dir}/tunnel.cjs-bundlers.js`,
+				file: `${dir}/tunnel.cjs.js`,
 				format: 'cjs'
 			}
 		],
@@ -38,7 +38,15 @@ export default [
 			{
 				file: `${dir}/jsx.js`,
 				format: 'umd',
-				name: 'JSX'
+				name: 'Tunnel.jsx'
+			},
+			{
+				file: `${dir}/jsx.esm.js`,
+				format: 'es'
+			},
+			{
+				file: `${dir}/jsx.cjs.js`,
+				format: 'cjs'
 			}
 		],
 		plugins: [

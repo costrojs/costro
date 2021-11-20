@@ -90,13 +90,7 @@ http://example.com/#/about
 <script src="https://cdn.jsdelivr.net/npm/router/dist/tunnel.js"></script>
 <!-- umd -->
 <script>
-  // window.Tunnel
-</script>
-```
-
-```html
-<script type="module">
-  import { Tunnel } from 'https://cdn.jsdelivr.net/npm/router/dist/tunnel.esm.js'; // esm
+  const { Link, Component, App, navigate } = Tunnel;
 </script>
 ```
 
@@ -105,5 +99,5 @@ npm i router
 ```
 
 ```js
-import { Tunnel } from 'router'; // cjs
+import { Link, Component, App, navigate } from 'router';
 ```
