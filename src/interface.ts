@@ -47,7 +47,7 @@ export type onRouteChangeFunction = ({
 
 export type privateGetExternalStore = (key: string, path: string) => object | undefined | null
 
-export interface ComponentInjection {
+export interface HelperFunction {
 	__getExternalStore: privateGetExternalStore
 	getPath: () => null | string
 	navigate: (path: string) => void

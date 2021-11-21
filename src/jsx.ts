@@ -60,6 +60,13 @@ const SVG_TAGS = [
 	'view'
 ] // TODO: Can we remove this array?
 
+/**
+ * Create attribute on element
+ * @param {(HTMLElement|SVGElement)} element Element
+ * @param {String} name Attribute name
+ * @param {(String|Object|Boolean)} value Attribute value
+ * @param {Boolean} isSvg Element is SVG
+ */
 function createAttributes(
 	element: HTMLElement | SVGElement,
 	name: string,
@@ -100,12 +107,46 @@ function createAttributes(
 	}
 }
 
+/**
+ *
+ * @param element
+ * @param children
+ * @returns
+ */
+function appendChildren(
+	element: DocumentFragment | HTMLElement | SVGElement,
+	children: Array<string | Node>
+) {
+	for (let i = 0, length = children.length; i < length; i++) {
+		const child = children[i]
+		if (typeof child === 'string') {
+			element.appendChild(document.createTextNode(child))
+		} else if (child instanceof Node) {
+			element.appendChild(child)
+		}
+	}
+
+	return element
+}
+
+/**
+ * Create the fragment from <></>
+ * @param {Object} tag Fragment data
+ * @returns {DocumentFragment} Document fragment
+ */
 function Fragment(tag: FragmentTag): DocumentFragment {
 	const fragment = document.createDocumentFragment()
 	tag.children && tag.children.length && appendChildren(fragment, tag.children)
 	return fragment
 }
 
+/**
+ * Create the element
+ * @param {(String|Function)} tag Tag or function
+ * @param {Object} attributes The attributes of the tag
+ * @param {Array} children The children of the tag
+ * @returns {(HTMLElement|null)} Element or null
+ */
 function createElement(
 	tag: string | createElementFunction,
 	attributes: null | ElementAttributes,
@@ -134,22 +175,6 @@ function createElement(
 	}
 
 	element && children.length && appendChildren(element, children)
-
-	return element
-}
-
-function appendChildren(
-	element: DocumentFragment | HTMLElement | SVGElement,
-	children: Array<string | Node>
-) {
-	for (let i = 0, length = children.length; i < length; i++) {
-		const child = children[i]
-		if (typeof child === 'string') {
-			element.appendChild(document.createTextNode(child))
-		} else if (child instanceof Node) {
-			element.appendChild(child)
-		}
-	}
 
 	return element
 }

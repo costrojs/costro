@@ -48,6 +48,10 @@ class Component {
 		throw new Error('You have to implement the function "render" for the component.')
 	}
 
+	/**
+	 * Set the component store
+	 * @param {Object} data Data to store
+	 */
 	setStore(data: any) {
 		const keys = Object.keys(data) as string[]
 		for (let i = 0, length = keys.length; i < length; i++) {
@@ -63,6 +67,13 @@ class Component {
 		}
 	}
 
+	/**
+	 * Get store from a key
+	 * Store can be retrieved from an external Component
+	 * @param {String} key Store key
+	 * @param {String} path Cmponent path
+	 * @returns {(any|null)} Content of the store key
+	 */
 	getStore(key: string, path?: string): object | undefined | null {
 		if (key) {
 			if (path) {

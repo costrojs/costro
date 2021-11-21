@@ -1,6 +1,5 @@
 /**
  * Check whether an object has the property
- *
  * @param {Object} obj Object reference
  * @param {String} key Object property key inside the object
  * @returns {Boolean} Object has the property key

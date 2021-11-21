@@ -1,6 +1,15 @@
 import config from './config'
 import { Attributes } from './interface'
 
+/**
+ * Create the link
+ * @param {Object} options
+ * @param {Object} options.to Location path
+ * @param {Object} options.children The children of the element
+ * @param {Object} options.attrs The attributes of the element
+ * @param {Boolean} isHtml The function is called from HTML
+ * @returns {(String|HTMLElement)} Element as string or HTMLElement
+ */
 export default function Link(
 	{
 		to,
@@ -11,7 +20,7 @@ export default function Link(
 		children: any[]
 		to: string
 	},
-	isHTML = false
+	isHtml = false
 ) {
 	const element = document.createElement('a')
 	element.setAttribute('href', to)
@@ -19,7 +28,7 @@ export default function Link(
 	// Insert the flag for the event delegation
 	// @ts-ignore
 	element[config.customLinkProperty] = true
-	if (isHTML) {
+	if (isHtml) {
 		element.classList.add(config.customLinkCssClass)
 	}
 
@@ -47,5 +56,5 @@ export default function Link(
 		}
 	}
 
-	return isHTML ? element.outerHTML : element
+	return isHtml ? element.outerHTML : element
 }

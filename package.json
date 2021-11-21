@@ -41,6 +41,7 @@
 		"@babel/preset-env": "^7.16.0",
 		"@rollup/plugin-buble": "^0.21.3",
 		"@rollup/plugin-typescript": "^8.3.0",
+		"@types/node": "^16.11.9",
 		"@typescript-eslint/eslint-plugin": "^5.4.0",
 		"@typescript-eslint/parser": "^5.4.0",
 		"eslint": "^7.32.0",

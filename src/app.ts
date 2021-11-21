@@ -1,7 +1,7 @@
 import config from './config'
 import Hash from './location/hash'
 import History from './location/history'
-import { RouteData, interfaceLocationInstances, Route, ComponentInjection } from './interface'
+import { RouteData, interfaceLocationInstances, Route, HelperFunction, Fn } from './interface'
 import Component from './component'
 
 const LOCATION_INSTANCES: interfaceLocationInstances = {
@@ -17,6 +17,13 @@ export default class App {
 	#currentRoute: undefined | RouteData
 	#previousRoute: undefined | RouteData
 
+	/**
+	 * @constructor
+	 * @param {Object} options
+	 * @param {Object} options.mode Location mode
+	 * @param {Object} options.routes Definition of routes
+	 * @param {Object} options.target HTMLElement target
+	 */
 	constructor({
 		mode = 'hash',
 		routes,
@@ -47,6 +54,11 @@ export default class App {
 		})
 	}
 
+	/**
+	 * Create routes data
+	 * @param {Array<Route>} routes Definition of routes
+	 * @returns {Object} Routes data parsed
+	 */
 	createRoutesData(routes: Route[]): Map<string, RouteData> {
 		const inValidRoutes = routes
 			.filter((route): boolean => !this.isInterfaceTypeFromComponentGranted(route.component))
@@ -79,15 +91,20 @@ export default class App {
 		)
 	}
 
-	isInterfaceTypeFromComponentGranted(component: any): boolean {
-		return !!(
-			component instanceof Function ||
-			component instanceof Component ||
-			[Node.ELEMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE].includes(component.nodeType) ||
-			typeof component === 'string'
-		)
+	/**
+	 * Check if the component interface type is granted
+	 * @param {Function} component Component
+	 * @returns {Boolean} Interface type is granted
+	 */
+	isInterfaceTypeFromComponentGranted(component: Fn | Component): boolean {
+		return !!(component instanceof Function || component instanceof Component)
 	}
 
+	/**
+	 * Get the location instance (hash|history)
+	 * @param {String} mode Location mode
+	 * @returns {Object} Location instance
+	 */
 	getLocationInstance(mode: string): any {
 		const LocationInstance: any = LOCATION_INSTANCES[mode]
 		if (LocationInstance) {
@@ -96,16 +113,31 @@ export default class App {
 		throw new Error(`Router::getLocationInstance | Unknown mode "${mode}"`)
 	}
 
+	/**
+	 * Add events listeners
+	 */
 	addEvents() {
 		document.addEventListener('navigate', this.#onNavigate)
 		this.target.addEventListener('click', this.#onClickOnApp)
 	}
 
+	/**
+	 * On navigate event
+	 * Function is declared on constructor for private declaration without binding
+	 * @private
+	 * @param {Event}  e Event data
+	 */
 	#onNavigate = (e: Event) => {
 		const { to } = (<CustomEvent>e).detail
 		typeof to === 'string' && this.location.setPath(to)
 	}
 
+	/**
+	 * On click on app event
+	 * Function is declared on constructor for private declaration without binding
+	 * @private
+	 * @param {Event}  e Event data
+	 */
 	#onClickOnApp = (e: Event) => {
 		const target = e.target as HTMLElement
 
@@ -119,8 +151,10 @@ export default class App {
 	}
 
 	/**
-	 * Event listener for the hash change
-	 * @param {Event} e Event data
+	 * On route change event
+	 * @param {Object} options
+	 * @param {Object} options.currentPath Current path from location
+	 * @param {(Object|null)} options.previousPath Previous path from location
 	 */
 	onRouteChange({
 		currentPath,
@@ -150,7 +184,7 @@ export default class App {
 	}
 
 	/**
-	 * Destroy the component
+	 * Destroy the previous component
 	 */
 	destroyComponent() {
 		if (this.#previousRoute) {
@@ -161,7 +195,7 @@ export default class App {
 	}
 
 	/**
-	 * Create the component
+	 * Create the current component
 	 */
 	createComponent() {
 		if (this.#currentRoute) {
@@ -186,6 +220,10 @@ export default class App {
 		}
 	}
 
+	/**
+	 * Init component in cache
+	 * Only the classes that extend the component
+	 */
 	initComponentInCache() {
 		if (this.#currentRoute) {
 			// Inject helpers on the class prototype
@@ -206,6 +244,11 @@ export default class App {
 		}
 	}
 
+	/**
+	 * Get the component view
+	 * From the render function is Component, or from the component itself
+	 * @returns {(Node.ELEMENT_NODE|Node.DOCUMENT_FRAGMENT_NODE)} The component view
+	 */
 	getComponentView() {
 		if (this.#currentRoute) {
 			if (this.#currentRoute.isComponentClass) {
@@ -218,16 +261,26 @@ export default class App {
 		}
 	}
 
-	getInterfaceTypeFromView(component: any): string | null {
-		if ([Node.ELEMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE].includes(component.nodeType)) {
-			return 'ELEMENT_NODE'
-		} else if (typeof component === 'string') {
+	/**
+	 * Get the interface type from the component view
+	 * @param {(Node.ELEMENT_NODE|Node.DOCUMENT_FRAGMENT_NODE)} component Component view
+	 * @returns {(String|null)} Component type or null
+	 */
+	getInterfaceTypeFromView(component: string | Node): string | null {
+		if (typeof component === 'string') {
 			return 'STRING'
+		} else if ([Node.ELEMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE].includes(component.nodeType)) {
+			return 'ELEMENT_NODE'
 		}
 
 		return null
 	}
 
+	/**
+	 * Transform links inside string component into router friendly links
+	 * @param {(Node.ELEMENT_NODE|Node.DOCUMENT_FRAGMENT_NODE)} component Component view
+	 * @returns {Node.DOCUMENT_FRAGMENT_NODE} View of components with links compatible with the router
+	 */
 	transformLinksInStringComponent(component: string): DocumentFragment {
 		const template = document.createElement('template')
 		template.innerHTML = component.trim()
@@ -249,9 +302,11 @@ export default class App {
 	}
 
 	/**
-	 * Push new function inside step context to change the route
+	 * Get component helper functions
+	 * Function are inject as dependencies in the Component
+	 * @returns {Object} List of helper function
 	 */
-	getComponentHelpers(): ComponentInjection {
+	getComponentHelpers(): HelperFunction {
 		return {
 			__getExternalStore: (key: string, path: string): object | undefined | null => {
 				const route = this.#routes.get(path)
@@ -271,6 +326,9 @@ export default class App {
 		}
 	}
 
+	/**
+	 * Destroy the application
+	 */
 	destroy() {
 		this.location.destroy()
 		document.removeEventListener('navigate', this.#onNavigate)
