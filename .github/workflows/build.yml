@@ -40,5 +40,8 @@ jobs:
       - name: Test Markdown
         run: npm run test:markdown
 
+      - name: Test Jest
+        run: npm run test
+
       - name: Build
         run: npm run build
