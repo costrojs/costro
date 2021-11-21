@@ -19,13 +19,11 @@ module.exports = {
 		window: false
 	},
 
-	// parser: '@babel/eslint-parser',
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
 		ecmaFeatures: {
 			experimentalObjectRestSpread: true,
-			impliedStrict: true,
-			jsx: true
+			impliedStrict: true
 		},
 		ecmaVersion: 6,
 		sourceType: 'module'
@@ -40,9 +38,6 @@ module.exports = {
 		indent: ['error', 'tab', { ignoredNodes: ['TemplateLiteral > *'] }],
 		'no-console': 0,
 		'no-tabs': 0,
-		'react/display-name': 0,
-		'react/jsx-key': 0,
-		'react/prop-types': 0,
 		'sort-keys': ['error', 'asc', { caseSensitive: true, minKeys: 2, natural: true }],
 		'space-before-function-paren': [
 			'error',
@@ -53,13 +48,5 @@ module.exports = {
 			'asc',
 			{ caseSensitive: true, natural: true, requiredFirst: false }
 		]
-	},
-
-	settings: {
-		react: {
-			fragment: 'F', // Fragment
-			pragma: 'h', // createElement
-			version: '0' // Remove the warning of the missing React package
-		}
 	}
 }
