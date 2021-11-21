@@ -49,7 +49,7 @@ export default class App {
 
 	createRoutesData(routes: Route[]): Map<string, RouteData> {
 		const inValidRoutes = routes
-			.filter((route): boolean => !this.isInterfaceTypeFromInputGranted(route.component))
+			.filter((route): boolean => !this.isInterfaceTypeFromComponentGranted(route.component))
 			.map((route) => route.path)
 
 		if (inValidRoutes.length) {
@@ -62,7 +62,9 @@ export default class App {
 
 		return new Map(
 			routes
-				.filter((route): boolean => this.isInterfaceTypeFromInputGranted(route.component))
+				.filter((route): boolean =>
+					this.isInterfaceTypeFromComponentGranted(route.component)
+				)
 				.map((route: Route): any => [
 					route.path,
 					{
@@ -78,7 +80,7 @@ export default class App {
 		)
 	}
 
-	isInterfaceTypeFromInputGranted(component: any): boolean {
+	isInterfaceTypeFromComponentGranted(component: any): boolean {
 		return !!(
 			component instanceof Function ||
 			component instanceof Component ||
@@ -170,27 +172,19 @@ export default class App {
 				this.initComponentInCache()
 			}
 
-			const componentView = this.getComponentView()
-
+			let componentView = this.getComponentView()
 			if (componentView) {
 				if (!this.#currentRoute.interfaceType) {
 					this.#currentRoute.interfaceType = this.getInterfaceTypeFromView(componentView)
 					this.#routes.set(this.#currentRoute.path, this.#currentRoute)
 				}
 
-				if (this.#currentRoute.isComponentClass) {
-					this.#currentRoute.component.beforeRender()
-					if (this.#currentRoute.interfaceType === 'STRING') {
-						this.target.appendChild(this.transformLinksInStringComponent(componentView))
-					} else if (this.#currentRoute.interfaceType === 'ELEMENT_NODE') {
-						this.target.appendChild(componentView)
-					}
-					this.#currentRoute.component.afterRender()
-				} else if (this.#currentRoute.interfaceType === 'ELEMENT_NODE') {
-					this.target.appendChild(componentView)
-				} else if (this.#currentRoute.interfaceType === 'STRING') {
-					this.target.appendChild(this.transformLinksInStringComponent(componentView))
+				this.#currentRoute.isComponentClass && this.#currentRoute.component.beforeRender()
+				if (this.#currentRoute.interfaceType === 'STRING') {
+					componentView = this.transformLinksInStringComponent(componentView)
 				}
+				this.target.appendChild(componentView)
+				this.#currentRoute.isComponentClass && this.#currentRoute.component.afterRender()
 			}
 		}
 	}
