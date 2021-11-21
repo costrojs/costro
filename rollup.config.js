@@ -33,7 +33,7 @@ export default [
 		].concat(isProduction ? [terser()] : [])
 	},
 	{
-		input: 'src/jsx.js',
+		input: 'src/jsx.ts',
 		output: [
 			{
 				file: `${dir}/jsx.js`,

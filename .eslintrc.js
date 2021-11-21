@@ -57,8 +57,8 @@ module.exports = {
 
 	settings: {
 		react: {
-			fragment: 'Fragment',
-			pragma: 'createElement',
+			fragment: 'F', // Fragment
+			pragma: 'h', // createElement
 			version: '0' // Remove the warning of the missing React package
 		}
 	}

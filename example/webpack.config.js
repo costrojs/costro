@@ -43,12 +43,12 @@ module.exports = (env, argv) => {
 					]
 				},
 				{
-					test: /\.svg$/i,
-					include: path.resolve(__dirname, './src/'),
-					type: 'asset/source',
 					generator: {
 						filename: '[name][ext]'
-					}
+					},
+					include: path.resolve(__dirname, './src/'),
+					test: /\.svg$/i,
+					type: 'asset/source'
 				}
 			]
 		},
