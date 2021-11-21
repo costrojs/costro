@@ -1,64 +1,25 @@
 import { extend } from '../utils'
 import Component from '../component'
 
-class ComponentWithoutPrivateFields {
-	constructor() {
-		this.store = new Map()
-	}
-
-	setStore(data) {
-		const keys = Object.keys(data)
-		for (let i = 0, length = keys.length; i < length; i++) {
-			const key = keys[i]
-			// Merge store data if key already exists
-			if (this.store.has(key)) {
-				const value = this.store.get(key)
-				const newValue = extend(true, { [key]: value }, { [key]: data[key] })
-				this.store.set(key, newValue[key])
-			} else {
-				this.store.set(key, data[key])
-			}
-		}
-	}
-
-	getStore(key, path) {
-		if (key) {
-			if (path) {
-				return this.__getExternalStore(key, path)
-			}
-
-			return this.store.get(key)
-		}
-
-		return null
-	}
-}
-
-ComponentWithoutPrivateFields.prototype.__isComponent = {}
-
 let component
-let componentWithoutPrivateFields
 
 const getInstance = () => {
-	return new Component({
+	const instance = new Component({
 		page: 'home'
 	})
-}
-
-const getInstanceWithoutPrivateFields = () => {
-	return new ComponentWithoutPrivateFields()
+	instance.__getExternalStore = () => {}
+	return instance
 }
 
 beforeEach(() => {
 	component = getInstance()
-	componentWithoutPrivateFields = getInstanceWithoutPrivateFields()
 })
 
 describe('Component ', () => {
 	describe('Component constructor', () => {
 		it('Should call the constructor', () => {
 			expect(component.props).toStrictEqual({ page: 'home' })
-			expect(component.store).toBe(undefined)
+			expect(component.store).toStrictEqual(new Map())
 			expect(component.__isComponent).toStrictEqual({})
 			expect(component.beforeRender).toBeInstanceOf(Function)
 			expect(component.afterRender).toBeInstanceOf(Function)
@@ -106,10 +67,8 @@ describe('Component ', () => {
 
 	describe('Component setStore', () => {
 		it('Should call the setStore', () => {
-			componentWithoutPrivateFields.store = new Map([
-				['identity', { lastname: 'Doe', name: 'John' }]
-			])
-			componentWithoutPrivateFields.setStore({
+			component.store = new Map([['identity', { lastname: 'Doe', name: 'John' }]])
+			component.setStore({
 				identity: {
 					private: true
 				},
@@ -120,21 +79,34 @@ describe('Component ', () => {
 				['page', 'home'],
 				['identity', { lastname: 'Doe', name: 'John', private: true }]
 			])
-			expect(componentWithoutPrivateFields.store).toStrictEqual(store)
+			expect(component.store).toStrictEqual(store)
 		})
 	})
 
 	describe('Component getStore', () => {
 		it('Should call the getStore', () => {
-			componentWithoutPrivateFields.store = new Map([
-				['identity', { lastname: 'Doe', name: 'John' }]
-			])
-			const result = componentWithoutPrivateFields.getStore('identity')
+			component.store = new Map([['identity', { lastname: 'Doe', name: 'John' }]])
+			const result = component.getStore('identity')
 
 			expect(result).toStrictEqual({
 				lastname: 'Doe',
 				name: 'John'
 			})
+		})
+
+		it('Should call the getStore without key', () => {
+			const result = component.getStore()
+
+			expect(result).toBe(null)
+		})
+
+		it('Should call the getStore with a path', () => {
+			component.__getExternalStore = jest.fn().mockReturnValue(true)
+
+			const result = component.getStore('identity', '/home')
+
+			expect(result).toBe(true)
+			expect(component.__getExternalStore).toHaveBeenCalledWith('identity', '/home')
 		})
 	})
 })
