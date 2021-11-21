@@ -18,7 +18,9 @@ describe('hasOwn', () => {
 
 		expect(result).toBe(false)
 	})
+})
 
+describe('extend', () => {
 	it('Should call the extend function without deep', () => {
 		const obj1 = {
 			name: 'John'
