@@ -8,7 +8,6 @@ module.exports = {
 
 	extends: [
 		'standard',
-		'plugin:react/recommended',
 		'plugin:prettier/recommended',
 		'plugin:@typescript-eslint/recommended',
 		'plugin:typescript-sort-keys/recommended'
