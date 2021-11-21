@@ -7,6 +7,7 @@ module.exports = {
 	modulePaths: ['./src'],
 	preset: 'ts-jest/presets/js-with-babel',
 	resetModules: true,
+	rootDir: '../',
 	testEnvironment: 'jsdom',
 	testMatch: ['<rootDir>/tests/unit/*.test.js'],
 	transform: {
