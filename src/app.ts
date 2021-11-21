@@ -66,10 +66,10 @@ export default class App {
 				.map((route: Route): any => [
 					route.path,
 					{
-						component: null,
-						instance: route.component,
+						component: route.component,
 						interfaceType: null,
-						isComponent: route.component.prototype instanceof Component,
+						isComponentClass: route.component.prototype instanceof Component,
+						isComponentClassReady: false,
 						isFunction: route.component instanceof Function,
 						path: route.path,
 						props: route.props
@@ -78,12 +78,12 @@ export default class App {
 		)
 	}
 
-	isInterfaceTypeFromInputGranted(instance: any): boolean {
+	isInterfaceTypeFromInputGranted(component: any): boolean {
 		return !!(
-			instance instanceof Function ||
-			instance instanceof Component ||
-			[Node.ELEMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE].includes(instance.nodeType) ||
-			typeof instance === 'string'
+			component instanceof Function ||
+			component instanceof Component ||
+			[Node.ELEMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE].includes(component.nodeType) ||
+			typeof component === 'string'
 		)
 	}
 
@@ -140,28 +140,14 @@ export default class App {
 			if (previousPath) {
 				this.#previousRoute = this.#routes.get(previousPath)
 				if (this.#previousRoute) {
-					this.updatePreviousRoute(previousPath)
+					this.destroyComponent()
 				}
 			}
 
-			this.updateCurrentRoute(currentPath)
+			this.createComponent()
 		} else {
 			throw new Error(`App::onRouteChange | Unknown route "${currentPath}"`)
 		}
-	}
-
-	updatePreviousRoute(path: string) {
-		if (this.#previousRoute && this.#previousRoute.component === null) {
-			this.createInstanceInCache(path)
-		}
-		this.destroyComponent()
-	}
-
-	updateCurrentRoute(path: string) {
-		if (this.#currentRoute && this.#currentRoute.component === null) {
-			this.createInstanceInCache(path)
-		}
-		this.createComponent()
 	}
 
 	/**
@@ -169,9 +155,9 @@ export default class App {
 	 */
 	destroyComponent() {
 		if (this.#previousRoute) {
-			this.#previousRoute.isComponent && this.#previousRoute.component.beforeDestroy()
+			this.#previousRoute.isComponentClass && this.#previousRoute.component.beforeDestroy()
 			this.target.replaceChildren()
-			this.#previousRoute.isComponent && this.#previousRoute.component.afterDestroy()
+			this.#previousRoute.isComponentClass && this.#previousRoute.component.afterDestroy()
 		}
 	}
 
@@ -180,24 +166,75 @@ export default class App {
 	 */
 	createComponent() {
 		if (this.#currentRoute) {
-			if (this.#currentRoute.isComponent) {
-				this.#currentRoute.component.beforeRender()
-				if (this.#currentRoute.interfaceType === 'STRING') {
-					this.target.appendChild(
-						this.transformLinksInStringComponent(this.#currentRoute.component.render())
-					)
-				} else if (this.#currentRoute.interfaceType === 'ELEMENT_NODE') {
-					this.target.appendChild(this.#currentRoute.component.render())
+			if (this.#currentRoute.isComponentClass && !this.#currentRoute.isComponentClassReady) {
+				this.initComponentInCache()
+			}
+
+			const componentView = this.getComponentView()
+
+			if (componentView) {
+				if (!this.#currentRoute.interfaceType) {
+					this.#currentRoute.interfaceType = this.getInterfaceTypeFromView(componentView)
+					this.#routes.set(this.#currentRoute.path, this.#currentRoute)
 				}
-				this.#currentRoute.component.afterRender()
-			} else if (this.#currentRoute.interfaceType === 'ELEMENT_NODE') {
-				this.target.appendChild(this.#currentRoute.component())
-			} else if (this.#currentRoute.interfaceType === 'STRING') {
-				this.target.appendChild(
-					this.transformLinksInStringComponent(this.#currentRoute.component())
-				)
+
+				if (this.#currentRoute.isComponentClass) {
+					this.#currentRoute.component.beforeRender()
+					if (this.#currentRoute.interfaceType === 'STRING') {
+						this.target.appendChild(this.transformLinksInStringComponent(componentView))
+					} else if (this.#currentRoute.interfaceType === 'ELEMENT_NODE') {
+						this.target.appendChild(componentView)
+					}
+					this.#currentRoute.component.afterRender()
+				} else if (this.#currentRoute.interfaceType === 'ELEMENT_NODE') {
+					this.target.appendChild(componentView)
+				} else if (this.#currentRoute.interfaceType === 'STRING') {
+					this.target.appendChild(this.transformLinksInStringComponent(componentView))
+				}
 			}
 		}
+	}
+
+	initComponentInCache() {
+		if (this.#currentRoute) {
+			// Inject helpers on the class prototype
+			const helpers = this.getComponentHelpers()
+			const keys = Object.keys(helpers) as string[]
+			for (let i = 0, length = keys.length; i < length; i++) {
+				const key = keys[i]
+				// @ts-ignore
+				this.#currentRoute.component.prototype[key] = helpers[key]
+			}
+
+			// eslint-disable-next-line new-cap
+			const instance = new this.#currentRoute.component(this.#currentRoute.props)
+			this.#currentRoute.component = instance
+			this.#currentRoute.isComponentClassReady = true
+
+			this.#routes.set(this.#currentRoute.path, this.#currentRoute)
+		}
+	}
+
+	getComponentView() {
+		if (this.#currentRoute) {
+			if (this.#currentRoute.isComponentClass) {
+				return this.#currentRoute.component.render()
+			} else if (this.#currentRoute.isFunction) {
+				return this.#currentRoute.component()
+			} else {
+				return this.#currentRoute.component
+			}
+		}
+	}
+
+	getInterfaceTypeFromView(component: any): string | null {
+		if ([Node.ELEMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE].includes(component.nodeType)) {
+			return 'ELEMENT_NODE'
+		} else if (typeof component === 'string') {
+			return 'STRING'
+		}
+
+		return null
 	}
 
 	transformLinksInStringComponent(component: string): DocumentFragment {
@@ -220,37 +257,6 @@ export default class App {
 		return fragment
 	}
 
-	createInstanceInCache(path: string) {
-		const route = this.#routes.get(path)
-
-		if (route) {
-			if (route.isFunction) {
-				if (route.isComponent) {
-					// Inject helpers on the class prototype
-					const helpers = this.getComponentHelpers()
-					const keys = Object.keys(helpers) as string[]
-					for (let i = 0, length = keys.length; i < length; i++) {
-						const key = keys[i]
-						// @ts-ignore
-						route.instance.prototype[key] = helpers[key]
-					}
-
-					// eslint-disable-next-line new-cap
-					route.component = new route.instance(route.props)
-					route.interfaceType = this.getInterfaceTypeFromOutput(route.component.render())
-				} else {
-					route.component = () => route.instance()
-					route.interfaceType = this.getInterfaceTypeFromOutput(route.component()) // TODO: le render est appelé deux fois !
-				}
-			} else {
-				route.component = () => route.instance
-				route.interfaceType = this.getInterfaceTypeFromOutput(route.component())
-			}
-			console.log(route.interfaceType)
-			this.#routes.set(path, route)
-		}
-	}
-
 	/**
 	 * Push new function inside step context to change the route
 	 */
@@ -260,7 +266,7 @@ export default class App {
 				const route = this.#routes.get(path)
 
 				// Store are only available for Component type
-				if (route && route.isComponent && route.component) {
+				if (route && route.isComponentClass && route.component) {
 					return route.component.getStore(key)
 				}
 
@@ -274,16 +280,6 @@ export default class App {
 				route && this.location.setPath(path)
 			}
 		}
-	}
-
-	getInterfaceTypeFromOutput(component: any): string | null {
-		if ([Node.ELEMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE].includes(component.nodeType)) {
-			return 'ELEMENT_NODE'
-		} else if (typeof component === 'string') {
-			return 'STRING'
-		}
-
-		return null
 	}
 
 	destroy() {

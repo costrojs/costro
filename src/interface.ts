@@ -25,10 +25,10 @@ export interface Route {
 }
 
 export interface RouteData {
-	component: any | null
-	instance: any
+	component: any
 	interfaceType: string | null
-	isComponent: boolean
+	isComponentClass: boolean
+	isComponentClassReady: boolean
 	isFunction: boolean
 	path: string
 	props: any
