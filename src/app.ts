@@ -56,7 +56,7 @@ export default class App {
 			throw new Error(
 				`App::createRoutesData | Invalid type for path components: "${inValidRoutes.join(
 					'", "'
-				)}". Allowed types are function, HTMLElement, DocumentFragment, Component and String.`
+				)}". Allowed types are Function, Component, Node.ELEMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE and String.`
 			)
 		}
 
@@ -81,10 +81,8 @@ export default class App {
 	isInterfaceTypeFromInputGranted(instance: any): boolean {
 		return !!(
 			instance instanceof Function ||
-			instance instanceof HTMLElement ||
-			instance instanceof SVGElement ||
-			instance instanceof DocumentFragment ||
 			instance instanceof Component ||
+			[Node.ELEMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE].includes(instance.nodeType) ||
 			typeof instance === 'string'
 		)
 	}
@@ -184,21 +182,17 @@ export default class App {
 		if (this.#currentRoute) {
 			if (this.#currentRoute.isComponent) {
 				this.#currentRoute.component.beforeRender()
-				if (this.#currentRoute.interfaceType === 'String') {
+				if (this.#currentRoute.interfaceType === 'STRING') {
 					this.target.appendChild(
 						this.transformLinksInStringComponent(this.#currentRoute.component.render())
 					)
-				} else {
+				} else if (this.#currentRoute.interfaceType === 'ELEMENT_NODE') {
 					this.target.appendChild(this.#currentRoute.component.render())
 				}
 				this.#currentRoute.component.afterRender()
-			} else if (
-				['HTMLElement', 'SVGElement'].includes(this.#currentRoute.interfaceType as string)
-			) {
+			} else if (this.#currentRoute.interfaceType === 'ELEMENT_NODE') {
 				this.target.appendChild(this.#currentRoute.component())
-			} else if (this.#currentRoute.interfaceType === 'DocumentFragment') {
-				this.target.appendChild(this.#currentRoute.component())
-			} else if (this.#currentRoute.interfaceType === 'String') {
+			} else if (this.#currentRoute.interfaceType === 'STRING') {
 				this.target.appendChild(
 					this.transformLinksInStringComponent(this.#currentRoute.component())
 				)
@@ -252,7 +246,7 @@ export default class App {
 				route.component = () => route.instance
 				route.interfaceType = this.getInterfaceTypeFromOutput(route.component())
 			}
-
+			console.log(route.interfaceType)
 			this.#routes.set(path, route)
 		}
 	}
@@ -283,14 +277,10 @@ export default class App {
 	}
 
 	getInterfaceTypeFromOutput(component: any): string | null {
-		if (component instanceof HTMLElement) {
-			return 'HTMLElement'
-		} else if (component instanceof DocumentFragment) {
-			return 'DocumentFragment'
-		} else if (component instanceof SVGElement) {
-			return 'SVGElement'
+		if ([Node.ELEMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE].includes(component.nodeType)) {
+			return 'ELEMENT_NODE'
 		} else if (typeof component === 'string') {
-			return 'String'
+			return 'STRING'
 		}
 
 		return null
