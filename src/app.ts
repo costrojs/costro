@@ -141,9 +141,7 @@ export default class App {
 		if (this.#currentRoute) {
 			if (previousPath) {
 				this.#previousRoute = this.#routes.get(previousPath)
-				if (this.#previousRoute) {
-					this.destroyComponent()
-				}
+				this.#previousRoute && this.destroyComponent()
 			}
 
 			this.createComponent()
@@ -222,8 +220,10 @@ export default class App {
 	}
 
 	getInterfaceTypeFromView(component: any): string | null {
-		if ([Node.ELEMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE].includes(component.nodeType)) {
+		if (component.nodeType === Node.ELEMENT_NODE) {
 			return 'ELEMENT_NODE'
+		} else if (component.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+			return 'Node.DOCUMENT_FRAGMENT_NODE'
 		} else if (typeof component === 'string') {
 			return 'STRING'
 		}

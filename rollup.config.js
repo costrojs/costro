@@ -14,7 +14,7 @@ const banner =
 
 export default [
 	{
-		external: ['tslib'], // Used to remove Microsoft copyright from tslib
+		// external: ['tslib'], // Used to remove Microsoft copyright from tslib
 		input: 'src/index.ts',
 		output: [
 			{
@@ -43,7 +43,7 @@ export default [
 		].concat(isProduction ? [terser()] : [])
 	},
 	{
-		external: ['tslib'], // Used to remove Microsoft copyright from tslib
+		// external: ['tslib'], // Used to remove Microsoft copyright from tslib
 		input: 'src/jsx.ts',
 		output: [
 			{
