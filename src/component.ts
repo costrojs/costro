@@ -76,9 +76,6 @@ class Component {
 	}
 }
 
-// The flag is used by the jsx-dom library to initialize the Component class
-// @ts-ignore
-Component.prototype.isReactComponent = {}
 // @ts-ignore
 Component.prototype.__isComponent = {}
 

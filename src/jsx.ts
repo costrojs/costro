@@ -1,10 +1,4 @@
-import { Attributes, Component } from './interface'
-
-interface Constructable<T> {
-	new (...args: any): T
-}
-
-type fn = () => void
+import { FragmentTag, ElementAttributes, createElementFunction } from './interface'
 
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 const XML_NAMESPACE = 'http://www.w3.org/XML/1998/namespace'
@@ -69,7 +63,7 @@ const SVG_TAGS = [
 function createAttributes(
 	element: HTMLElement | SVGElement,
 	name: string,
-	value: string | object | Node | boolean,
+	value: string | object | boolean,
 	isSvg = false
 ) {
 	const valusIsString = typeof value === 'string'
@@ -106,31 +100,19 @@ function createAttributes(
 	}
 }
 
-interface FragmentTag {
-	children: HTMLElement[] | SVGElement[]
-}
-
-interface ElementAttributes {
-	[key: string]: string | (() => void)
-}
-
-function Fragment(tag: FragmentTag) {
-	// console.log('Fragment', tag)
+function Fragment(tag: FragmentTag): DocumentFragment {
 	const fragment = document.createDocumentFragment()
 	tag.children && tag.children.length && appendChildren(fragment, tag.children)
 	return fragment
 }
 
 function createElement(
-	tag: string | Function,
+	tag: string | createElementFunction,
 	attributes: null | ElementAttributes,
-	...children: string[] | HTMLElement[]
-) {
-	// console.log('createElement', { tag, attributes, children })
-	let element
-	if (tag instanceof Function) {
-		element = tag(attributes || {})
-	} else {
+	...children: string[] | HTMLElement[] | SVGElement[]
+): HTMLElement | SVGElement | null {
+	let element = null
+	if (typeof tag === 'string') {
 		const isSvg = SVG_TAGS.includes(tag)
 		element = isSvg ? document.createElementNS(SVG_NAMESPACE, tag) : document.createElement(tag)
 
@@ -147,17 +129,11 @@ function createElement(
 				}
 			}
 		}
+	} else if (tag instanceof Function) {
+		element = tag(attributes || {})
 	}
 
-	children.length && appendChildren(element, children)
-
-	if (tag instanceof Function) {
-		if (isComponentClass(tag as fn)) {
-			element = initComponentClass(tag as Constructable<Component>, attributes, children)
-		} else {
-			element = tag({ ...attributes, children })
-		}
-	}
+	element && children.length && appendChildren(element, children)
 
 	return element
 }
@@ -176,23 +152,6 @@ function appendChildren(
 	}
 
 	return element
-}
-
-function isComponentClass(tag: fn): boolean {
-	const prototype = tag.prototype
-	console.log(
-		'isComponentClass',
-		tag,
-		!!(prototype && (prototype.isReactComponent || prototype.__isComponent))
-	)
-	return !!(prototype && (prototype.isReactComponent || prototype.__isComponent))
-}
-
-function initComponentClass(Tag: Constructable<Component>, attributes: any, children: Array<any>) {
-	console.log('initComponentClass', { Tag, attributes, children })
-	attributes = { ...attributes, children }
-	const instance = new Tag(attributes)
-	return instance.render()
 }
 
 export { createElement, createElement as h, Fragment, Fragment as F }
