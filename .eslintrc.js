@@ -8,6 +8,7 @@ module.exports = {
 
 	extends: [
 		'standard',
+		'plugin:react/recommended',
 		'plugin:prettier/recommended',
 		'plugin:@typescript-eslint/recommended',
 		'plugin:typescript-sort-keys/recommended'
@@ -22,13 +23,14 @@ module.exports = {
 	parserOptions: {
 		ecmaFeatures: {
 			experimentalObjectRestSpread: true,
-			impliedStrict: true
+			impliedStrict: true,
+			jsx: true
 		},
 		ecmaVersion: 6,
 		sourceType: 'module'
 	},
 
-	plugins: ['prettier', '@typescript-eslint'],
+	plugins: ['@typescript-eslint'],
 
 	rules: {
 		'@typescript-eslint/ban-ts-comment': 'off',
@@ -37,6 +39,7 @@ module.exports = {
 		indent: ['error', 'tab', { ignoredNodes: ['TemplateLiteral > *'] }],
 		'no-console': 0,
 		'no-tabs': 0,
+		'react/prop-types': 0,
 		'sort-keys': ['error', 'asc', { caseSensitive: true, minKeys: 2, natural: true }],
 		'space-before-function-paren': [
 			'error',
@@ -47,5 +50,13 @@ module.exports = {
 			'asc',
 			{ caseSensitive: true, natural: true, requiredFirst: false }
 		]
+	},
+
+	settings: {
+		react: {
+			fragment: 'F', // Fragment
+			pragma: 'h', // createElement
+			version: '0' // Remove the warning of the missing React package
+		}
 	}
 }

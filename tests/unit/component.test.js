@@ -1,5 +1,4 @@
-import { extend } from '../utils'
-import Component from '../component'
+import Component from '@src/component'
 
 let component
 
@@ -7,7 +6,9 @@ const getInstance = () => {
 	const instance = new Component({
 		page: 'home'
 	})
-	instance.__getExternalStore = () => {}
+	instance.__getExternalStore = () => {
+		/* Empty */
+	}
 	return instance
 }
 

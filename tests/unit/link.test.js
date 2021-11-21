@@ -1,4 +1,4 @@
-import link from '../link'
+import link from '@src/link'
 
 describe('link', () => {
 	it('Should call the link function with HTML', () => {

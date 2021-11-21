@@ -45,3 +45,6 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Test Fixtures
+        run: npm run test:fixtures

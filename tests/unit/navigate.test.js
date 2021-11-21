@@ -1,4 +1,4 @@
-import navigate from '../navigate'
+import navigate from '@src/navigate'
 
 describe('navigate', () => {
 	it('Should call the navigate function', () => {

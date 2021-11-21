@@ -1,4 +1,4 @@
-import { hasOwn, extend } from '../utils'
+import { hasOwn, extend } from '@src/utils'
 
 describe('hasOwn', () => {
 	it('Should call the hasOwn function with a known key', () => {
