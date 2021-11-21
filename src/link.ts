@@ -25,13 +25,6 @@ export default function Link(
 	const element = document.createElement('a')
 	element.setAttribute('href', to)
 
-	// Insert the flag for the event delegation
-	// @ts-ignore
-	element[config.customLinkProperty] = true
-	if (isHtml) {
-		element.classList.add(config.customLinkCssClass)
-	}
-
 	// Insert Link children elements
 	const fragment = document.createDocumentFragment()
 	for (let i = 0, length = children.length; i < length; i++) {
@@ -54,6 +47,14 @@ export default function Link(
 			// @ts-ignore
 			element.setAttribute(key === 'className' ? 'class' : key, attrs[key])
 		}
+	}
+
+	// Insert the flag for the event delegation
+	// Must be executed after adding attributes (conflict between setAttribute('class') and classList.add())
+	// @ts-ignore
+	element[config.customLinkProperty] = true
+	if (isHtml) {
+		element.classList.add(config.customLinkCssClass)
 	}
 
 	return isHtml ? element.outerHTML : element
