@@ -1,20 +1,20 @@
 import { onRouteChangeFunction } from '../interface'
 
 export default class Hash {
-	#defaultHash: string
+	defaultHash: string
 	currentPath: null | string
 	previousPath: null | string
-	#onRouteChange: onRouteChangeFunction
+	onRouteChange: onRouteChangeFunction
 
 	/**
 	 * @constructor
 	 * @param {Function} onRouteChange On route change callback function
 	 */
 	constructor(onRouteChange: onRouteChangeFunction) {
-		this.#onRouteChange = onRouteChange
+		this.onRouteChange = onRouteChange
 
 		// The getPath function can returns an empty string and not matched the "/" path
-		this.#defaultHash = '/'
+		this.defaultHash = '/'
 
 		this.currentPath = this.getPath()
 		this.previousPath = null
@@ -31,19 +31,18 @@ export default class Hash {
 	 * Add events listeners
 	 */
 	addEvents() {
-		window.addEventListener('hashchange', this.#hashChanged)
+		window.addEventListener('hashchange', this.hashChanged)
 	}
 
 	/**
 	 * On hash change event
-	 * @private
 	 * @param {Event}  e Event data
 	 */
-	#hashChanged = (e: Event) => {
+	hashChanged = (e: Event) => {
 		this.previousPath = this.getPreviousPath(e as HashChangeEvent)
 		this.currentPath = this.getPath()
 
-		this.#onRouteChange({
+		this.onRouteChange({
 			currentPath: this.currentPath,
 			previousPath: this.previousPath
 		})
@@ -55,7 +54,7 @@ export default class Hash {
 	 * @returns {(String|null)} Previous route or default hash or null
 	 */
 	getPreviousPath(e: HashChangeEvent): string | null {
-		return e && e.oldURL ? e.oldURL.split('#')[1] || this.#defaultHash : null
+		return e && e.oldURL ? e.oldURL.split('#')[1] || this.defaultHash : null
 	}
 
 	/**
@@ -68,7 +67,7 @@ export default class Hash {
 		const href = window.location.href
 		const index = href.indexOf('#')
 
-		return index >= 0 ? href.slice(index + 1) : this.#defaultHash
+		return index >= 0 ? href.slice(index + 1) : this.defaultHash
 	}
 
 	/**
@@ -86,7 +85,7 @@ export default class Hash {
 	 * Destroy the location
 	 */
 	destroy() {
-		window.removeEventListener('hashchange', this.#hashChanged)
+		window.removeEventListener('hashchange', this.hashChanged)
 		this.currentPath = null
 		this.previousPath = null
 	}

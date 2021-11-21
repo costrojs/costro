@@ -12,10 +12,10 @@ const LOCATION_INSTANCES: interfaceLocationInstances = {
 export default class App {
 	target: HTMLElement
 	mode: string
-	#routes: Map<string, RouteData>
+	routes: Map<string, RouteData>
 	location: any
-	#currentRoute: undefined | RouteData
-	#previousRoute: undefined | RouteData
+	currentRoute: undefined | RouteData
+	previousRoute: undefined | RouteData
 
 	/**
 	 * @constructor
@@ -35,12 +35,12 @@ export default class App {
 	}) {
 		this.mode = mode
 		this.target = target
-		this.#currentRoute = undefined
-		this.#previousRoute = undefined
+		this.currentRoute = undefined
+		this.previousRoute = undefined
 
-		this.#routes = this.createRoutesData(routes)
-		console.log(this.#routes)
-		if (!this.#routes.size) {
+		this.routes = this.createRoutesData(routes)
+		console.log(this.routes)
+		if (!this.routes.size) {
 			throw new Error('App::constructor | Invalid routes configuration')
 		}
 
@@ -117,17 +117,16 @@ export default class App {
 	 * Add events listeners
 	 */
 	addEvents() {
-		document.addEventListener('navigate', this.#onNavigate)
-		this.target.addEventListener('click', this.#onClickOnApp)
+		document.addEventListener('navigate', this.onNavigate)
+		this.target.addEventListener('click', this.onClickOnApp)
 	}
 
 	/**
 	 * On navigate event
 	 * Function is declared on constructor for private declaration without binding
-	 * @private
 	 * @param {Event}  e Event data
 	 */
-	#onNavigate = (e: Event) => {
+	onNavigate = (e: Event) => {
 		const { to } = (<CustomEvent>e).detail
 		typeof to === 'string' && this.location.setPath(to)
 	}
@@ -135,10 +134,9 @@ export default class App {
 	/**
 	 * On click on app event
 	 * Function is declared on constructor for private declaration without binding
-	 * @private
 	 * @param {Event}  e Event data
 	 */
-	#onClickOnApp = (e: Event) => {
+	onClickOnApp = (e: Event) => {
 		const target = e.target as HTMLElement
 
 		// @ts-ignore
@@ -164,17 +162,17 @@ export default class App {
 		previousPath?: null | string
 	}) {
 		// Route is already active
-		if (this.#currentRoute && this.#currentRoute.path === currentPath) {
+		if (this.currentRoute && this.currentRoute.path === currentPath) {
 			return
 		}
 
-		this.#currentRoute = this.#routes.get(currentPath)
+		this.currentRoute = this.routes.get(currentPath)
 
 		// Check if route exist
-		if (this.#currentRoute) {
+		if (this.currentRoute) {
 			if (previousPath) {
-				this.#previousRoute = this.#routes.get(previousPath)
-				this.#previousRoute && this.destroyComponent()
+				this.previousRoute = this.routes.get(previousPath)
+				this.previousRoute && this.destroyComponent()
 			}
 
 			this.createComponent()
@@ -187,10 +185,10 @@ export default class App {
 	 * Destroy the previous component
 	 */
 	destroyComponent() {
-		if (this.#previousRoute) {
-			this.#previousRoute.isComponentClass && this.#previousRoute.component.beforeDestroy()
+		if (this.previousRoute) {
+			this.previousRoute.isComponentClass && this.previousRoute.component.beforeDestroy()
 			this.target.replaceChildren()
-			this.#previousRoute.isComponentClass && this.#previousRoute.component.afterDestroy()
+			this.previousRoute.isComponentClass && this.previousRoute.component.afterDestroy()
 		}
 	}
 
@@ -198,24 +196,24 @@ export default class App {
 	 * Create the current component
 	 */
 	createComponent() {
-		if (this.#currentRoute) {
-			if (this.#currentRoute.isComponentClass && !this.#currentRoute.isComponentClassReady) {
+		if (this.currentRoute) {
+			if (this.currentRoute.isComponentClass && !this.currentRoute.isComponentClassReady) {
 				this.initComponentInCache()
 			}
 
 			let componentView = this.getComponentView()
 			if (componentView) {
-				if (!this.#currentRoute.interfaceType) {
-					this.#currentRoute.interfaceType = this.getInterfaceTypeFromView(componentView)
-					this.#routes.set(this.#currentRoute.path, this.#currentRoute)
+				if (!this.currentRoute.interfaceType) {
+					this.currentRoute.interfaceType = this.getInterfaceTypeFromView(componentView)
+					this.routes.set(this.currentRoute.path, this.currentRoute)
 				}
 
-				this.#currentRoute.isComponentClass && this.#currentRoute.component.beforeRender()
-				if (this.#currentRoute.interfaceType === 'STRING') {
+				this.currentRoute.isComponentClass && this.currentRoute.component.beforeRender()
+				if (this.currentRoute.interfaceType === 'STRING') {
 					componentView = this.transformLinksInStringComponent(componentView)
 				}
 				this.target.appendChild(componentView)
-				this.#currentRoute.isComponentClass && this.#currentRoute.component.afterRender()
+				this.currentRoute.isComponentClass && this.currentRoute.component.afterRender()
 			}
 		}
 	}
@@ -225,22 +223,22 @@ export default class App {
 	 * Only the classes that extend the component
 	 */
 	initComponentInCache() {
-		if (this.#currentRoute) {
+		if (this.currentRoute) {
 			// Inject helpers on the class prototype
 			const helpers = this.getComponentHelpers()
 			const keys = Object.keys(helpers) as string[]
 			for (let i = 0, length = keys.length; i < length; i++) {
 				const key = keys[i]
 				// @ts-ignore
-				this.#currentRoute.component.prototype[key] = helpers[key]
+				this.currentRoute.component.prototype[key] = helpers[key]
 			}
 
 			// eslint-disable-next-line new-cap
-			const instance = new this.#currentRoute.component(this.#currentRoute.props)
-			this.#currentRoute.component = instance
-			this.#currentRoute.isComponentClassReady = true
+			const instance = new this.currentRoute.component(this.currentRoute.props)
+			this.currentRoute.component = instance
+			this.currentRoute.isComponentClassReady = true
 
-			this.#routes.set(this.#currentRoute.path, this.#currentRoute)
+			this.routes.set(this.currentRoute.path, this.currentRoute)
 		}
 	}
 
@@ -250,13 +248,13 @@ export default class App {
 	 * @returns {(Node.ELEMENT_NODE|Node.DOCUMENT_FRAGMENT_NODE)} The component view
 	 */
 	getComponentView() {
-		if (this.#currentRoute) {
-			if (this.#currentRoute.isComponentClass) {
+		if (this.currentRoute) {
+			if (this.currentRoute.isComponentClass) {
 				// Call the before render first
-				this.#currentRoute.component.beforeRender()
-				return this.#currentRoute.component.render()
+				this.currentRoute.component.beforeRender()
+				return this.currentRoute.component.render()
 			} else {
-				return this.#currentRoute.component()
+				return this.currentRoute.component()
 			}
 		}
 	}
@@ -309,7 +307,7 @@ export default class App {
 	getComponentHelpers(): HelperFunction {
 		return {
 			__getExternalStore: (key: string, path: string): object | undefined | null => {
-				const route = this.#routes.get(path)
+				const route = this.routes.get(path)
 				if (route && route.isComponentClass && route.isComponentClassReady) {
 					return route.component.getStore(key)
 				}
@@ -320,7 +318,7 @@ export default class App {
 				return this.location.getPath()
 			},
 			navigate: (path: string): void => {
-				const route = this.#routes.get(path)
+				const route = this.routes.get(path)
 				route && this.location.setPath(path)
 			}
 		}
@@ -331,13 +329,13 @@ export default class App {
 	 */
 	destroy() {
 		this.location.destroy()
-		document.removeEventListener('navigate', this.#onNavigate)
-		this.target.removeEventListener('click', this.#onClickOnApp)
+		document.removeEventListener('navigate', this.onNavigate)
+		this.target.removeEventListener('click', this.onClickOnApp)
 
-		this.#currentRoute = undefined
-		this.#previousRoute = undefined
+		this.currentRoute = undefined
+		this.previousRoute = undefined
 
-		this.#routes.clear()
+		this.routes.clear()
 		this.target.replaceChildren()
 	}
 }

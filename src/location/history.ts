@@ -1,7 +1,7 @@
 import { onRouteChangeFunction } from '../interface'
 
 export default class History {
-	#onRouteChange: onRouteChangeFunction
+	onRouteChange: onRouteChangeFunction
 	currentPath: null | string
 	previousPath: null | string
 
@@ -10,7 +10,7 @@ export default class History {
 	 * @param {Function} onRouteChange On route change callback function
 	 */
 	constructor(onRouteChange: onRouteChangeFunction) {
-		this.#onRouteChange = onRouteChange
+		this.onRouteChange = onRouteChange
 		this.currentPath = this.getPath()
 		this.previousPath = null
 
@@ -34,18 +34,17 @@ export default class History {
 	 * Add events listeners
 	 */
 	addEvents() {
-		window.addEventListener('popstate', this.#onPopState)
+		window.addEventListener('popstate', this.onPopState)
 	}
 
 	/**
 	 * On pop state event
-	 * @private
 	 */
-	#onPopState = () => {
+	onPopState = () => {
 		this.previousPath = this.currentPath
 		this.currentPath = this.getPath()
 
-		this.#onRouteChange({
+		this.onRouteChange({
 			currentPath: this.currentPath,
 			previousPath: this.previousPath
 		})
@@ -69,7 +68,7 @@ export default class History {
 
 		window.history.pushState({ path: this.currentPath }, '', `${path}`)
 
-		this.#onRouteChange({
+		this.onRouteChange({
 			currentPath: this.currentPath,
 			previousPath: this.previousPath
 		})
@@ -79,7 +78,7 @@ export default class History {
 	 * Destroy the location
 	 */
 	destroy() {
-		window.removeEventListener('popstate', this.#onPopState)
+		window.removeEventListener('popstate', this.onPopState)
 		this.currentPath = null
 		this.previousPath = null
 	}

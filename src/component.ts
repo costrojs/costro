@@ -2,7 +2,7 @@ import { extend } from './utils'
 import { privateGetExternalStore } from './interface'
 
 class Component {
-	#store: Map<string, object>
+	store: Map<string, object>
 	props: any
 	__getExternalStore!: privateGetExternalStore
 
@@ -10,7 +10,7 @@ class Component {
 	constructor(props) {
 		// @ts-ignore
 		this.props = props
-		this.#store = new Map()
+		this.store = new Map()
 	}
 
 	/**
@@ -57,12 +57,12 @@ class Component {
 		for (let i = 0, length = keys.length; i < length; i++) {
 			const key = keys[i]
 			// Merge store data if key already exists
-			if (this.#store.has(key)) {
-				const value = this.#store.get(key)
+			if (this.store.has(key)) {
+				const value = this.store.get(key)
 				const newValue = extend(true, { [key]: value }, { [key]: data[key] })
-				this.#store.set(key, newValue[key])
+				this.store.set(key, newValue[key])
 			} else {
-				this.#store.set(key, data[key])
+				this.store.set(key, data[key])
 			}
 		}
 	}
@@ -80,7 +80,7 @@ class Component {
 				return this.__getExternalStore(key, path)
 			}
 
-			return this.#store.get(key)
+			return this.store.get(key)
 		}
 
 		return null
