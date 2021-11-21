@@ -5,11 +5,11 @@ function Navigation() {
 	return (
 		<ul>
 			<li>
-				<Link to="/">htmlElementByFunction</Link>
+				<Link to="/">htmlElement</Link>
 				{/* <button onClick={() => navigate('/')}>Home</button> */}
 			</li>
 			<li>
-				<Link to="/document-fragment-by-function">documentFragmentByFunction</Link>
+				<Link to="/document-fragment">documentFragment</Link>
 			</li>
 			<li>
 				<Link to="/custom-component-1">CustomComponent 1</Link>
@@ -18,38 +18,29 @@ function Navigation() {
 				<Link to="/custom-component-2">CustomComponent 2</Link>
 			</li>
 			<li>
-				<Link to="/string-by-function">StringByFunction</Link>
+				<Link to="/string">String</Link>
 			</li>
 			<li>
-				<Link to="/html-element">htmlElement</Link>
-			</li>
-			<li>
-				<Link to="/document-fragment">documentFragment</Link>
-			</li>
-			<li>
-				<Link to="/string">string</Link>
-			</li>
-			<li>
-				<Link to="/svg-html-element">svgHtmlElement</Link>
+				<Link to="/svg">svgHtmlElement</Link>
 			</li>
 		</ul>
 	)
 }
 
-function htmlElementByFunction() {
+function htmlElement() {
 	return (
 		<div>
 			<Navigation />
-			<h2>HTMLElement by Function</h2>
+			<h2>HTMLElement</h2>
 		</div>
 	)
 }
 
-function documentFragmentByFunction() {
+function documentFragment() {
 	return (
 		<>
 			<Navigation />
-			<h2>DocumentFragment by Function</h2>
+			<h2>DocumentFragment</h2>
 		</>
 	)
 }
@@ -59,7 +50,7 @@ class CustomComponent1 extends Component {
 		return (
 			<>
 				<Navigation />
-				<h2>Custom Component 1 by Function</h2>
+				<h2>Custom Component 1</h2>
 				<p>{this.props.title}</p>
 			</>
 		)
@@ -77,7 +68,7 @@ class CustomComponent2 extends Component {
 		return (
 			<>
 				<Navigation />
-				<h2>Custom Component 2 by Function</h2>
+				<h2>Custom Component 2</h2>
 				<p>{this.name}</p>
 			</>
 		)
@@ -88,34 +79,14 @@ class CustomComponent2 extends Component {
 	}
 }
 
-function StringByFunction() {
+function String() {
 	return `
         ${Link({ children: ['Home'], to: '/' }, true)}
         <h2>String by Function</h2>
     `
 }
 
-const htmlElement = (
-	<div>
-		<Navigation />
-		<h2>HTMLElement</h2>
-		{/* <CustomComponent isConnected={true} data={{ name: 'John' }} /> */}
-	</div>
-)
-
-const documentFragment = (
-	<>
-		<Navigation />
-		<h2>DocumentFragment</h2>
-	</>
-)
-
-const String = `
-    ${Link({ children: ['Home'], to: '/' }, true)}
-    <h2>String</h2>
-`
-
-const svgHtmlElement = (
+const svg = () => (
 	<svg
 		version="1.1"
 		xmlns="http://www.w3.org/2000/svg"
@@ -146,12 +117,12 @@ const svgHtmlElement = (
 
 const routes = [
 	{
-		component: htmlElementByFunction,
+		component: htmlElement,
 		path: '/'
 	},
 	{
-		component: documentFragmentByFunction,
-		path: '/document-fragment-by-function'
+		component: documentFragment,
+		path: '/document-fragment'
 	},
 	{
 		component: CustomComponent1, // Don't call <CustomComponent isConnected={true} />
@@ -165,24 +136,12 @@ const routes = [
 		path: '/custom-component-2'
 	},
 	{
-		component: StringByFunction,
-		path: '/string-by-function'
-	},
-	{
-		component: htmlElement,
-		path: '/html-element'
-	},
-	{
-		component: documentFragment,
-		path: '/document-fragment'
-	},
-	{
 		component: String,
 		path: '/string'
 	},
 	{
-		component: svgHtmlElement,
-		path: '/svg-html-element'
+		component: svg,
+		path: '/svg'
 	}
 ]
 

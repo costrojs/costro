@@ -29,7 +29,6 @@ export interface RouteData {
 	interfaceType: string | null
 	isComponentClass: boolean
 	isComponentClassReady: boolean
-	isFunction: boolean
 	path: string
 	props: any
 }

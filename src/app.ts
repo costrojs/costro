@@ -72,7 +72,6 @@ export default class App {
 						interfaceType: null,
 						isComponentClass: route.component.prototype instanceof Component,
 						isComponentClassReady: false,
-						isFunction: route.component instanceof Function,
 						path: route.path,
 						props: route.props
 					}
@@ -210,20 +209,18 @@ export default class App {
 	getComponentView() {
 		if (this.#currentRoute) {
 			if (this.#currentRoute.isComponentClass) {
+				// Call the before render first
+				this.#currentRoute.component.beforeRender()
 				return this.#currentRoute.component.render()
-			} else if (this.#currentRoute.isFunction) {
-				return this.#currentRoute.component()
 			} else {
-				return this.#currentRoute.component
+				return this.#currentRoute.component()
 			}
 		}
 	}
 
 	getInterfaceTypeFromView(component: any): string | null {
-		if (component.nodeType === Node.ELEMENT_NODE) {
+		if ([Node.ELEMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE].includes(component.nodeType)) {
 			return 'ELEMENT_NODE'
-		} else if (component.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
-			return 'Node.DOCUMENT_FRAGMENT_NODE'
 		} else if (typeof component === 'string') {
 			return 'STRING'
 		}
@@ -258,9 +255,7 @@ export default class App {
 		return {
 			__getExternalStore: (key: string, path: string): object | undefined | null => {
 				const route = this.#routes.get(path)
-
-				// Store are only available for Component type
-				if (route && route.isComponentClass && route.component) {
+				if (route && route.isComponentClass && route.isComponentClassReady) {
 					return route.component.getStore(key)
 				}
 
