@@ -73,7 +73,7 @@ function createAttributes(
 	value: string | object | boolean,
 	isSvg = false
 ) {
-	const valusIsString = typeof value === 'string'
+	const valueIsString = typeof value === 'string'
 	if (name === 'style') {
 		if (typeof value === 'string') {
 			element.setAttribute('style', value)
@@ -90,19 +90,19 @@ function createAttributes(
 			// @ts-ignore
 			element.dataset[datasetProperty[i]] = value[datasetProperty[i]]
 		}
-	} else if (name === 'innerHTML' && valusIsString) {
+	} else if (name === 'innerHTML' && valueIsString) {
 		element.innerHTML = value
-	} else if (['class', 'className'].includes(name) && valusIsString) {
+	} else if (['class', 'className'].includes(name) && valueIsString) {
 		const cssClass = value.split(' ')
 		for (let i = 0, length = cssClass.length; i < length; i++) {
 			element.classList.add(cssClass[i])
 		}
-	} else if (isSvg && SVG_ATTRIBUTES_CAMEL_CASE.includes(name) && valusIsString) {
+	} else if (isSvg && SVG_ATTRIBUTES_CAMEL_CASE.includes(name) && valueIsString) {
 		const attributesWithColon = name.replaceAll(/[A-Z]/g, (match) => ':' + match.toLowerCase())
 		element.setAttributeNS(XML_NAMESPACE, attributesWithColon, value)
 	} else if (value === true) {
 		element.setAttribute(name, '')
-	} else if (value !== false && value !== null && valusIsString) {
+	} else if (value !== false && value !== null && valueIsString) {
 		element.setAttribute(name, value)
 	}
 }
@@ -136,7 +136,6 @@ function appendChildren(
  */
 function Fragment(tag: FragmentTag): DocumentFragment {
 	const fragment = document.createDocumentFragment()
-	tag.children && tag.children.length && appendChildren(fragment, tag.children)
 	return fragment
 }
 
