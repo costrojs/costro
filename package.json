@@ -31,7 +31,7 @@
 		"test:coverage": "jest --config ./config/jest.config.js --coverage",
 		"test:eslint": "eslint . -c ./config/.eslintrc.js --ignore-pattern node_modules --ignore-pattern dist",
 		"test:fixtures": "rm -rf ./fixtures/dist && webpack --mode=production --config=./tests/fixtures/webpack.config.js",
-		"test:markdown": "markdownlint '**/*.md' --ignore node_modules",
+		"test:markdown": "markdownlint-cli2 '**/*.md'",
 		"test:type-check": "tsc --noEmit",
 		"test:watch": "jest --config ./config/jest.config.js --watchAll --coverage",
 		"watch:type-check": "tsc --noEmit --watch"
@@ -59,7 +59,7 @@
 		"eslint-plugin-react": "^7.27.1",
 		"eslint-plugin-typescript-sort-keys": "^2.0.0",
 		"jest": "^27.3.1",
-		"markdownlint-cli": "^0.29.0",
+		"markdownlint-cli2": "^0.3.2",
 		"prettier": "^2.4.1",
 		"rollup": "^2.60.0",
 		"rollup-plugin-terser": "^7.0.2",

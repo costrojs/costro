@@ -46,9 +46,10 @@
     },
     "extensions": {
         "recommendations": [
+            "davidanson.vscode-markdownlint",
             "esbenp.prettier-vscode",
             "dbaeumer.vscode-eslint",
-            "mhmadhamster.postcss-language"
+            "mhmadhamster.postcss-language",
         ]
     }
 }
