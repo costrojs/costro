@@ -24,9 +24,12 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
+      - name: Read .nvmrc
+        run: echo NVMRC=`cat .nvmrc` >> $GITHUB_ENV
+
       - uses: actions/setup-node@v1
         with:
-          node-version: 12.14.0
+          node-version: ${{ env.NVMRC }}
 
       - name: Install dependencies
         run: npm ci
