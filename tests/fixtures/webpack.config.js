@@ -31,9 +31,6 @@ module.exports = {
 			}
 		]
 	},
-	stats: {
-		modules: false
-	},
 	optimization: {
 		chunkIds: 'deterministic',
 		mergeDuplicateChunks: true,
@@ -50,5 +47,8 @@ module.exports = {
 	output: {
 		filename: '[name].js',
 		path: path.resolve(__dirname, './dist')
+	},
+	stats: {
+		modules: false
 	}
 }
