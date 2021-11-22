@@ -41,11 +41,12 @@ export default function Link(
 	const keys = Object.keys(attrs) as string[]
 	for (let i = 0, length = keys.length; i < length; i++) {
 		const key = keys[i]
+		// @ts-ignore
+		const value = attrs[key]
 
 		// Exclude __self and __source keys
-		if (!key.startsWith('__')) {
-			// @ts-ignore
-			element.setAttribute(key === 'className' ? 'class' : key, attrs[key])
+		if (!key.startsWith('__') && value !== false && value !== null) {
+			element.setAttribute(key === 'className' ? 'class' : key, value === true ? '' : value)
 		}
 	}
 
