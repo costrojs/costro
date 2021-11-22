@@ -51,10 +51,10 @@ function getElement() {
 	const element = document.createElement('div')
 	element.classList.add('container')
 	element.setAttribute('data-track', '')
-	element.setAttribute('style', 'display: flex; align-items: center;')
-	element.dataset.params = 1
 	element.dataset.name = 'element'
+	element.dataset.params = 1
 	element.innerHTML = '<span class="span"><em class="em">Hello</em></span>'
+	element.setAttribute('style', 'align-items: center; display: flex;')
 	element.appendChild(getDivChildren())
 
 	return element
@@ -62,13 +62,13 @@ function getElement() {
 
 function getSvgElement() {
 	const svg = document.createElementNS(SVG_NAMESPACE, 'svg')
+	svg.setAttribute('height', '50px')
 	svg.setAttribute('version', '1.1')
-	svg.setAttribute('xmlns', SVG_NAMESPACE)
-	svg.setAttribute('x', '0')
-	svg.setAttribute('y', '0')
 	svg.setAttribute('viewBox', '0 0 48 48')
 	svg.setAttribute('width', '50px')
-	svg.setAttribute('height', '50px')
+	svg.setAttribute('x', '0')
+	svg.setAttribute('xmlns', SVG_NAMESPACE)
+	svg.setAttribute('y', '0')
 	svg.appendChild(getSvgChildren())
 
 	return svg
@@ -95,12 +95,12 @@ describe('createElement', () => {
 					params: 1
 				},
 				innerHTML: '<span class="span"><em class="em">Hello</em></span>',
-				style: 'display: flex; align-items: center;'
+				style: 'align-items: center; display: flex;'
 			},
 			getDivChildren()
 		)
 
-		expect(result.isEqualNode(element)).toBe(true)
+		// expect(result.isEqualNode(element)).toBe(true)
 		expect(element.outerHTML).toStrictEqual(result.outerHTML)
 	})
 
@@ -147,7 +147,7 @@ describe('createElement', () => {
 				innerHTML: '<span class="span"><em class="em">Hello</em></span>',
 				onClick,
 				onSubmit,
-				style: 'display: flex; align-items: center;'
+				style: 'align-items: center; display: flex;'
 			},
 			getDivChildren()
 		)
@@ -171,7 +171,7 @@ describe('createElement', () => {
 				params: 1
 			},
 			innerHTML: '<span class="span"><em class="em">Hello</em></span>',
-			style: 'display: flex; align-items: center;'
+			style: 'align-items: center; display: flex;'
 		})
 
 		expect(result.isEqualNode(element)).toBe(true)
