@@ -30,7 +30,7 @@
 		"test": "jest --config ./config/jest.config.js --verbose --coverage",
 		"test:coverage": "jest --config ./config/jest.config.js --coverage",
 		"test:eslint": "eslint . -c ./config/.eslintrc.js --ignore-pattern node_modules --ignore-pattern dist",
-		"test:fixtures": "rm -rf ./fixtures/dist && webpack --mode=production --config=./fixtures/webpack.config.js",
+		"test:fixtures": "rm -rf ./fixtures/dist && webpack --mode=production --config=./tests/fixtures/webpack.config.js",
 		"test:markdown": "markdownlint '**/*.md' --ignore node_modules",
 		"test:type-check": "tsc --noEmit",
 		"test:watch": "jest --config ./config/jest.config.js --watchAll --coverage",

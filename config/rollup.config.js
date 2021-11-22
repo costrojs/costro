@@ -4,7 +4,7 @@ import buble from '@rollup/plugin-buble'
 import { terser } from 'rollup-plugin-terser'
 
 const isProduction = process.env.ENV === 'production'
-const dir = path.resolve(__dirname, './dist')
+const dir = path.resolve(__dirname, '../dist')
 const banner =
 	'/*!\n' +
 	` * Tunnel v${require('../package.json').version}\n` +
