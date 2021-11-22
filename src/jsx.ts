@@ -98,7 +98,7 @@ function createAttributes(
 			element.classList.add(cssClass[i])
 		}
 	} else if (isSvg && SVG_ATTRIBUTES_CAMEL_CASE.includes(name) && valueIsString) {
-		const attributesWithColon = name.replaceAll(/[A-Z]/g, (match) => ':' + match.toLowerCase())
+		const attributesWithColon = name.replace(/[A-Z]/g, (match) => ':' + match.toLowerCase())
 		element.setAttributeNS(XML_NAMESPACE, attributesWithColon, value)
 	} else if (value === true) {
 		element.setAttribute(name, '')
