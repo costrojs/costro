@@ -31,6 +31,9 @@ module.exports = {
 			}
 		]
 	},
+	stats: {
+		modules: false
+	},
 	optimization: {
 		chunkIds: 'deterministic',
 		mergeDuplicateChunks: true,
