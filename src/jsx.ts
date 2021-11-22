@@ -1,4 +1,4 @@
-import { FragmentTag, ElementAttributes, createElementFunction } from './interface'
+import { ElementAttributes, createElementFunction } from './interface'
 
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 const XML_NAMESPACE = 'http://www.w3.org/XML/1998/namespace'
@@ -131,10 +131,9 @@ function appendChildren(
 
 /**
  * Create the fragment from <></>
- * @param {Object} tag Fragment data
  * @returns {DocumentFragment} Document fragment
  */
-function Fragment(tag: FragmentTag): DocumentFragment {
+function Fragment(): DocumentFragment {
 	const fragment = document.createDocumentFragment()
 	return fragment
 }

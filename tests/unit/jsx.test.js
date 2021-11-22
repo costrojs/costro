@@ -4,7 +4,6 @@ const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 
 let element
 let svg
-let g
 
 function getSvgChildren() {
 	const g = document.createElement('g')
@@ -91,12 +90,12 @@ describe('createElement', () => {
 			{
 				class: 'container',
 				'data-track': true,
-				style: 'display: flex; align-items: center;',
 				dataset: {
-					params: 1,
-					name: 'element'
+					name: 'element',
+					params: 1
 				},
-				innerHTML: '<span class="span"><em class="em">Hello</em></span>'
+				innerHTML: '<span class="span"><em class="em">Hello</em></span>',
+				style: 'display: flex; align-items: center;'
 			},
 			getDivChildren()
 		)
@@ -111,15 +110,15 @@ describe('createElement', () => {
 			{
 				class: 'container',
 				'data-track': true,
-				style: {
-					display: 'flex',
-					alignItems: 'center'
-				},
 				dataset: {
-					params: 1,
-					name: 'element'
+					name: 'element',
+					params: 1
 				},
-				innerHTML: '<span class="span"><em class="em">Hello</em></span>'
+				innerHTML: '<span class="span"><em class="em">Hello</em></span>',
+				style: {
+					alignItems: 'center',
+					display: 'flex'
+				}
 			},
 			getDivChildren()
 		)
@@ -141,14 +140,14 @@ describe('createElement', () => {
 			{
 				class: 'container',
 				'data-track': true,
-				style: 'display: flex; align-items: center;',
 				dataset: {
-					params: 1,
-					name: 'element'
+					name: 'element',
+					params: 1
 				},
 				innerHTML: '<span class="span"><em class="em">Hello</em></span>',
 				onClick,
-				onSubmit
+				onSubmit,
+				style: 'display: flex; align-items: center;'
 			},
 			getDivChildren()
 		)
@@ -167,12 +166,12 @@ describe('createElement', () => {
 		const result = createElement(tagFn, {
 			class: 'container',
 			'data-track': true,
-			style: 'display: flex; align-items: center;',
 			dataset: {
-				params: 1,
-				name: 'element'
+				name: 'element',
+				params: 1
 			},
-			innerHTML: '<span class="span"><em class="em">Hello</em></span>'
+			innerHTML: '<span class="span"><em class="em">Hello</em></span>',
+			style: 'display: flex; align-items: center;'
 		})
 
 		expect(result.isEqualNode(element)).toBe(true)
@@ -205,13 +204,13 @@ describe('createElement', () => {
 		const result = createElement(
 			'svg',
 			{
+				height: '50px',
 				version: '1.1',
-				xmlns: SVG_NAMESPACE,
-				x: '0',
-				y: '0',
 				viewBox: '0 0 48 48',
 				width: '50px',
-				height: '50px'
+				x: '0',
+				xmlns: SVG_NAMESPACE,
+				y: '0'
 			},
 			getSvgChildren()
 		)

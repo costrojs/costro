@@ -53,10 +53,6 @@ export interface HelperFunction {
 	navigate: (path: string) => void
 }
 
-export interface FragmentTag {
-	children: HTMLElement[] | SVGElement[]
-}
-
 export interface ElementAttributes {
 	[key: string]: string | Fn
 }
