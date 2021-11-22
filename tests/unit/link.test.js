@@ -12,9 +12,7 @@ describe('link', () => {
 			true
 		)
 
-		expect(result).toBe(
-			'<a href="/home" class="btn btn-info customLink" data-test="true">Home</a>'
-		)
+		expect(result).toBe('<a href="/home" class="btn btn-info customLink" data-test="">Home</a>')
 	})
 
 	it('Should call the link function with HTML and className attribute', () => {
@@ -55,7 +53,7 @@ describe('link', () => {
 		const element = document.createElement('a')
 		element.classList.add('btn', 'btn-info')
 		element.setAttribute('href', '/home')
-		element.setAttribute('data-test', true)
+		element.setAttribute('data-test', '')
 		element.innerHTML = '<span>Home</span>'
 
 		expect(result).toStrictEqual(element)
