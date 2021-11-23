@@ -14,7 +14,7 @@ const banner =
 
 export default [
 	{
-		// external: ['tslib'], // Used to remove Microsoft copyright from tslib
+		// external: ['tslib'], // TODO: Used to remove Microsoft copyright from tslib
 		input: 'src/index.ts',
 		output: [
 			{
