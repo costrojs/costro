@@ -1,13 +1,7 @@
 import config from './config'
-import Hash from './location/hash'
-import History from './location/history'
-import { RouteData, interfaceLocationInstances, Route, HelperFunction, Fn } from './interface'
+import Location from './location'
+import { RouteData, Route, HelperFunction, Fn } from './interface'
 import Component from './component'
-
-const LOCATION_INSTANCES: interfaceLocationInstances = {
-	hash: Hash,
-	history: History
-}
 
 export default class App {
 	target: HTMLElement
@@ -40,12 +34,16 @@ export default class App {
 
 		this.routes = this.createRoutesData(routes)
 		console.log(this.routes)
+
 		if (!this.routes.size) {
 			throw new Error('App::constructor | Invalid routes configuration')
 		}
 
-		const LocationInstance = this.getLocationInstance(mode)
-		this.location = new LocationInstance(this.onRouteChange.bind(this))
+		if (!['hash', 'history'].includes(this.mode)) {
+			throw new Error(`App::constructor | Unknown mode "${mode}"`)
+		}
+
+		this.location = new Location(this.onRouteChange.bind(this), this.mode)
 		this.location.init()
 
 		this.addEvents()
@@ -98,19 +96,6 @@ export default class App {
 	 */
 	isInterfaceTypeFromComponentGranted(component: Fn | Component): boolean {
 		return !!(component instanceof Function || component instanceof Component)
-	}
-
-	/**
-	 * Get the location instance (hash|history)
-	 * @param {String} mode Location mode
-	 * @returns {Object} Location instance
-	 */
-	getLocationInstance(mode: string): any {
-		const LocationInstance: any = LOCATION_INSTANCES[mode]
-		if (LocationInstance) {
-			return LocationInstance
-		}
-		throw new Error(`Router::getLocationInstance | Unknown mode "${mode}"`)
 	}
 
 	/**

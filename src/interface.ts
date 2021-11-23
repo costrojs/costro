@@ -14,10 +14,6 @@ export interface Component {
 	setStore: (data: any) => void
 }
 
-export interface interfaceLocationInstances {
-	[key: string]: any
-}
-
 export interface Route {
 	component: Constructable<Component> | Fn | any // Multi types with constructor and function fails
 	path: string
