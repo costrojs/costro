@@ -100,8 +100,9 @@ describe('createElement', () => {
 			getDivChildren()
 		)
 
-		// expect(result.isEqualNode(element)).toBe(true)
-		expect(element.outerHTML).toStrictEqual(result.outerHTML)
+		expect(result).toStrictEqual(element)
+		expect(result.isEqualNode(element)).toBe(true)
+		expect(result.outerHTML).toStrictEqual(element.outerHTML)
 	})
 
 	it('Should call the createElement function with style object', () => {
@@ -123,6 +124,7 @@ describe('createElement', () => {
 			getDivChildren()
 		)
 
+		expect(result).toStrictEqual(element)
 		expect(result.isEqualNode(element)).toBe(true)
 		expect(element.outerHTML).toEqual(result.outerHTML)
 	})
@@ -174,6 +176,7 @@ describe('createElement', () => {
 			style: 'align-items: center; display: flex;'
 		})
 
+		expect(result).toStrictEqual(element)
 		expect(result.isEqualNode(element)).toBe(true)
 		expect(element.outerHTML).toStrictEqual(result.outerHTML)
 	})
@@ -186,6 +189,7 @@ describe('createElement', () => {
 
 		const result = createElement(tagFn, false)
 
+		expect(result).toStrictEqual(div)
 		expect(result.isEqualNode(div)).toBe(true)
 		expect(div.outerHTML).toStrictEqual(result.outerHTML)
 	})
@@ -196,6 +200,7 @@ describe('createElement', () => {
 
 		const result = createElement('div', {}, 'Hello')
 
+		expect(result).toStrictEqual(div)
 		expect(result.isEqualNode(div)).toBe(true)
 		expect(div.outerHTML).toStrictEqual(result.outerHTML)
 	})
@@ -215,6 +220,7 @@ describe('createElement', () => {
 			getSvgChildren()
 		)
 
+		expect(result).toStrictEqual(svg)
 		expect(result.isEqualNode(svg)).toBe(true)
 		expect(svg.outerHTML).toStrictEqual(result.outerHTML)
 	})
@@ -227,8 +233,9 @@ describe('createElement', () => {
 			xmlLang: 'en-US'
 		})
 
+		expect(result).toStrictEqual(svgElement)
 		expect(result.isEqualNode(svgElement)).toBe(true)
-		expect(svgElement.outerHTML).toStrictEqual(result.outerHTML)
+		expect(result.outerHTML).toStrictEqual(svgElement.outerHTML)
 	})
 })
 
