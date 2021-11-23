@@ -43,11 +43,11 @@ jobs:
       - name: Test Markdown
         run: npm run test:markdown
 
-      - name: Test Jest
-        run: npm run test
-
       - name: Build
         run: npm run build
+
+      - name: Test Jest
+        run: npm run test
 
       - name: Test Fixtures
         run: npm run test:fixtures
