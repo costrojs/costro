@@ -1,16 +1,15 @@
 import App from '@src/app'
 import Location from '@src/location'
-import exp from 'constants'
-import { h, F } from '../../dist/jsx'
+import { h } from '../../dist/jsx'
 import routesFixtures from '../fixtures/routes-fixture'
 
 jest.mock('@src/location', () => {
 	return jest.fn().mockImplementation(() => {
 		return {
-			init: jest.fn(),
+			destroy: jest.fn(),
 			getPath: jest.fn().mockReturnValue('/document-fragment'),
-			setPath: jest.fn(),
-			destroy: jest.fn()
+			init: jest.fn(),
+			setPath: jest.fn()
 		}
 	})
 })
@@ -97,7 +96,7 @@ const routes = new Map([
 beforeEach(() => {
 	document.body.appendChild(
 		<div id="app">
-			<a href="/svg" class="link"></a>
+			<a href="/svg" className="link"></a>
 		</div>
 	)
 
@@ -132,6 +131,7 @@ describe('App', () => {
 			App.prototype.createRoutesData = jest.fn().mockReturnValue([])
 
 			expect(() => {
+				// eslint-disable-next-line no-new
 				new App({
 					mode: 'hash',
 					routes: [],
@@ -142,6 +142,7 @@ describe('App', () => {
 
 		it('Should call the constructor function with invalid mode', () => {
 			expect(() => {
+				// eslint-disable-next-line no-new
 				new App({
 					mode: 'test',
 					routes: customRoutes,
@@ -244,33 +245,33 @@ describe('App', () => {
 	describe('destroyComponent', () => {
 		it('should call the destroyComponent function', () => {
 			app.previousRoute = {
-				isComponentClass: true,
 				component: {
-					beforeDestroy: jest.fn(),
-					afterDestroy: jest.fn()
-				}
+					afterDestroy: jest.fn(),
+					beforeDestroy: jest.fn()
+				},
+				isComponentClass: true
 			}
 
 			app.target.replaceChildren = jest.fn()
 
 			app.destroyComponent()
 
-			expect(app.previousRoute.component.beforeDestroy).toHaveBeenCalled
+			expect(app.previousRoute.component.beforeDestroy).toHaveBeenCalled()
 			expect(app.target.replaceChildren).toHaveBeenCalled()
-			expect(app.previousRoute.component.afterDestroy).toHaveBeenCalled
+			expect(app.previousRoute.component.afterDestroy).toHaveBeenCalled()
 		})
 	})
 
 	describe('createComponent', () => {
 		it('should call the createComponent function with a component and HTMLElement', () => {
 			app.currentRoute = {
-				isComponentClass: true,
-				isComponentClassReady: false,
-				interfaceType: null,
 				component: {
-					beforeRender: jest.fn(),
-					afterRender: jest.fn()
-				}
+					afterRender: jest.fn(),
+					beforeRender: jest.fn()
+				},
+				interfaceType: null,
+				isComponentClass: true,
+				isComponentClassReady: false
 			}
 
 			app.initComponentInCache = jest.fn()
@@ -281,9 +282,9 @@ describe('App', () => {
 
 			app.createComponent()
 
-			expect(app.initComponentInCache).toHaveBeenCalled
-			expect(app.getComponentView).toHaveBeenCalled
-			expect(app.getInterfaceTypeFromView).toHaveBeenCalled
+			expect(app.initComponentInCache).toHaveBeenCalled()
+			expect(app.getComponentView).toHaveBeenCalled()
+			expect(app.getInterfaceTypeFromView).toHaveBeenCalled()
 			expect(app.currentRoute.interfaceType).toBe('ELEMENT_NODE')
 			expect(app.currentRoute.component.beforeRender).toHaveBeenCalled()
 			expect(app.transformLinksInStringComponent).not.toHaveBeenCalled()
@@ -293,13 +294,13 @@ describe('App', () => {
 
 		it('should call the createComponent function with a component and String', () => {
 			app.currentRoute = {
-				isComponentClass: true,
-				isComponentClassReady: false,
-				interfaceType: null,
 				component: {
-					beforeRender: jest.fn(),
-					afterRender: jest.fn()
-				}
+					afterRender: jest.fn(),
+					beforeRender: jest.fn()
+				},
+				interfaceType: null,
+				isComponentClass: true,
+				isComponentClassReady: false
 			}
 
 			app.initComponentInCache = jest.fn()
@@ -312,9 +313,9 @@ describe('App', () => {
 
 			app.createComponent()
 
-			expect(app.initComponentInCache).toHaveBeenCalled
-			expect(app.getComponentView).toHaveBeenCalled
-			expect(app.getInterfaceTypeFromView).toHaveBeenCalled
+			expect(app.initComponentInCache).toHaveBeenCalled()
+			expect(app.getComponentView).toHaveBeenCalled()
+			expect(app.getInterfaceTypeFromView).toHaveBeenCalled()
 			expect(app.currentRoute.interfaceType).toBe('STRING')
 			expect(app.currentRoute.component.beforeRender).toHaveBeenCalled()
 			expect(app.transformLinksInStringComponent).toHaveBeenCalledWith(
@@ -329,14 +330,20 @@ describe('App', () => {
 		it('should call the initComponentInCache function', () => {
 			class CustomComponent {}
 			app.currentRoute = {
-				path: '/svg',
-				component: CustomComponent
+				component: CustomComponent,
+				path: '/svg'
 			}
 
 			const helpers = {
-				__getExternalStore: () => {},
-				getPath: () => {},
-				navigate: () => {}
+				__getExternalStore: () => {
+					/* Empty */
+				},
+				getPath: () => {
+					/* Empty */
+				},
+				navigate: () => {
+					/* Empty */
+				}
 			}
 
 			app.getComponentHelpers = jest.fn().mockReturnValue(helpers)
@@ -358,12 +365,12 @@ describe('App', () => {
 	describe('getComponentView', () => {
 		it('should call the getComponentView function with a component class', () => {
 			app.currentRoute = {
-				isComponentClass: true,
 				component: {
+					afterRender: jest.fn(),
 					beforeRender: jest.fn(),
-					render: jest.fn().mockReturnValue(<div>Component</div>),
-					afterRender: jest.fn()
-				}
+					render: jest.fn().mockReturnValue(<div>Component</div>)
+				},
+				isComponentClass: true
 			}
 
 			const result = app.getComponentView()
@@ -374,8 +381,8 @@ describe('App', () => {
 
 		it('should call the getComponentView function with a component', () => {
 			app.currentRoute = {
-				isComponentClass: false,
-				component: jest.fn().mockReturnValue(<div>Component</div>)
+				component: jest.fn().mockReturnValue(<div>Component</div>),
+				isComponentClass: false
 			}
 
 			const result = app.getComponentView()
@@ -404,7 +411,9 @@ describe('App', () => {
 		})
 
 		it('should call the getInterfaceTypeFromView function with invalid type', () => {
-			const result = app.getInterfaceTypeFromView(() => {})
+			const result = app.getInterfaceTypeFromView(() => {
+				/* Empty */
+			})
 
 			expect(result).toBe(null)
 		})
@@ -436,12 +445,6 @@ describe('App', () => {
 
 			const result = app.getComponentHelpers()
 
-			const helpers = {
-				__getExternalStore: () => {},
-				getPath: () => {},
-				navigate: () => {}
-			}
-
 			expect(result.__getExternalStore).toBeInstanceOf(Function)
 			expect(result.getPath).toBeInstanceOf(Function)
 			expect(result.navigate).toBeInstanceOf(Function)
@@ -451,11 +454,11 @@ describe('App', () => {
 	describe('getComponentHelpers __getExternalStore', () => {
 		it('should call the __getExternalStore helper function', () => {
 			app.routes.get = jest.fn().mockReturnValue({
-				isComponentClass: true,
-				isComponentClassReady: true,
 				component: {
 					getStore: jest.fn().mockReturnValue('John')
-				}
+				},
+				isComponentClass: true,
+				isComponentClassReady: true
 			})
 
 			const externalStore = app.getComponentHelpers().__getExternalStore('name', '/svg')
@@ -473,8 +476,10 @@ describe('App', () => {
 
 		it('should call the __getExternalStore helper function with not a component class', () => {
 			app.routes.get = jest.fn().mockReturnValue({
-				isComponentClass: false,
-				component: () => {}
+				component: () => {
+					/* Empty */
+				},
+				isComponentClass: false
 			})
 
 			const externalStore = app.getComponentHelpers().__getExternalStore('name', '/svg')
@@ -484,11 +489,11 @@ describe('App', () => {
 
 		it('should call the __getExternalStore helper function with a component class not ready', () => {
 			app.routes.get = jest.fn().mockReturnValue({
-				isComponentClass: true,
-				isComponentClassReady: false,
 				component: {
 					getStore: jest.fn().mockReturnValue('John')
-				}
+				},
+				isComponentClass: true,
+				isComponentClassReady: false
 			})
 
 			const externalStore = app.getComponentHelpers().__getExternalStore('name', '/svg')
@@ -513,7 +518,7 @@ describe('App', () => {
 			app.routes.get = jest.fn().mockReturnValue(true)
 			app.location.setPath = jest.fn()
 
-			const path = app.getComponentHelpers().navigate('/svg')
+			app.getComponentHelpers().navigate('/svg')
 
 			expect(app.routes.get).toHaveBeenCalledWith('/svg')
 			expect(app.location.setPath).toHaveBeenCalledWith('/svg')
@@ -523,7 +528,7 @@ describe('App', () => {
 			app.routes.get = jest.fn().mockReturnValue(false)
 			app.location.setPath = jest.fn()
 
-			const path = app.getComponentHelpers().navigate('/svgg')
+			app.getComponentHelpers().navigate('/svgg')
 
 			expect(app.routes.get).toHaveBeenCalledWith('/svgg')
 			expect(app.location.setPath).not.toHaveBeenCalled()

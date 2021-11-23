@@ -44,7 +44,7 @@ function documentFragment() {
 	)
 }
 
-class CustomComponent1 {
+class CustomComponent1 extends Component {
 	render() {
 		return (
 			<>
@@ -62,7 +62,7 @@ class CustomComponent1 {
 	}
 }
 
-class CustomComponent2 {
+class CustomComponent2 extends Component {
 	render() {
 		return (
 			<>
