@@ -51,12 +51,14 @@ describe('link', () => {
 		})
 
 		const element = document.createElement('a')
-		element.classList.add('btn', 'btn-info')
 		element.setAttribute('href', '/home')
+		element.classList.add('btn', 'btn-info')
 		element.setAttribute('data-test', '')
 		element.innerHTML = '<span>Home</span>'
 
 		expect(result).toStrictEqual(element)
+		expect(result.isEqualNode(element)).toBe(true)
+		expect(result.outerHTML).toEqual(element.outerHTML)
 		expect(result.__customLink).toBe(true)
 	})
 })
