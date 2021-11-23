@@ -51,21 +51,18 @@ describe('extend', () => {
 				unknown: true
 			}
 		}
+		const finalObj = {
+			name: 'John',
+			skills: {
+				private: true,
+				array: [1, 2, 3],
+				fn: () => true,
+				unknown: true
+			},
+			lastname: 'Doe'
+		}
 		const result = extend(true, obj1, obj2)
 
-		expect(JSON.stringify(result)).toStrictEqual(
-			JSON.stringify({
-				name: 'John',
-				skills: {
-					private: true,
-					// eslint-disable-next-line sort-keys
-					array: [1, 2, 3],
-					fn: () => true,
-					unknown: true
-				},
-				// eslint-disable-next-line sort-keys
-				lastname: 'Doe'
-			})
-		)
+		expect(JSON.stringify(result)).toStrictEqual(JSON.stringify(finalObj))
 	})
 })
