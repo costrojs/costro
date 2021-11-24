@@ -90,8 +90,6 @@ const routes = new Map([
 	['/svg', routeSvg]
 ])
 
-const backupApp = App
-
 beforeEach(() => {
 	document.body.appendChild(
 		<div id="app">
@@ -115,14 +113,18 @@ afterEach(() => {
 describe('App', () => {
 	describe('Constructor', () => {
 		beforeEach(() => {
-			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
-			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
+			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
+				/* Empty */
+			})
 		})
 
 		it('Should call the constructor function', () => {
 			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
 
-			let app = getInstance()
+			const app = getInstance()
 
 			expect(app.mode).toBe('hash')
 			expect(app.target).toBe(document.querySelector('#app'))
@@ -140,7 +142,7 @@ describe('App', () => {
 			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue([])
 
 			expect(() => {
-				let app = getInstance()
+				getInstance()
 			}).toThrow(new Error('App::constructor | Invalid routes configuration'))
 		})
 
@@ -161,8 +163,12 @@ describe('App', () => {
 	describe('createRoutesData', () => {
 		beforeEach(() => {
 			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
-			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
-			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
+			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
+				/* Empty */
+			})
 
 			app = getInstance()
 		})
@@ -199,8 +205,12 @@ describe('App', () => {
 	describe('isInterfaceTypeFromComponentGranted', () => {
 		beforeEach(() => {
 			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
-			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
-			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
+			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
+				/* Empty */
+			})
 
 			app = getInstance()
 		})
@@ -226,7 +236,9 @@ describe('App', () => {
 			jest.spyOn(App.prototype, 'addEvents').mockImplementationOnce(() => {
 				// Prevent the addEvent function to be called from the constructor
 			})
-			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
+			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
+				/* Empty */
+			})
 
 			app = getInstance()
 		})
@@ -246,8 +258,12 @@ describe('App', () => {
 	describe('onNavigate', () => {
 		beforeEach(() => {
 			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
-			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
-			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
+			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
+				/* Empty */
+			})
 
 			app = getInstance()
 		})
@@ -266,8 +282,12 @@ describe('App', () => {
 	describe('onClickOnApp', () => {
 		beforeEach(() => {
 			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
-			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
-			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
+			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
+				/* Empty */
+			})
 
 			app = getInstance()
 		})
@@ -289,7 +309,9 @@ describe('App', () => {
 	describe('onRouteChange', () => {
 		beforeEach(() => {
 			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
-			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
+			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
+				/* Empty */
+			})
 			jest.spyOn(App.prototype, 'onRouteChange').mockImplementationOnce(() => {
 				// Prevent the addEvent function to be called from the constructor
 			})
@@ -371,8 +393,12 @@ describe('App', () => {
 	describe('destroyComponent', () => {
 		beforeEach(() => {
 			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
-			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
-			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
+			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
+				/* Empty */
+			})
 
 			app = getInstance()
 		})
@@ -399,8 +425,12 @@ describe('App', () => {
 	describe('createComponent', () => {
 		beforeEach(() => {
 			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
-			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
-			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
+			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
+				/* Empty */
+			})
 
 			app = getInstance()
 		})
@@ -471,8 +501,12 @@ describe('App', () => {
 	describe('initComponentInCache', () => {
 		beforeEach(() => {
 			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
-			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
-			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
+			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
+				/* Empty */
+			})
 
 			app = getInstance()
 		})
@@ -515,8 +549,12 @@ describe('App', () => {
 	describe('getComponentView', () => {
 		beforeEach(() => {
 			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
-			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
-			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
+			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
+				/* Empty */
+			})
 
 			app = getInstance()
 		})
@@ -552,8 +590,12 @@ describe('App', () => {
 	describe('getInterfaceTypeFromView', () => {
 		beforeEach(() => {
 			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
-			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
-			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
+			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
+				/* Empty */
+			})
 
 			app = getInstance()
 		})
@@ -588,8 +630,12 @@ describe('App', () => {
 	describe('transformLinksInStringComponent', () => {
 		beforeEach(() => {
 			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
-			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
-			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
+			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
+				/* Empty */
+			})
 
 			app = getInstance()
 		})
@@ -616,8 +662,12 @@ describe('App', () => {
 	describe('getComponentHelpers', () => {
 		beforeEach(() => {
 			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
-			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
-			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
+			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
+				/* Empty */
+			})
 
 			app = getInstance()
 		})
@@ -636,8 +686,12 @@ describe('App', () => {
 	describe('getComponentHelpers __getExternalStore', () => {
 		beforeEach(() => {
 			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
-			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
-			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
+			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
+				/* Empty */
+			})
 
 			app = getInstance()
 		})
@@ -695,8 +749,12 @@ describe('App', () => {
 	describe('getComponentHelpers getPath', () => {
 		beforeEach(() => {
 			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
-			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
-			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
+			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
+				/* Empty */
+			})
 
 			app = getInstance()
 		})
@@ -714,8 +772,12 @@ describe('App', () => {
 	describe('getComponentHelpers navigate', () => {
 		beforeEach(() => {
 			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
-			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
-			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
+			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
+				/* Empty */
+			})
 
 			app = getInstance()
 		})
@@ -744,8 +806,12 @@ describe('App', () => {
 	describe('destroy', () => {
 		beforeEach(() => {
 			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
-			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
-			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
+			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
+				/* Empty */
+			})
 
 			app = getInstance()
 		})
