@@ -16,6 +16,7 @@ jest.mock('@src/location', () => {
 
 let app
 let customRoutes
+let customRoutesFixtures
 
 const getInstance = () =>
 	new App({
@@ -24,6 +25,22 @@ const getInstance = () =>
 		target: document.querySelector('#app')
 	})
 
+const routeString = {
+	component: routesFixtures[4].component,
+	interfaceType: null,
+	isComponentClass: false,
+	isComponentClassReady: false,
+	path: '/string',
+	props: undefined
+}
+const routeSvg = {
+	component: routesFixtures[5].component,
+	interfaceType: null,
+	isComponentClass: false,
+	isComponentClassReady: false,
+	path: '/svg',
+	props: undefined
+}
 const routes = new Map([
 	[
 		'/',
@@ -69,28 +86,8 @@ const routes = new Map([
 			props: undefined
 		}
 	],
-	[
-		'/string',
-		{
-			component: routesFixtures[4].component,
-			interfaceType: null,
-			isComponentClass: false,
-			isComponentClassReady: false,
-			path: '/string',
-			props: undefined
-		}
-	],
-	[
-		'/svg',
-		{
-			component: routesFixtures[5].component,
-			interfaceType: null,
-			isComponentClass: false,
-			isComponentClassReady: false,
-			path: '/svg',
-			props: undefined
-		}
-	]
+	['/string', routeString],
+	['/svg', routeSvg]
 ])
 
 const backupApp = App
@@ -102,7 +99,8 @@ beforeEach(() => {
 		</div>
 	)
 
-	customRoutes = routesFixtures
+	customRoutes = routes
+	customRoutesFixtures = routesFixtures
 
 	// Restet app because each test set it manually
 	app = null
@@ -122,7 +120,7 @@ describe('App', () => {
 		})
 
 		it('Should call the constructor function', () => {
-			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(routes)
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
 
 			let app = getInstance()
 
@@ -147,7 +145,7 @@ describe('App', () => {
 		})
 
 		it('Should call the constructor function with invalid mode', () => {
-			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(routes)
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
 
 			expect(() => {
 				// eslint-disable-next-line no-new
@@ -162,7 +160,7 @@ describe('App', () => {
 
 	describe('createRoutesData', () => {
 		beforeEach(() => {
-			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(routes)
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
 			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
 			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
 
@@ -173,7 +171,7 @@ describe('App', () => {
 			app.isInterfaceTypeFromComponentGranted = jest.fn().mockReturnValue(true)
 			app.createRoutesData.mockRestore()
 
-			const result = app.createRoutesData(customRoutes)
+			const result = app.createRoutesData(customRoutesFixtures)
 
 			expect(result).toStrictEqual(routes)
 			expect(app.isInterfaceTypeFromComponentGranted).toHaveBeenCalledTimes(12)
@@ -189,7 +187,7 @@ describe('App', () => {
 			app.createRoutesData.mockRestore()
 
 			expect(() => {
-				app.createRoutesData(customRoutes)
+				app.createRoutesData(customRoutesFixtures)
 			}).toThrow(
 				new Error(
 					'App::createRoutesData | Invalid type for path components: "/", "/document-fragment", "/custom-component-1". Allowed types are Function, Component, Node.ELEMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE and String.'
@@ -200,7 +198,7 @@ describe('App', () => {
 
 	describe('isInterfaceTypeFromComponentGranted', () => {
 		beforeEach(() => {
-			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(routes)
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
 			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
 			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
 
@@ -208,7 +206,9 @@ describe('App', () => {
 		})
 
 		it('should call the isInterfaceTypeFromComponentGranted function with a valid component', () => {
-			const result = app.isInterfaceTypeFromComponentGranted(customRoutes[0].component)
+			const result = app.isInterfaceTypeFromComponentGranted(
+				customRoutesFixtures[0].component
+			)
 
 			expect(result).toBe(true)
 		})
@@ -222,7 +222,7 @@ describe('App', () => {
 
 	describe('addEvents', () => {
 		beforeEach(() => {
-			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(routes)
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
 			jest.spyOn(App.prototype, 'addEvents').mockImplementationOnce(() => {
 				// Prevent the addEvent function to be called from the constructor
 			})
@@ -245,7 +245,7 @@ describe('App', () => {
 
 	describe('onNavigate', () => {
 		beforeEach(() => {
-			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(routes)
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
 			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
 			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
 
@@ -265,7 +265,7 @@ describe('App', () => {
 
 	describe('onClickOnApp', () => {
 		beforeEach(() => {
-			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(routes)
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
 			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
 			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
 
@@ -286,15 +286,91 @@ describe('App', () => {
 		})
 	})
 
-	// describe('onRouteChange', () => {
-	// 	it('should call the onRouteChange function', () => {
-	// 		app.onRouteChange({ currentPath: '/' })
-	// 	})
-	// })
+	describe('onRouteChange', () => {
+		beforeEach(() => {
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
+			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
+			jest.spyOn(App.prototype, 'onRouteChange').mockImplementationOnce(() => {
+				// Prevent the addEvent function to be called from the constructor
+			})
+
+			app = getInstance()
+		})
+
+		it('should call the onRouteChange function with a valid route and without previous route', () => {
+			app.routes.get = jest.fn().mockReturnValue(routeSvg)
+			app.destroyComponent = jest.fn()
+			app.createComponent = jest.fn()
+
+			app.onRouteChange.mockRestore()
+			app.onRouteChange({
+				currentPath: '/svg'
+			})
+
+			expect(app.routes.get).toHaveBeenCalledWith('/svg')
+			expect(app.currentRoute).toStrictEqual(routeSvg)
+			expect(app.destroyComponent).not.toHaveBeenCalled()
+			expect(app.createComponent).toHaveBeenCalled()
+		})
+
+		it('should call the onRouteChange function with a valid route and a previous route', () => {
+			app.routes.get = jest
+				.fn()
+				.mockReturnValueOnce(routeSvg)
+				.mockReturnValueOnce(routeString)
+			app.destroyComponent = jest.fn()
+			app.createComponent = jest.fn()
+
+			app.onRouteChange.mockRestore()
+			app.onRouteChange({
+				currentPath: '/svg',
+				previousPath: '/string'
+			})
+
+			expect(app.routes.get).toHaveBeenCalledWith('/svg')
+			expect(app.currentRoute).toStrictEqual(routeSvg)
+			expect(app.routes.get).toHaveBeenCalledWith('/string')
+			expect(app.previousRoute).toStrictEqual(routeString)
+			expect(app.destroyComponent).toHaveBeenCalled()
+			expect(app.createComponent).toHaveBeenCalled()
+		})
+
+		it('should call the onRouteChange function with a route already rendered', () => {
+			app.routes.get = jest.fn().mockReturnValue(routeSvg)
+			app.destroyComponent = jest.fn()
+			app.createComponent = jest.fn()
+
+			app.onRouteChange.mockRestore()
+			app.currentRoute = routeSvg
+			app.onRouteChange({
+				currentPath: '/svg',
+				previousPath: '/string'
+			})
+
+			expect(app.routes.get).not.toHaveBeenCalled()
+			expect(app.routes.get).not.toHaveBeenCalled()
+			expect(app.destroyComponent).not.toHaveBeenCalled()
+			expect(app.createComponent).not.toHaveBeenCalled()
+		})
+
+		it('should call the onRouteChange function with an invalid route', () => {
+			app.routes.get = jest.fn().mockReturnValue(null)
+			app.destroyComponent = jest.fn()
+			app.createComponent = jest.fn()
+
+			app.onRouteChange.mockRestore()
+
+			expect(() => {
+				app.onRouteChange({
+					currentPath: '/svg2'
+				})
+			}).toThrow(new Error('App::onRouteChange | Unknown route "/svg2"'))
+		})
+	})
 
 	describe('destroyComponent', () => {
 		beforeEach(() => {
-			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(routes)
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
 			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
 			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
 
@@ -322,7 +398,7 @@ describe('App', () => {
 
 	describe('createComponent', () => {
 		beforeEach(() => {
-			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(routes)
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
 			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
 			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
 
@@ -394,7 +470,7 @@ describe('App', () => {
 
 	describe('initComponentInCache', () => {
 		beforeEach(() => {
-			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(routes)
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
 			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
 			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
 
@@ -438,7 +514,7 @@ describe('App', () => {
 
 	describe('getComponentView', () => {
 		beforeEach(() => {
-			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(routes)
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
 			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
 			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
 
@@ -475,7 +551,7 @@ describe('App', () => {
 
 	describe('getInterfaceTypeFromView', () => {
 		beforeEach(() => {
-			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(routes)
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
 			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
 			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
 
@@ -511,7 +587,7 @@ describe('App', () => {
 
 	describe('transformLinksInStringComponent', () => {
 		beforeEach(() => {
-			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(routes)
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
 			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
 			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
 
@@ -539,7 +615,7 @@ describe('App', () => {
 
 	describe('getComponentHelpers', () => {
 		beforeEach(() => {
-			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(routes)
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
 			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
 			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
 
@@ -559,7 +635,7 @@ describe('App', () => {
 
 	describe('getComponentHelpers __getExternalStore', () => {
 		beforeEach(() => {
-			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(routes)
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
 			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
 			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
 
@@ -618,7 +694,7 @@ describe('App', () => {
 
 	describe('getComponentHelpers getPath', () => {
 		beforeEach(() => {
-			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(routes)
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
 			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
 			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
 
@@ -637,7 +713,7 @@ describe('App', () => {
 
 	describe('getComponentHelpers navigate', () => {
 		beforeEach(() => {
-			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(routes)
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
 			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
 			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
 
@@ -667,7 +743,7 @@ describe('App', () => {
 
 	describe('destroy', () => {
 		beforeEach(() => {
-			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(routes)
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
 			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {})
 			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {})
 
