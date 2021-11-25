@@ -12,24 +12,38 @@ const banner =
 	' * Released under the MIT License.\n' +
 	' */'
 
+// Use custom Terser configuration to remove the Microsoft copyright from tslib and keep the banner plugin
+// Terser is executed after the banner plugin
+const terserConfig = terser({
+	format: {
+		comments: function (node, comment) {
+			if (comment.type === 'comment2') {
+				return /Yoriiis/i.test(comment.value)
+			}
+		}
+	}
+})
+
 export default [
 	{
-		// external: ['tslib'], // TODO: Used to remove Microsoft copyright from tslib
 		input: 'src/index.ts',
 		output: [
 			{
 				banner,
+				exports: 'named',
 				file: `${dir}/tunnel.js`,
 				format: 'umd',
 				name: 'Tunnel'
 			},
 			{
 				banner,
+				exports: 'named',
 				file: `${dir}/tunnel.esm.js`,
 				format: 'es'
 			},
 			{
 				banner,
+				exports: 'named',
 				file: `${dir}/tunnel.cjs.js`,
 				format: 'cjs'
 			}
@@ -40,10 +54,9 @@ export default [
 				typescript: require('typescript')
 			}),
 			buble()
-		].concat(isProduction ? [terser()] : [])
+		].concat(isProduction ? [terserConfig] : [])
 	},
 	{
-		// external: ['tslib'], // Used to remove Microsoft copyright from tslib
 		input: 'src/jsx.ts',
 		output: [
 			{
@@ -69,6 +82,6 @@ export default [
 				typescript: require('typescript')
 			}),
 			buble()
-		].concat(isProduction ? [terser()] : [])
+		].concat(isProduction ? [terserConfig] : [])
 	}
 ]
