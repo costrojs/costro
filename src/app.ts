@@ -33,7 +33,7 @@ export default class App {
 		this.previousRoute = undefined
 
 		this.routes = this.createRoutesData(routes)
-		console.log(this.routes)
+		// console.log(this.routes)
 
 		if (!this.routes.size) {
 			throw new Error('App::constructor | Invalid routes configuration')

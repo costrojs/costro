@@ -1,10 +1,11 @@
 module.exports = {
 	coverageDirectory: 'coverage',
+	coveragePathIgnorePatterns: ['<rootDir>/dist', '<rootDir>/tests/fixtures'],
 	moduleFileExtensions: ['js', 'ts', 'css'],
 	moduleNameMapper: {
 		'^@src(.*)$': '<rootDir>/src$1'
 	},
-	modulePaths: ['./src'],
+	modulePaths: ['<rootDir>/src'],
 	preset: 'ts-jest/presets/js-with-babel',
 	resetModules: true,
 	rootDir: '../',
@@ -13,6 +14,5 @@ module.exports = {
 	transform: {
 		'^.+\\.(ts|tsx|js)$': 'ts-jest'
 	},
-	transformIgnorePatterns: ['node_modules/(?!jsx-dom)'],
 	verbose: true
 }
