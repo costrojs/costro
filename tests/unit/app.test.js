@@ -33,12 +33,12 @@ const routeString = {
 	path: '/string',
 	props: undefined
 }
-const routeSvg = {
-	component: routesFixtures[5].component,
+const routeDocumentFragment = {
+	component: routesFixtures[1].component,
 	interfaceType: null,
 	isComponentClass: false,
 	isComponentClassReady: false,
-	path: '/svg',
+	path: '/document-fragment',
 	props: undefined
 }
 const routes = new Map([
@@ -53,17 +53,7 @@ const routes = new Map([
 			props: undefined
 		}
 	],
-	[
-		'/document-fragment',
-		{
-			component: routesFixtures[1].component,
-			interfaceType: null,
-			isComponentClass: false,
-			isComponentClassReady: false,
-			path: '/document-fragment',
-			props: undefined
-		}
-	],
+	['/document-fragment', routeDocumentFragment],
 	[
 		'/custom-component-1',
 		{
@@ -87,13 +77,23 @@ const routes = new Map([
 		}
 	],
 	['/string', routeString],
-	['/svg', routeSvg]
+	[
+		'/svg',
+		{
+			component: routesFixtures[5].component,
+			interfaceType: null,
+			isComponentClass: false,
+			isComponentClassReady: false,
+			path: '/svg',
+			props: undefined
+		}
+	]
 ])
 
 beforeEach(() => {
 	document.body.appendChild(
 		<div id="app">
-			<a href="/svg" className="link"></a>
+			<a href="/document-fragment" className="link"></a>
 		</div>
 	)
 
@@ -113,6 +113,7 @@ afterEach(() => {
 describe('App', () => {
 	describe('Constructor', () => {
 		beforeEach(() => {
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
 			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
 				/* Empty */
 			})
@@ -122,8 +123,6 @@ describe('App', () => {
 		})
 
 		it('Should call the constructor function', () => {
-			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
-
 			const app = getInstance()
 
 			expect(app.mode).toBe('hash')
@@ -146,9 +145,16 @@ describe('App', () => {
 			}).toThrow(new Error('App::constructor | Invalid routes configuration'))
 		})
 
-		it('Should call the constructor function with invalid mode', () => {
-			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
+		it('Should call the constructor function with default mode', () => {
+			const app = new App({
+				routes,
+				target: document.querySelector('#app')
+			})
 
+			expect(app.mode).toBe('hash')
+		})
+
+		it('Should call the constructor function with invalid mode', () => {
 			expect(() => {
 				// eslint-disable-next-line no-new
 				new App({
@@ -302,7 +308,7 @@ describe('App', () => {
 			app.onClickOnApp(event)
 
 			expect(event.preventDefault).toHaveBeenCalled()
-			expect(app.location.setPath).toHaveBeenCalledWith('/svg')
+			expect(app.location.setPath).toHaveBeenCalledWith('/document-fragment')
 		})
 	})
 
@@ -320,37 +326,41 @@ describe('App', () => {
 		})
 
 		it('should call the onRouteChange function with a valid route and without previous route', () => {
-			app.routes.get = jest.fn().mockReturnValue(routeSvg)
+			console.info = jest.fn()
+			app.routes.get = jest.fn().mockReturnValue(routeDocumentFragment)
 			app.destroyComponent = jest.fn()
 			app.createComponent = jest.fn()
 
 			app.onRouteChange.mockRestore()
 			app.onRouteChange({
-				currentPath: '/svg'
+				currentPath: '/document-fragment'
 			})
 
-			expect(app.routes.get).toHaveBeenCalledWith('/svg')
-			expect(app.currentRoute).toStrictEqual(routeSvg)
+			expect(app.routes.get).toHaveBeenCalledWith('/document-fragment')
+			expect(console.info).not.toHaveBeenCalled()
+			expect(app.currentRoute).toStrictEqual(routeDocumentFragment)
 			expect(app.destroyComponent).not.toHaveBeenCalled()
 			expect(app.createComponent).toHaveBeenCalled()
 		})
 
 		it('should call the onRouteChange function with a valid route and a previous route', () => {
+			console.info = jest.fn()
 			app.routes.get = jest
 				.fn()
-				.mockReturnValueOnce(routeSvg)
+				.mockReturnValueOnce(routeDocumentFragment)
 				.mockReturnValueOnce(routeString)
 			app.destroyComponent = jest.fn()
 			app.createComponent = jest.fn()
 
 			app.onRouteChange.mockRestore()
 			app.onRouteChange({
-				currentPath: '/svg',
+				currentPath: '/document-fragment',
 				previousPath: '/string'
 			})
 
-			expect(app.routes.get).toHaveBeenCalledWith('/svg')
-			expect(app.currentRoute).toStrictEqual(routeSvg)
+			expect(app.routes.get).toHaveBeenCalledWith('/document-fragment')
+			expect(console.info).not.toHaveBeenCalled()
+			expect(app.currentRoute).toStrictEqual(routeDocumentFragment)
 			expect(app.routes.get).toHaveBeenCalledWith('/string')
 			expect(app.previousRoute).toStrictEqual(routeString)
 			expect(app.destroyComponent).toHaveBeenCalled()
@@ -358,35 +368,43 @@ describe('App', () => {
 		})
 
 		it('should call the onRouteChange function with a route already rendered', () => {
-			app.routes.get = jest.fn().mockReturnValue(routeSvg)
+			console.info = jest.fn()
+			app.routes.get = jest.fn().mockReturnValue(routeDocumentFragment)
 			app.destroyComponent = jest.fn()
 			app.createComponent = jest.fn()
 
 			app.onRouteChange.mockRestore()
-			app.currentRoute = routeSvg
+			app.currentRoute = routeDocumentFragment
 			app.onRouteChange({
-				currentPath: '/svg',
+				currentPath: '/document-fragment',
 				previousPath: '/string'
 			})
 
-			expect(app.routes.get).not.toHaveBeenCalled()
-			expect(app.routes.get).not.toHaveBeenCalled()
+			expect(app.routes.get).toHaveBeenCalledWith('/document-fragment')
+			expect(console.info).toHaveBeenCalledWith(
+				'App::onRouteChange | Route "/document-fragment" already rendered'
+			)
 			expect(app.destroyComponent).not.toHaveBeenCalled()
 			expect(app.createComponent).not.toHaveBeenCalled()
 		})
 
 		it('should call the onRouteChange function with an invalid route', () => {
+			console.info = jest.fn()
 			app.routes.get = jest.fn().mockReturnValue(null)
 			app.destroyComponent = jest.fn()
 			app.createComponent = jest.fn()
 
 			app.onRouteChange.mockRestore()
+			app.onRouteChange({
+				currentPath: '/document-fragment-2'
+			})
 
-			expect(() => {
-				app.onRouteChange({
-					currentPath: '/svg2'
-				})
-			}).toThrow(new Error('App::onRouteChange | Unknown route "/svg2"'))
+			expect(app.routes.get).toHaveBeenCalledWith('/document-fragment-2')
+			expect(console.info).toHaveBeenCalledWith(
+				'App::onRouteChange | Unknown route "/document-fragment-2"'
+			)
+			expect(app.destroyComponent).not.toHaveBeenCalled()
+			expect(app.createComponent).not.toHaveBeenCalled()
 		})
 	})
 
@@ -515,7 +533,7 @@ describe('App', () => {
 			class CustomComponent {}
 			app.currentRoute = {
 				component: CustomComponent,
-				path: '/svg'
+				path: '/document-fragment'
 			}
 
 			const helpers = {
@@ -542,7 +560,7 @@ describe('App', () => {
 			expect(app.currentRoute.component.getPath).toBe(helpers.getPath)
 			expect(app.currentRoute.component.navigate).toBeInstanceOf(Function)
 			expect(app.currentRoute.component.navigate).toBe(helpers.navigate)
-			expect(app.routes.set).toHaveBeenCalledWith('/svg', app.currentRoute)
+			expect(app.routes.set).toHaveBeenCalledWith('/document-fragment', app.currentRoute)
 		})
 	})
 
@@ -642,14 +660,14 @@ describe('App', () => {
 
 		it('should call the transformLinksInStringComponent function', () => {
 			const result = app.transformLinksInStringComponent(
-				'<a href="/svg" class="btn customLink">SVG</a>'
+				'<a href="/document-fragment" class="btn customLink">Document Fragment</a>'
 			)
 
 			const fragment = document.createDocumentFragment()
 			const link = document.createElement('a')
-			link.setAttribute('href', '/svg')
+			link.setAttribute('href', '/document-fragment')
 			link.setAttribute('class', 'btn')
-			link.innerHTML = 'SVG'
+			link.innerHTML = 'Document Fragment'
 			fragment.appendChild(link)
 
 			expect(result).toStrictEqual(fragment)
@@ -705,7 +723,9 @@ describe('App', () => {
 				isComponentClassReady: true
 			})
 
-			const externalStore = app.getComponentHelpers().__getExternalStore('name', '/svg')
+			const externalStore = app
+				.getComponentHelpers()
+				.__getExternalStore('name', '/document-fragment')
 
 			expect(externalStore).toBe('John')
 		})
@@ -713,7 +733,9 @@ describe('App', () => {
 		it('should call the __getExternalStore helper function with invalid route', () => {
 			app.routes.get = jest.fn().mockReturnValue(null)
 
-			const externalStore = app.getComponentHelpers().__getExternalStore('name', '/svg')
+			const externalStore = app
+				.getComponentHelpers()
+				.__getExternalStore('name', '/document-fragment')
 
 			expect(externalStore).toBe(null)
 		})
@@ -726,7 +748,9 @@ describe('App', () => {
 				isComponentClass: false
 			})
 
-			const externalStore = app.getComponentHelpers().__getExternalStore('name', '/svg')
+			const externalStore = app
+				.getComponentHelpers()
+				.__getExternalStore('name', '/document-fragment')
 
 			expect(externalStore).toBe(null)
 		})
@@ -740,7 +764,9 @@ describe('App', () => {
 				isComponentClassReady: false
 			})
 
-			const externalStore = app.getComponentHelpers().__getExternalStore('name', '/svg')
+			const externalStore = app
+				.getComponentHelpers()
+				.__getExternalStore('name', '/document-fragment')
 
 			expect(externalStore).toBe(null)
 		})
@@ -760,12 +786,12 @@ describe('App', () => {
 		})
 
 		it('should call the getPath helper function', () => {
-			app.location.getPath = jest.fn().mockReturnValue('/svg')
+			app.location.getPath = jest.fn().mockReturnValue('/document-fragment')
 
 			const path = app.getComponentHelpers().getPath()
 
 			expect(app.location.getPath).toHaveBeenCalled()
-			expect(path).toBe('/svg')
+			expect(path).toBe('/document-fragment')
 		})
 	})
 
@@ -786,19 +812,19 @@ describe('App', () => {
 			app.routes.get = jest.fn().mockReturnValue(true)
 			app.location.setPath = jest.fn()
 
-			app.getComponentHelpers().navigate('/svg')
+			app.getComponentHelpers().navigate('/document-fragment')
 
-			expect(app.routes.get).toHaveBeenCalledWith('/svg')
-			expect(app.location.setPath).toHaveBeenCalledWith('/svg')
+			expect(app.routes.get).toHaveBeenCalledWith('/document-fragment')
+			expect(app.location.setPath).toHaveBeenCalledWith('/document-fragment')
 		})
 
 		it('should call the navigate helper function with invalid path', () => {
 			app.routes.get = jest.fn().mockReturnValue(false)
 			app.location.setPath = jest.fn()
 
-			app.getComponentHelpers().navigate('/svgg')
+			app.getComponentHelpers().navigate('/document-fragment-2')
 
-			expect(app.routes.get).toHaveBeenCalledWith('/svgg')
+			expect(app.routes.get).toHaveBeenCalledWith('/document-fragment-2')
 			expect(app.location.setPath).not.toHaveBeenCalled()
 		})
 	})

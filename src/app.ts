@@ -146,12 +146,20 @@ export default class App {
 		currentPath: string
 		previousPath?: null | string
 	}) {
-		// Route is already active
-		if (this.currentRoute && this.currentRoute.path === currentPath) {
+		const currentRoute = this.routes.get(currentPath)
+
+		if (!currentRoute) {
+			console.info(`App::onRouteChange | Unknown route "${currentPath}"`)
 			return
 		}
 
-		this.currentRoute = this.routes.get(currentPath)
+		// Route is already active
+		if (this.currentRoute && this.currentRoute.path === currentPath) {
+			console.info(`App::onRouteChange | Route "${currentPath}" already rendered`)
+			return
+		}
+
+		this.currentRoute = currentRoute
 
 		// Check if route exist
 		if (this.currentRoute) {
@@ -161,8 +169,6 @@ export default class App {
 			}
 
 			this.createComponent()
-		} else {
-			throw new Error(`App::onRouteChange | Unknown route "${currentPath}"`)
 		}
 	}
 
