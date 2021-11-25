@@ -1,4 +1,13 @@
-export { default as App } from './app'
-export { default as Component } from './component'
-export { default as Link } from './link'
-export { default as navigate } from './navigate'
+import App from './app'
+import Component from './component'
+import Link from './link'
+import navigate from './navigate'
+
+export { App, Component, Link, navigate }
+
+export default {
+	App,
+	Component,
+	Link,
+	navigate
+}
