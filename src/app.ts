@@ -146,30 +146,26 @@ export default class App {
 		currentPath: string
 		previousPath?: null | string
 	}) {
-		const currentRoute = this.getRouteMatch(currentPath)
+		const route = this.getRouteMatch(currentPath)
 
-		if (!currentRoute) {
+		if (!route && this.currentRoute) {
 			console.info(`App::onRouteChange | Unknown route "${currentPath}"`)
+
+			this.previousRoute = this.currentRoute
+			this.currentRoute = undefined
+
+			this.destroyComponent()
 			return
 		}
 
-		// Route is already active
-		if (this.currentRoute && this.currentRoute.path === currentPath) {
-			console.info(`App::onRouteChange | Route "${currentPath}" already rendered`)
-			return
+		this.currentRoute = route
+
+		if (previousPath) {
+			this.previousRoute = this.getRouteMatch(previousPath)
+			this.previousRoute && this.destroyComponent()
 		}
 
-		this.currentRoute = currentRoute
-
-		// Check if route exist
-		if (this.currentRoute) {
-			if (previousPath) {
-				this.previousRoute = this.getRouteMatch(previousPath)
-				this.previousRoute && this.destroyComponent()
-			}
-
-			this.createComponent()
-		}
+		this.createComponent()
 	}
 
 	/**

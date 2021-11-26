@@ -329,6 +329,7 @@ describe('App', () => {
 
 		it('should call the onRouteChange function with a valid route and without previous route', () => {
 			console.info = jest.fn()
+			app.getRouteMatch = jest.fn().mockReturnValue(routeDocumentFragment)
 			app.destroyComponent = jest.fn()
 			app.createComponent = jest.fn()
 
@@ -337,15 +338,21 @@ describe('App', () => {
 				currentPath: '/document-fragment'
 			})
 
-			expect(app.routes.get).toHaveBeenCalledWith('/document-fragment')
+			expect(app.getRouteMatch).toHaveBeenCalledTimes(1)
+			expect(app.getRouteMatch).toHaveBeenCalledWith('/document-fragment')
 			expect(console.info).not.toHaveBeenCalled()
-			expect(app.currentRoute).toStrictEqual(routeDocumentFragment)
 			expect(app.destroyComponent).not.toHaveBeenCalled()
+			expect(app.currentRoute).toStrictEqual(routeDocumentFragment)
+			expect(app.previousRoute).toBe(undefined)
 			expect(app.createComponent).toHaveBeenCalled()
 		})
 
 		it('should call the onRouteChange function with a valid route and a previous route', () => {
 			console.info = jest.fn()
+			app.getRouteMatch = jest
+				.fn()
+				.mockReturnValueOnce(routeDocumentFragment)
+				.mockReturnValueOnce(routeString)
 			app.destroyComponent = jest.fn()
 			app.createComponent = jest.fn()
 
@@ -355,50 +362,37 @@ describe('App', () => {
 				previousPath: '/string'
 			})
 
-			expect(app.routes.get).toHaveBeenCalledWith('/document-fragment')
+			expect(app.getRouteMatch).toHaveBeenCalledTimes(2)
+			expect(app.getRouteMatch).toHaveBeenNthCalledWith(1, '/document-fragment')
+			expect(app.getRouteMatch).toHaveBeenNthCalledWith(2, '/string')
 			expect(console.info).not.toHaveBeenCalled()
 			expect(app.currentRoute).toStrictEqual(routeDocumentFragment)
-			expect(app.routes.get).toHaveBeenCalledWith('/string')
 			expect(app.previousRoute).toStrictEqual(routeString)
-			expect(app.destroyComponent).toHaveBeenCalled()
+			expect(app.destroyComponent).toHaveBeenCalledTimes(1)
 			expect(app.createComponent).toHaveBeenCalled()
 		})
 
-		it('should call the onRouteChange function with a route already rendered', () => {
-			console.info = jest.fn()
-			app.destroyComponent = jest.fn()
-			app.createComponent = jest.fn()
-
-			app.onRouteChange.mockRestore()
+		it('should call the onRouteChange function with an unknown route', () => {
 			app.currentRoute = routeDocumentFragment
-			app.onRouteChange({
-				currentPath: '/document-fragment',
-				previousPath: '/string'
-			})
 
-			expect(app.routes.get).toHaveBeenCalledWith('/document-fragment')
-			expect(console.info).toHaveBeenCalledWith(
-				'App::onRouteChange | Route "/document-fragment" already rendered'
-			)
-			expect(app.destroyComponent).not.toHaveBeenCalled()
-			expect(app.createComponent).not.toHaveBeenCalled()
-		})
-
-		it('should call the onRouteChange function with an invalid route', () => {
+			app.getRouteMatch = jest.fn().mockReturnValueOnce(undefined)
 			console.info = jest.fn()
 			app.destroyComponent = jest.fn()
 			app.createComponent = jest.fn()
 
 			app.onRouteChange.mockRestore()
 			app.onRouteChange({
-				currentPath: '/document-fragment-2'
+				currentPath: '/unknown-route'
 			})
 
-			expect(app.routes.get).toHaveBeenCalledWith('/document-fragment-2')
+			expect(app.getRouteMatch).toHaveBeenCalledTimes(1)
+			expect(app.getRouteMatch).toHaveBeenNthCalledWith(1, '/unknown-route')
 			expect(console.info).toHaveBeenCalledWith(
-				'App::onRouteChange | Unknown route "/document-fragment-2"'
+				'App::onRouteChange | Unknown route "/unknown-route"'
 			)
-			expect(app.destroyComponent).not.toHaveBeenCalled()
+			expect(app.currentRoute).toBe(undefined)
+			expect(app.previousRoute).toStrictEqual(routeDocumentFragment)
+			expect(app.destroyComponent).toHaveBeenCalled()
 			expect(app.createComponent).not.toHaveBeenCalled()
 		})
 	})
