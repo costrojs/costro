@@ -53,7 +53,7 @@ export default [
 				include: 'src/**',
 				typescript: require('typescript')
 			}),
-			buble()
+			buble({ transforms: { forOf: false } })
 		].concat(isProduction ? [terserConfig] : [])
 	},
 	{

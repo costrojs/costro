@@ -55,13 +55,13 @@ const routes = new Map([
 	],
 	['/document-fragment', routeDocumentFragment],
 	[
-		'/custom-component-1',
+		'/custom-component/:id/:name',
 		{
 			component: routesFixtures[2].component,
 			interfaceType: null,
 			isComponentClass: false,
 			isComponentClassReady: false,
-			path: '/custom-component-1',
+			path: '/custom-component/:id/:name',
 			props: { title: 'home' }
 		}
 	],
@@ -202,7 +202,7 @@ describe('App', () => {
 				app.createRoutesData(customRoutesFixtures)
 			}).toThrow(
 				new Error(
-					'App::createRoutesData | Invalid type for path components: "/", "/document-fragment", "/custom-component-1". Allowed types are Function, Component, Node.ELEMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE and String.'
+					'App::createRoutesData | Invalid type for path components: "/", "/document-fragment", "/custom-component/:id/:name". Allowed types are Function, Component, Node.ELEMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE and String.'
 				)
 			)
 		})
@@ -323,11 +323,12 @@ describe('App', () => {
 			})
 
 			app = getInstance()
+
+			jest.spyOn(app.routes, 'get')
 		})
 
 		it('should call the onRouteChange function with a valid route and without previous route', () => {
 			console.info = jest.fn()
-			app.routes.get = jest.fn().mockReturnValue(routeDocumentFragment)
 			app.destroyComponent = jest.fn()
 			app.createComponent = jest.fn()
 
@@ -345,10 +346,6 @@ describe('App', () => {
 
 		it('should call the onRouteChange function with a valid route and a previous route', () => {
 			console.info = jest.fn()
-			app.routes.get = jest
-				.fn()
-				.mockReturnValueOnce(routeDocumentFragment)
-				.mockReturnValueOnce(routeString)
 			app.destroyComponent = jest.fn()
 			app.createComponent = jest.fn()
 
@@ -369,7 +366,6 @@ describe('App', () => {
 
 		it('should call the onRouteChange function with a route already rendered', () => {
 			console.info = jest.fn()
-			app.routes.get = jest.fn().mockReturnValue(routeDocumentFragment)
 			app.destroyComponent = jest.fn()
 			app.createComponent = jest.fn()
 
@@ -390,7 +386,6 @@ describe('App', () => {
 
 		it('should call the onRouteChange function with an invalid route', () => {
 			console.info = jest.fn()
-			app.routes.get = jest.fn().mockReturnValue(null)
 			app.destroyComponent = jest.fn()
 			app.createComponent = jest.fn()
 
@@ -405,6 +400,47 @@ describe('App', () => {
 			)
 			expect(app.destroyComponent).not.toHaveBeenCalled()
 			expect(app.createComponent).not.toHaveBeenCalled()
+		})
+	})
+
+	describe('getRouteMatch', () => {
+		beforeEach(() => {
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
+			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
+				/* Empty */
+			})
+
+			app = getInstance()
+		})
+
+		it('should call the getRouteMatch function with a valid route', () => {
+			const result = app.getRouteMatch('/document-fragment')
+
+			expect(result).toStrictEqual(routeDocumentFragment)
+		})
+
+		it('should call the getRouteMatch function with a valid route with segments', () => {
+			jest.spyOn(app.routes, 'get')
+
+			const result = app.getRouteMatch('/custom-component/42/john-doe')
+
+			expect(app.routes.get).toHaveBeenCalledTimes(2)
+			expect(app.routes.get).toHaveBeenCalledWith('/custom-component/42/john-doe')
+			expect(app.routes.get).toHaveBeenCalledWith('/custom-component/:id/:name')
+			expect(result).toStrictEqual(app.routes.get('/custom-component/:id/:name'))
+		})
+
+		it('should call the getRouteMatch function with a valid route with segments', () => {
+			jest.spyOn(app.routes, 'get')
+
+			const result = app.getRouteMatch('/unknown-route')
+
+			expect(app.routes.get).toHaveBeenCalledTimes(1)
+			expect(app.routes.get).toHaveBeenCalledWith('/unknown-route')
+			expect(result).toStrictEqual(undefined)
 		})
 	})
 

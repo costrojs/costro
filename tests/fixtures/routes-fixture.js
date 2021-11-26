@@ -11,7 +11,7 @@ function Navigation() {
 				<button onClick={() => navigate('/document-fragment')}>documentFragment</button>
 			</li>
 			<li>
-				<Link to="/custom-component-1">CustomComponent 1</Link>
+				<Link to="/custom-component/42/john-doe">CustomComponent 1</Link>
 			</li>
 			<li>
 				<Link to="/custom-component-2">CustomComponent 2</Link>
@@ -125,7 +125,7 @@ const routes = [
 	},
 	{
 		component: CustomComponent1,
-		path: '/custom-component-1',
+		path: '/custom-component/:id/:name',
 		props: {
 			title: 'home'
 		}

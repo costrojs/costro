@@ -146,7 +146,7 @@ export default class App {
 		currentPath: string
 		previousPath?: null | string
 	}) {
-		const currentRoute = this.routes.get(currentPath)
+		const currentRoute = this.getRouteMatch(currentPath)
 
 		if (!currentRoute) {
 			console.info(`App::onRouteChange | Unknown route "${currentPath}"`)
@@ -164,11 +164,41 @@ export default class App {
 		// Check if route exist
 		if (this.currentRoute) {
 			if (previousPath) {
-				this.previousRoute = this.routes.get(previousPath)
+				this.previousRoute = this.getRouteMatch(previousPath)
 				this.previousRoute && this.destroyComponent()
 			}
 
 			this.createComponent()
+		}
+	}
+
+	/**
+	 * Search the route from the path
+	 * Path can contain transformed segments
+	 * @param {String} path Path
+	 * @returns {(Route|undefined)} The route that matches the path or undefined
+	 */
+	getRouteMatch(path: string): RouteData | undefined {
+		const route = this.routes.get(path)
+
+		if (route) {
+			return route
+		} else {
+			const segmentPattern = /:[a-zA-Z0-9]+/
+
+			// In case of unknown route, search for dynamic segments match
+			for (const route of this.routes) {
+				// Route contains dynamic segments
+				if (new RegExp(segmentPattern, 'g').test(route[0])) {
+					const pathRegExp = route[0].replace(
+						new RegExp(segmentPattern, 'g'),
+						'[a-zA-Z0-9]+'
+					)
+					if (new RegExp(pathRegExp).test(path)) {
+						return this.routes.get(route[0])
+					}
+				}
+			}
 		}
 	}
 
@@ -298,7 +328,7 @@ export default class App {
 	getComponentHelpers(): HelperFunction {
 		return {
 			__getExternalStore: (key: string, path: string): object | undefined | null => {
-				const route = this.routes.get(path)
+				const route = this.getRouteMatch(path)
 				if (route && route.isComponentClass && route.isComponentClassReady) {
 					return route.component.getStore(key)
 				}
@@ -309,7 +339,7 @@ export default class App {
 				return this.location.getPath()
 			},
 			navigate: (path: string): void => {
-				const route = this.routes.get(path)
+				const route = this.getRouteMatch(path)
 				route && this.location.setPath(path)
 			}
 		}
