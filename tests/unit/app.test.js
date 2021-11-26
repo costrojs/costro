@@ -486,8 +486,7 @@ describe('App', () => {
 		it('should call the createComponent function with a component and HTMLElement', () => {
 			app.currentRoute = {
 				component: {
-					afterRender: jest.fn(),
-					beforeRender: jest.fn()
+					afterRender: jest.fn()
 				},
 				interfaceType: null,
 				isComponentClass: true,
@@ -506,7 +505,6 @@ describe('App', () => {
 			expect(app.getComponentView).toHaveBeenCalled()
 			expect(app.getInterfaceTypeFromView).toHaveBeenCalled()
 			expect(app.currentRoute.interfaceType).toBe('ELEMENT_NODE')
-			expect(app.currentRoute.component.beforeRender).toHaveBeenCalled()
 			expect(app.transformLinksInStringComponent).not.toHaveBeenCalled()
 			expect(app.target.appendChild).toHaveBeenCalledWith(<div>Component</div>)
 			expect(app.currentRoute.component.afterRender).toHaveBeenCalled()
@@ -515,8 +513,7 @@ describe('App', () => {
 		it('should call the createComponent function with a component and String', () => {
 			app.currentRoute = {
 				component: {
-					afterRender: jest.fn(),
-					beforeRender: jest.fn()
+					afterRender: jest.fn()
 				},
 				interfaceType: null,
 				isComponentClass: true,
@@ -537,7 +534,6 @@ describe('App', () => {
 			expect(app.getComponentView).toHaveBeenCalled()
 			expect(app.getInterfaceTypeFromView).toHaveBeenCalled()
 			expect(app.currentRoute.interfaceType).toBe('STRING')
-			expect(app.currentRoute.component.beforeRender).toHaveBeenCalled()
 			expect(app.transformLinksInStringComponent).toHaveBeenCalledWith(
 				'<div><a href="" class="customLink">Link</a></div>'
 			)
