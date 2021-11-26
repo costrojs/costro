@@ -225,7 +225,6 @@ export default class App {
 					this.routes.set(this.currentRoute.path, this.currentRoute)
 				}
 
-				this.currentRoute.isComponentClass && this.currentRoute.component.beforeRender()
 				if (this.currentRoute.interfaceType === 'STRING') {
 					componentView = this.transformLinksInStringComponent(componentView)
 				}
