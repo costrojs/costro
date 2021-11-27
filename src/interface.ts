@@ -17,12 +17,12 @@ export interface Component {
 	beforeDestroy: Fn
 	beforeRender: Fn
 	getStore: (key: string) => object | undefined | Map<string, object>
-	render: Fn
-	route: RouteComponent
-	setStore: (data: any) => void
 	prototype: {
 		__isComponent: boolean
 	}
+	render: Fn
+	route: RouteComponent
+	setStore: (data: any) => void
 }
 
 export interface Route {
