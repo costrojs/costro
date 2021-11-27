@@ -101,3 +101,17 @@ npm i router
 ```js
 import { Link, Component, App, navigate } from 'router';
 ```
+
+If you add a target="\_blank" to your a element, you must omit the `onClick={() => navigate('/')}` handler.
+
+```ini
+# Apache
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+```
