@@ -28,7 +28,7 @@ export default class Location {
 	}
 
 	/**
-	 * Inititlize the location
+	 * Initialize the location
 	 */
 	init() {
 		this.addEvents()

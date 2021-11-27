@@ -1,15 +1,20 @@
 import { extend } from './utils'
-import { privateGetExternalStore } from './interface'
+import { privateGetExternalStore, RouteComponent } from './interface'
 
 class Component {
 	store: Map<string, object>
 	props: any
+	route: RouteComponent
 	__getExternalStore!: privateGetExternalStore
 
 	// @ts-ignore
 	constructor(props) {
 		// @ts-ignore
 		this.props = props
+		this.route = {
+			params: {},
+			path: ''
+		}
 		this.store = new Map()
 	}
 
@@ -88,6 +93,6 @@ class Component {
 }
 
 // @ts-ignore
-Component.prototype.__isComponent = {}
+Component.prototype.__isComponent = true
 
 export default Component

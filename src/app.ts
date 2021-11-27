@@ -1,7 +1,7 @@
 import config from './config'
 import Location from './location'
-import { RouteData, Route, HelperFunction, Fn } from './interface'
-import Component from './component'
+import { RouteData, Route, HelperFunction, Fn, Component } from './interface'
+import { getDynamicSegmentsFromPath, createRegExpFromPath } from './utils'
 
 export default class App {
 	target: HTMLElement
@@ -75,17 +75,35 @@ export default class App {
 				.filter((route): boolean =>
 					this.isInterfaceTypeFromComponentGranted(route.component)
 				)
-				.map((route: Route): any => [
-					route.path,
-					{
-						component: route.component,
-						interfaceType: null,
-						isComponentClass: route.component.prototype instanceof Component,
-						isComponentClassReady: false,
-						path: route.path,
-						props: route.props
+				.map((route: Route): any => {
+					if (typeof route.path === 'undefined') {
+						route.path = '*'
 					}
-				])
+
+					// Detect route path with trailing slash
+					if (route.path !== '/' && route.path.endsWith('/')) {
+						throw new Error(
+							`App::createRoutesData | Route path "${route.path}" must not have a trailing slash.`
+						)
+					}
+
+					const dynamicSegments = getDynamicSegmentsFromPath(route.path)
+					const pathRegExp = createRegExpFromPath(route.path)
+
+					return [
+						route.path,
+						{
+							component: route.component,
+							dynamicSegments,
+							interfaceType: null,
+							isComponentClass: !!route.component.__isComponent,
+							isComponentClassReady: false,
+							path: route.path,
+							pathRegExp,
+							props: route.props
+						}
+					]
+				})
 		)
 	}
 
@@ -95,7 +113,7 @@ export default class App {
 	 * @returns {Boolean} Interface type is granted
 	 */
 	isInterfaceTypeFromComponentGranted(component: Fn | Component): boolean {
-		return !!(component instanceof Function || component instanceof Component)
+		return !!(component instanceof Function || component.__isComponent)
 	}
 
 	/**
@@ -180,22 +198,17 @@ export default class App {
 		if (route) {
 			return route
 		} else {
-			const segmentPattern = /:[a-zA-Z0-9]+/
-
-			// In case of unknown route, search for dynamic segments match
+			// In case of unknown route, search for dynamic segments matches
 			for (const route of this.routes) {
-				// Route contains dynamic segments
-				if (new RegExp(segmentPattern, 'g').test(route[0])) {
-					const pathRegExp = route[0].replace(
-						new RegExp(segmentPattern, 'g'),
-						'[a-zA-Z0-9]+'
-					)
-					if (new RegExp(pathRegExp).test(path)) {
-						return this.routes.get(route[0])
-					}
+				if (route[1].dynamicSegments.length && new RegExp(route[1].pathRegExp).test(path)) {
+					return this.routes.get(route[0])
 				}
 			}
 		}
+
+		// If any route is found, check if the noud found route exist
+		const notFoundRoute = this.routes.get('*')
+		return notFoundRoute && notFoundRoute
 	}
 
 	/**
@@ -266,11 +279,35 @@ export default class App {
 	getComponentView() {
 		if (this.currentRoute) {
 			if (this.currentRoute.isComponentClass) {
-				// Call the before render first
+				this.updateComponentRouteData()
 				this.currentRoute.component.beforeRender()
 				return this.currentRoute.component.render()
 			} else {
 				return this.currentRoute.component()
+			}
+		}
+	}
+
+	/**
+	 * Update the route data on the component (path, params)
+	 */
+	updateComponentRouteData() {
+		if (this.currentRoute) {
+			this.currentRoute.component.route.path = this.location.currentPath
+			if (this.currentRoute.dynamicSegments.length) {
+				const dynamicSegments = this.location.currentPath.match(
+					this.currentRoute.pathRegExp
+				)
+				if (dynamicSegments && dynamicSegments.length > 1) {
+					// Remove matching text as the first item
+					dynamicSegments.shift()
+
+					for (let i = 0, length = dynamicSegments.length; i < length; i++) {
+						// @ts-ignore
+						const segmentKey = this.currentRoute.dynamicSegments[i]
+						this.currentRoute.component.route.params[segmentKey] = dynamicSegments[i]
+					}
+				}
 			}
 		}
 	}
@@ -329,13 +366,6 @@ export default class App {
 				}
 
 				return null
-			},
-			getPath: (): null | string => {
-				return this.location.getPath()
-			},
-			navigate: (path: string): void => {
-				const route = this.getRouteMatch(path)
-				route && this.location.setPath(path)
 			}
 		}
 	}

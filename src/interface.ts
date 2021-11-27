@@ -4,13 +4,22 @@ export interface Constructable<T> {
 	new (...args: any): T
 }
 
+export interface RouteComponent {
+	params: {
+		[key: string]: string
+	}
+	path: string
+}
+
 export interface Component {
+	__isComponent: boolean
 	afterDestroy: Fn
 	afterRender: Fn
 	beforeDestroy: Fn
 	beforeRender: Fn
 	getStore: (key: string) => object | undefined | Map<string, object>
 	render: Fn
+	route: RouteComponent
 	setStore: (data: any) => void
 }
 
@@ -22,10 +31,12 @@ export interface Route {
 
 export interface RouteData {
 	component: any
+	dynamicSegments: string[]
 	interfaceType: string | null
 	isComponentClass: boolean
 	isComponentClassReady: boolean
 	path: string
+	pathRegExp: string
 	props: any
 }
 
@@ -45,8 +56,6 @@ export type privateGetExternalStore = (key: string, path: string) => object | un
 
 export interface HelperFunction {
 	__getExternalStore: privateGetExternalStore
-	getPath: () => null | string
-	navigate: (path: string) => void
 }
 
 export interface ElementAttributes {

@@ -43,4 +43,43 @@ function extend(deep = false, ...objects: any[]): any {
 	return extended
 }
 
-export { extend, hasOwn }
+// eslint-disable-next-line no-useless-escape
+const PATTERN_DYNAMIC_SEGMENT = `\/:([^\/]*)`
+
+/**
+ * Get dynamic segments from path
+ * @param {String} path Path
+ * @returns {Array<String>} List of dynamic segments as key (without the "/:"")
+ */
+function getDynamicSegmentsFromPath(path: string): string[] {
+	const segments = path.match(new RegExp(PATTERN_DYNAMIC_SEGMENT, 'g')) || []
+	const segmentLength = segments.length
+	const dynamicSegments = []
+
+	if (segmentLength) {
+		for (let i = 0; i < segmentLength; i++) {
+			dynamicSegments.push(segments[i].replace('/:', ''))
+		}
+	}
+
+	return dynamicSegments
+}
+
+/**
+ * Create RegExp from path
+ * Used to match path with dynamic segments ("/:id/:name" = "/42/john-doe")
+ * @param {String} path Path
+ * @returns {String} Path transformed in RegExp
+ */
+function createRegExpFromPath(path: string): string {
+	return (
+		'^' +
+		path.replace(
+			new RegExp(PATTERN_DYNAMIC_SEGMENT, 'g'),
+			PATTERN_DYNAMIC_SEGMENT.replace(':', '')
+		) +
+		'$'
+	)
+}
+
+export { extend, hasOwn, getDynamicSegmentsFromPath, createRegExpFromPath }

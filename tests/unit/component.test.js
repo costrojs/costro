@@ -21,7 +21,7 @@ describe('Component ', () => {
 		it('Should call the constructor', () => {
 			expect(component.props).toStrictEqual({ page: 'home' })
 			expect(component.store).toStrictEqual(new Map())
-			expect(component.__isComponent).toStrictEqual({})
+			expect(component.__isComponent).toStrictEqual(true)
 			expect(component.beforeRender).toBeInstanceOf(Function)
 			expect(component.afterRender).toBeInstanceOf(Function)
 			expect(component.beforeDestroy).toBeInstanceOf(Function)
