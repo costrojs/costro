@@ -12,7 +12,6 @@ export interface RouteComponent {
 }
 
 export interface Component {
-	__isComponent: boolean
 	afterDestroy: Fn
 	afterRender: Fn
 	beforeDestroy: Fn
@@ -21,6 +20,9 @@ export interface Component {
 	render: Fn
 	route: RouteComponent
 	setStore: (data: any) => void
+	prototype: {
+		__isComponent: boolean
+	}
 }
 
 export interface Route {

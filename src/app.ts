@@ -89,6 +89,7 @@ export default class App {
 
 					const dynamicSegments = getDynamicSegmentsFromPath(route.path)
 					const pathRegExp = createRegExpFromPath(route.path)
+					const isComponentClass = this.isComponentClass(route.component)
 
 					return [
 						route.path,
@@ -96,7 +97,7 @@ export default class App {
 							component: route.component,
 							dynamicSegments,
 							interfaceType: null,
-							isComponentClass: !!route.component.__isComponent,
+							isComponentClass,
 							isComponentClassReady: false,
 							path: route.path,
 							pathRegExp,
@@ -113,7 +114,16 @@ export default class App {
 	 * @returns {Boolean} Interface type is granted
 	 */
 	isInterfaceTypeFromComponentGranted(component: Fn | Component): boolean {
-		return !!(component instanceof Function || component.__isComponent)
+		return !!(component instanceof Function || this.isComponentClass(component))
+	}
+
+	/**
+	 * Check if the component is a class component (extends from Component)
+	 * @param {Function} component Component
+	 * @returns {Boolean} The component extends from the Component class
+	 */
+	isComponentClass(component: Fn | Component): boolean {
+		return component.prototype ? !!component.prototype.__isComponent : false
 	}
 
 	/**

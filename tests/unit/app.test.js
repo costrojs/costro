@@ -281,6 +281,32 @@ describe('App', () => {
 		})
 	})
 
+	describe('isComponentClass', () => {
+		beforeEach(() => {
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
+			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
+				/* Empty */
+			})
+
+			app = getInstance()
+		})
+
+		it('should call the isComponentClass function with a component which extends from Component class', () => {
+			const result = app.isComponentClass(customRoutesFixtures[2].component)
+
+			expect(result).toBe(true)
+		})
+
+		it('should call the isComponentClass function with a component which not extends from Component class', () => {
+			const result = app.isComponentClass(customRoutesFixtures[0].component)
+
+			expect(result).toBe(false)
+		})
+	})
+
 	describe('addEvents', () => {
 		beforeEach(() => {
 			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
