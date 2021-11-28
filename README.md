@@ -1,117 +1,43 @@
 # Router
 
-```js
-import { Tunnel } from 'tunnel';
-import { createElement, Fragment } from 'jsx-dom';
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/yoriiis/router/Build/main?style=for-the-badge) [![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/router?color=%23ff5627&style=for-the-badge)](https://www.jsdelivr.com/package/npm/router)
 
-function Navigation() {
-  return (
-    <ul>
-      <li>
-        <Link to="/">Home</Link>
-        {/* <button onClick={() => navigate('/')}>Home</button> */}
-      </li>
-      <li>
-        <Link to="/about">About</Link>
-      </li>
-      <li>
-        <Link to="/contact">Contact</Link>
-      </li>
-    </ul>
-  );
-}
+Components, Router and Store in 3Kb
 
-function Home() {
-  return (
-    <div>
-      <Navigation />
-      <h2>Home</h2>
-    </div>
-  );
-}
+## What is `Router`?
 
-function About() {
-  return (
-    <>
-      <Navigation />
-      <h2>About</h2>
-    </>
-  );
-}
+If you have questions about anything related to Router, you're always welcome to ask on [GitHub Discussions](https://github.com/yoriiis/router/discussions).
 
-class Contact extends Component {
-  render() {
-    return (
-      <>
-        <Navigation />
-        <h2>Contact</h2>
-      </>
-    );
-  }
-}
+## How it works
 
-const routes = [
-  {
-    path: '/',
-    component: Home
-  },
-  {
-    path: '/about',
-    component: About
-  },
-  {
-    path: '/contact',
-    component: Contact
-  }
-];
+See the [Wiki](https://github.com/yoriiis/router/wiki) for full documentation and examples.
 
-const app = new Tunnel({
-  target: document.querySelector('#app'),
-  mode: 'history',
-  routes
-});
-```
+## Browser support
 
-Mode: `history`
+`Router` supports the latest 2 versions of most modern browsers (Chrome, Firefox, Edge, Safari and Opera).
 
-```text
-http://example.com/about
-```
+## Licence
 
-Mode: `hash`
+`Router` is licensed under the [MIT License](https://opensource.org/licenses/MIT). Created with &#9825; by [@yoriiis](http://github.com/yoriiis).
 
-```text
-http://example.com/#/about
-```
+Utilisé par Prisma Media
 
-## Installation
+---
 
-```html
-<script src="https://cdn.jsdelivr.net/npm/router/dist/tunnel.js"></script>
-<!-- umd -->
-<script>
-  const { Link, Component, App, navigate } = Tunnel;
-</script>
-```
-
-```bash
-npm i router
-```
-
-```js
-import { Link, Component, App, navigate } from 'router';
-```
+TODO:
 
 If you add a target="\_blank" to your a element, you must omit the `onClick={() => navigate('/')}` handler.
+You can just use class for CSS classes. className is still supported, but class is preferred.
+this.props and this.state are passed to render() for you
+SVG attribute
 
-```ini
-# Apache
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /
-  RewriteRule ^index\.html$ - [L]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
-</IfModule>
+Pas de virtual dom => expliquer pourquoi
+
+this.routes
+
+```js
+this.routes = {
+  path: '',
+  params: {}
+};
 ```

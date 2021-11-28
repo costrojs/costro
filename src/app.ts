@@ -152,7 +152,7 @@ export default class App {
 		const target = e.target as HTMLElement
 
 		// @ts-ignore
-		if (target['__customLink']) {
+		if (target.__customLink) {
 			e.preventDefault()
 
 			const href = target.getAttribute('href')
@@ -353,7 +353,7 @@ export default class App {
 			link.classList.remove('__customLink')
 
 			// @ts-ignore
-			link['__customLink'] = true
+			link.__customLink = true
 		}
 
 		template.remove()
