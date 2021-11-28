@@ -12,11 +12,21 @@ The store is accessible in the whole context of the Component class, including t
 
 View the content of the store of the component.
 
+**Signature:**
+
+```typescript
+store: Map<string, object>
+```
+
+**Example:**
+
 ```js
 import { Component } from 'router';
 
 class Home extends Component {
-  render() {
+  constructor(props) {
+    super(props);
+
     console.log(this.store);
   }
 }
@@ -24,15 +34,29 @@ class Home extends Component {
 
 ### setStore
 
-`setStore(Object):void`
-
 Add data to the store of the current component.
+
+**Signature:**
+
+```typescript
+setStore(data: object): void
+```
+
+**Parameters**
+
+| Parameter |   Type   | Description                                                                     |
+| --------- | :------: | ------------------------------------------------------------------------------- |
+| `data`    | `object` | The data to add in the store. Each keys will be added associated to their value |
+
+**Example:**
 
 ```js
 import { Component } from 'router';
 
 class Home extends Component {
-  render() {
+  constructor(props) {
+    super(props);
+
     this.setStore({
       name: 'John Doe',
       age: 42
@@ -41,19 +65,45 @@ class Home extends Component {
 }
 ```
 
+The JSON representation of the component store will be:
+
+```json
+{
+  "name": "John Doe",
+  "age": 42
+}
+```
+
 ### getStore
 
-`getStore(key: string, path?: string)`
+Get the data associated to the key in the store of the current component or in another component if the optional `path` parameter is specifiated.
 
-Get the data associated to the key in the current store or in another component if the optional `path` parameter is declared.
+**Signature:**
 
-The `path` must correspond to a valid route path (associated with a component) defined when creating the application instance.
+```typescript
+getStore(key: string, path?: string)
+```
+
+**Parameters**
+
+| Parameter |   Type   | Description                                                                                                           |
+| --------- | :------: | --------------------------------------------------------------------------------------------------------------------- |
+| `key`     | `string` | The key of the data to search in the store                                                                            |
+| `path`    | `string` | (Optional) The path of the external component. It must correspond to a valid route path (associated with a component) |
+
+**Returns**
+
+The data associated to the key.
+
+**Examples:**
 
 ```js
 import { Component } from 'router';
 
 class Home extends Component {
-  render() {
+  constructor(props) {
+    super(props);
+
     // Store key "name" from the current component
     this.getStore('name');
 

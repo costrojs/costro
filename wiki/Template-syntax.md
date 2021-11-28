@@ -30,6 +30,13 @@ class About extends Component {
 
 JSX offer many advantages to write template and is recommended when building large scale applications with Router.
 
+Out of the box, Router provides the `createElement()` and `Fragment()` functions thanks to the `router/jsx` file (only 1Kb). It transforms JSX syntax into valid DOM elements. To optimize the transformed code and pay homage to the [hyperscript](https://github.com/hyperhype/hyperscript), short names are available
+
+- `createElement` => `h`
+- `Fragment` => `F`
+
+Import them when using JSX in templates.
+
 The component can be a Function component.
 
 ```js
@@ -52,11 +59,6 @@ class About extends Component {
   }
 }
 ```
-
-Out of the box, Router provides the `createElement()` and `Fragment()` functions thanks to the `router/jsx` file. It transforms JSX syntax into valid DOM elements. To optimize the transformed code and pay homage to the [hyperscript](https://github.com/hyperhype/hyperscript), short names are available
-
-- `createElement` => `h`
-- `Fragment` => `F`
 
 ### Babel configuration
 
@@ -83,12 +85,6 @@ Then, update the Babel configuration to register the plugin and the pragmas.
 ```
 
 > 📝 [Documentation of the `@babel/plugin-transform-react-jsx`](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx)
-
-Finally, import them when using JSX in templates.
-
-```js
-import { h, F } from 'router/jsx';
-```
 
 ### ESLint configuration
 

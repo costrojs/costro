@@ -1,34 +1,10 @@
 # Component
 
-## Creating an Application Instance
-
-Every Router application starts by creating a new application instance with the `App` function:
-
-```js
-import { App } from 'router';
-
-const app = App({
-  target: document.querySelector('#app'),
-  routes: [],
-  mode: 'hash'
-});
-```
-
-The `App` constructor accepts the following parameters:
-
-| Arguments |     Type      | Default | Description                                   |
-| --------- | :-----------: | :-----: | --------------------------------------------- |
-| target    | `HTMLElement` | `null`  | Unique `HTMLElement` to build the application |
-| routes    |  `string[]`   |  `[]`   | List of route definition                      |
-| mode      |   `string`    | `hash`  | Router mode (`hash\|history`)                 |
-
-## Components and Props
-
-Function and Class Components
+## Function and Class Components
 
 The simplest way to define a component is to write a JavaScript function:
 
-Function Component
+Component as a function
 
 ```js
 function Welcome(props) {
@@ -36,9 +12,12 @@ function Welcome(props) {
 }
 ```
 
-ES6 Class Component
+Component as an ES6 Class
 
 ```js
+import { Component } from 'router';
+import { h, F } from 'router/jsx';
+
 class Welcome extends Component {
   render() {
     return <h2>Hello, {this.props.name}</h2>;
@@ -46,20 +25,126 @@ class Welcome extends Component {
 }
 ```
 
-Class component have life cycle hooks
+## Transform a Function to a Class
 
-And expose the following properties
+You can transform a function component to a class component with the following steps:
 
-| Property                              | Description                           |
-| ------------------------------------- | ------------------------------------- |
-| `store`                               | Component store (`key`, `value`)      |
-| `setStore(key: string, value: any)`   | Set data to the store                 |
-| `getStore(key: string, path: string)` | Get data from local or external store |
-| `route`                               | Get route data (`path`, `params`)     |
+1. Create an ES6 class, with the same name, that extends `Component`.
+2. Add a single method `render()`.
+3. Move the content of the function into the `render()` method.
+4. Replace `props` with `this.props` in the `render()` content.
+
+## Lifecycle hooks
+
+Lifecycle hooks are available on Class Components.
+
+We can declare special methods on the component class to run some code when a component is rendered or destroyed
+
+### beforeRender
+
+The `beforeRender()` method runs before the component output has been rendered to the DOM.
 
 ```js
-this.store;
-this.setStore();
-this.getStore();
-this.route; // => path and params
+import { Component } from 'router';
+import { h, F } from 'router/jsx';
+
+class Welcome extends Component {
+  beforeRender() {
+    // The component is not yet rendered to the DOM
+  }
+
+  render() {
+    return <h2>Welcome</h2>;
+  }
+}
+```
+
+### afterRender
+
+The `afterRender()` method runs after the component output has been rendered to the DOM.
+
+```js
+import { Component } from 'router';
+import { h, F } from 'router/jsx';
+
+class Welcome extends Component {
+  render() {
+    return <h2>Welcome</h2>;
+  }
+
+  afterRender() {
+    // The component is rendered to the DOM
+  }
+}
+```
+
+### beforeDestroy
+
+The `beforeDestroy()` method runs before the component has been removed to the DOM.
+
+```js
+import { Component } from 'router';
+import { h, F } from 'router/jsx';
+
+class Welcome extends Component {
+  beforeDestroy() {
+    // The component is not yet removed from the DOM
+  }
+
+  render() {
+    return <h2>Welcome</h2>;
+  }
+}
+```
+
+### afterDestroy
+
+The `afterDestroy()` method runs after the component has been removed to the DOM.
+
+```js
+import { Component } from 'router';
+import { h, F } from 'router/jsx';
+
+class Welcome extends Component {
+  render() {
+    return <h2>Welcome</h2>;
+  }
+
+  afterDestroy() {
+    // The component is removed from the DOM
+  }
+}
+```
+
+## Component route data
+
+The component class exposes the `route` data as a class property.
+
+```js
+import { Component } from 'router';
+import { h, F } from 'router/jsx';
+
+class Person extends Component {
+  constructor(props) {
+    super(props);
+
+    console.log(this.routes);
+  }
+}
+```
+
+| Property       |   Type   | Description                                |
+| -------------- | :------: | ------------------------------------------ |
+| `route.path`   | `string` | Current path in the URL                    |
+| `route.params` | `object` | List of dynamic segments with their values |
+
+Example with the component route path `/person/:id`, the `route` data will be as the following:
+
+```json
+{
+  "path": "/person/42",
+  "params": {
+    "id": 42
+  }
+}
 ```

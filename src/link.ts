@@ -20,7 +20,7 @@ export default function Link(
 		to: string
 	},
 	isHtml = false
-) {
+): HTMLElement | string {
 	const element = document.createElement('a')
 	element.setAttribute('href', to)
 
