@@ -87,7 +87,7 @@ import { Link } from 'router';
 
 **Signature:**
 
-```typescript
+```ts
 Link(
   {
     to,

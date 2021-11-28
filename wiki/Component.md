@@ -122,7 +122,7 @@ The component class exposes the `route` data as a class property.
 
 **Signature:**
 
-```typescript
+```ts
 route:{
   path: string
   params: {

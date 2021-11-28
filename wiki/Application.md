@@ -16,7 +16,7 @@ const app = new App({
 
 **Signature:**
 
-```typescript
+```ts
 App({
   target,
   routes,

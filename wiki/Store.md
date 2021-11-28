@@ -14,7 +14,7 @@ View the content of the store of the component.
 
 **Signature:**
 
-```typescript
+```ts
 store: Map<string, object>
 ```
 
@@ -38,7 +38,7 @@ Add data to the store of the current component.
 
 **Signature:**
 
-```typescript
+```ts
 setStore(data: object): void
 ```
 
@@ -80,7 +80,7 @@ Get the data associated to the key in the store of the current component or in a
 
 **Signature:**
 
-```typescript
+```ts
 getStore(key: string, path?: string)
 ```
 
