@@ -821,7 +821,7 @@ describe('App', () => {
 
 		it('should call the transformLinksInStringComponent function', () => {
 			const result = app.transformLinksInStringComponent(
-				'<a href="/document-fragment" class="btn customLink">Document Fragment</a>'
+				'<a href="/document-fragment" class="btn __customLink">Document Fragment</a>'
 			)
 
 			const fragment = document.createDocumentFragment()

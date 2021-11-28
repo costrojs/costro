@@ -1,4 +1,3 @@
-import config from './config'
 import Location from './location'
 import { RouteData, Route, HelperFunction, Fn, Component } from './interface'
 import { getDynamicSegmentsFromPath, createRegExpFromPath } from './utils'
@@ -153,7 +152,7 @@ export default class App {
 		const target = e.target as HTMLElement
 
 		// @ts-ignore
-		if (target[config.customLinkProperty]) {
+		if (target['__customLink']) {
 			e.preventDefault()
 
 			const href = target.getAttribute('href')
@@ -347,14 +346,14 @@ export default class App {
 		template.innerHTML = component.trim()
 
 		const fragment = document.importNode(template.content, true)
-		const customLinks = Array.from(fragment.querySelectorAll(`.${config.customLinkCssClass}`))
+		const customLinks = Array.from(fragment.querySelectorAll('.__customLink'))
 
 		for (let i = 0, length = customLinks.length; i < length; i++) {
 			const link = customLinks[i]
-			link.classList.remove(config.customLinkCssClass)
+			link.classList.remove('__customLink')
 
 			// @ts-ignore
-			link[config.customLinkProperty] = true
+			link['__customLink'] = true
 		}
 
 		template.remove()

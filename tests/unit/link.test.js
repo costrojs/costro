@@ -12,7 +12,9 @@ describe('link', () => {
 			true
 		)
 
-		expect(result).toBe('<a href="/home" class="btn btn-info customLink" data-test="">Home</a>')
+		expect(result).toBe(
+			'<a href="/home" class="btn btn-info __customLink" data-test="">Home</a>'
+		)
 	})
 
 	it('Should call the link function with HTML and className attribute', () => {
@@ -25,7 +27,7 @@ describe('link', () => {
 			true
 		)
 
-		expect(result).toBe('<a href="/home" class="btn btn-info customLink">Home</a>')
+		expect(result).toBe('<a href="/home" class="btn btn-info __customLink">Home</a>')
 	})
 
 	it('Should call the link function with HTML and without children', () => {
@@ -36,7 +38,7 @@ describe('link', () => {
 			true
 		)
 
-		expect(result).toBe('<a href="/home" class="customLink"></a>')
+		expect(result).toBe('<a href="/home" class="__customLink"></a>')
 	})
 
 	it('Should call the link function without HTML', () => {

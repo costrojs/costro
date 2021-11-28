@@ -1,4 +1,3 @@
-import config from './config'
 import { Attributes } from './interface'
 
 /**
@@ -53,9 +52,9 @@ export default function Link(
 	// Insert the flag for the event delegation
 	// Must be executed after adding attributes (conflict between setAttribute('class') and classList.add())
 	// @ts-ignore
-	element[config.customLinkProperty] = true
+	element['__customLink'] = true
 	if (isHtml) {
-		element.classList.add(config.customLinkCssClass)
+		element.classList.add('__customLink')
 	}
 
 	return isHtml ? element.outerHTML : element
