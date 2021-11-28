@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD041 -->
+
 - [Installation](installation)
 - [Component](component)
 - [Template syntax](template-syntax)

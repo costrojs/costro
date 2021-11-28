@@ -120,6 +120,19 @@ class Welcome extends Component {
 
 The component class exposes the `route` data as a class property.
 
+**Signature:**
+
+```typescript
+route:{
+  path: string
+  params: {
+    [key: string]: string
+  },
+}
+```
+
+**Example:**
+
 ```js
 import { Component } from 'router';
 import { h, F } from 'router/jsx';

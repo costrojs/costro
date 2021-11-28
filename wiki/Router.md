@@ -42,7 +42,7 @@ const app = new App({
 });
 ```
 
-You can also check out this example live on [CodeSandbox]().
+You can also check out this example live on [CodeSandbox](https://codesandbox.io).
 
 ## Dynamic Routing
 

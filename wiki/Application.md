@@ -2,7 +2,7 @@
 
 ## Creating an Application Instance
 
-Every Router application starts by creating a new application instance with the `App` function:
+Every Router application starts by creating a new application instance with the `App` class:
 
 ```js
 import { App } from 'router';
