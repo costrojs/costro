@@ -1,6 +1,6 @@
 # Template Syntax
 
-Router templates can be write in template string or with JSX, according to your needs.
+Costro templates can be write in template string or with JSX, according to your needs.
 
 ## Template string
 
@@ -14,10 +14,10 @@ const Home = () => {
 };
 ```
 
-Or, the component can be a ES6 class which extends the `Component` from Router.
+Or, the component can be a ES6 class which extends the `Component` from Costro.
 
 ```js
-import { Component } from 'router';
+import { Component } from 'costro';
 
 class About extends Component {
   render() {
@@ -28,9 +28,9 @@ class About extends Component {
 
 ## JSX
 
-JSX offer many advantages to write template and is recommended when building large scale applications with Router.
+JSX offer many advantages to write template and is recommended when building large scale applications with Costro.
 
-Out of the box, Router provides the `createElement()` and `Fragment()` functions thanks to the `router/jsx` file (only 1Kb). It transforms JSX syntax into valid DOM elements. To optimize the transformed code and pay homage to the [hyperscript](https://github.com/hyperhype/hyperscript), short names are available
+Out of the box, Costro provides the `createElement()` and `Fragment()` functions thanks to the `costro/jsx` file (only 1Kb). It transforms JSX syntax into valid DOM elements. To optimize the transformed code and pay homage to the [hyperscript](https://github.com/hyperhype/hyperscript), short names are available
 
 - `createElement` => `h`
 - `Fragment` => `F`
@@ -40,18 +40,18 @@ Import them when using JSX in templates.
 The component can be a Function component.
 
 ```js
-import { h, F } from 'router/jsx';
+import { h, F } from 'costro/jsx';
 
 const Home = () => {
   return <h2>Home</h2>;
 };
 ```
 
-Or, the component can be a ES6 class which extends the `Component` from Router.
+Or, the component can be a ES6 class which extends the `Component` from Costro.
 
 ```js
-import { Component } from 'router';
-import { h, F } from 'router/jsx';
+import { Component } from 'costro';
+import { h, F } from 'costro/jsx';
 
 class About extends Component {
   render() {

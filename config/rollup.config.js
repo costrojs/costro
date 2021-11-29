@@ -7,7 +7,7 @@ const isProduction = process.env.ENV === 'production'
 const dir = path.resolve(__dirname, '../dist')
 const banner =
 	'/*!\n' +
-	` * Tunnel v${require('../package.json').version}\n` +
+	` * Costro v${require('../package.json').version}\n` +
 	` * (c) 2020-${new Date().getFullYear()} Yoriiis\n` +
 	' * Released under the MIT License.\n' +
 	' */'
@@ -31,20 +31,20 @@ export default [
 			{
 				banner,
 				exports: 'named',
-				file: `${dir}/tunnel.js`,
+				file: `${dir}/costro.js`,
 				format: 'umd',
-				name: 'Tunnel'
+				name: 'Costro'
 			},
 			{
 				banner,
 				exports: 'named',
-				file: `${dir}/tunnel.esm.js`,
+				file: `${dir}/costro.esm.js`,
 				format: 'es'
 			},
 			{
 				banner,
 				exports: 'named',
-				file: `${dir}/tunnel.cjs.js`,
+				file: `${dir}/costro.cjs.js`,
 				format: 'cjs'
 			}
 		],
@@ -63,7 +63,7 @@ export default [
 				banner,
 				file: `${dir}/jsx.js`,
 				format: 'umd',
-				name: 'Tunnel.jsx'
+				name: 'Costro.jsx'
 			},
 			{
 				banner,

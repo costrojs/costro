@@ -1,5 +1,5 @@
 import { h, F } from '../../dist/jsx'
-import { Component, Link, navigate } from '../../dist/tunnel'
+import { Component, Link, navigate } from '../../dist/costro'
 
 function Navigation() {
 	return (

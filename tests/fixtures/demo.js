@@ -1,4 +1,4 @@
-import { App } from '../../dist/tunnel'
+import { App } from '../../dist/costro'
 import routesFixtures from './routes-fixture'
 
 // eslint-disable-next-line no-new

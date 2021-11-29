@@ -15,8 +15,8 @@ function Welcome(props) {
 Component as an ES6 Class
 
 ```js
-import { Component } from 'router';
-import { h, F } from 'router/jsx';
+import { Component } from 'costro';
+import { h, F } from 'costro/jsx';
 
 class Welcome extends Component {
   render() {
@@ -45,8 +45,8 @@ We can declare special methods on the component class to run some code when a co
 The `beforeRender()` method runs before the component output has been rendered to the DOM.
 
 ```js
-import { Component } from 'router';
-import { h, F } from 'router/jsx';
+import { Component } from 'costro';
+import { h, F } from 'costro/jsx';
 
 class Welcome extends Component {
   beforeRender() {
@@ -64,8 +64,8 @@ class Welcome extends Component {
 The `afterRender()` method runs after the component output has been rendered to the DOM.
 
 ```js
-import { Component } from 'router';
-import { h, F } from 'router/jsx';
+import { Component } from 'costro';
+import { h, F } from 'costro/jsx';
 
 class Welcome extends Component {
   render() {
@@ -83,8 +83,8 @@ class Welcome extends Component {
 The `beforeDestroy()` method runs before the component has been removed to the DOM.
 
 ```js
-import { Component } from 'router';
-import { h, F } from 'router/jsx';
+import { Component } from 'costro';
+import { h, F } from 'costro/jsx';
 
 class Welcome extends Component {
   beforeDestroy() {
@@ -102,8 +102,8 @@ class Welcome extends Component {
 The `afterDestroy()` method runs after the component has been removed to the DOM.
 
 ```js
-import { Component } from 'router';
-import { h, F } from 'router/jsx';
+import { Component } from 'costro';
+import { h, F } from 'costro/jsx';
 
 class Welcome extends Component {
   render() {
@@ -134,8 +134,8 @@ route:{
 **Example:**
 
 ```js
-import { Component } from 'router';
-import { h, F } from 'router/jsx';
+import { Component } from 'costro';
+import { h, F } from 'costro/jsx';
 
 class Person extends Component {
   constructor(props) {

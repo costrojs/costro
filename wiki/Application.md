@@ -2,10 +2,10 @@
 
 ## Creating an Application Instance
 
-Every Router application starts by creating a new application instance with the `App` class:
+Every Costro application starts by creating a new application instance with the `App` class:
 
 ```js
-import { App } from 'router';
+import { App } from 'costro';
 
 const app = new App({
   target: document.querySelector('#app'),

@@ -1,5 +1,5 @@
 {
-	"name": "router2",
+	"name": "costro",
 	"version": "1.0.0",
 	"description": "",
 	"keywords": [],
@@ -9,9 +9,9 @@
 	"author": "Yoriiis aka Joris DANIEL",
 	"exports": {
 		".": {
-			"import": "./dist/tunnel.esm.js",
-			"require": "./dist/tunnel.cjs.js",
-			"default": "./dist/tunnel.js"
+			"import": "./dist/costro.esm.js",
+			"require": "./dist/costro.cjs.js",
+			"default": "./dist/costro.js"
 		},
 		"./jsx": {
 			"import": "./dist/jsx.esm.js",
@@ -19,7 +19,7 @@
 			"default": "./dist/jsx.js"
 		}
 	},
-	"main": "dist/tunnel.cjs.js",
+	"main": "dist/costro.cjs.js",
 	"files": [
 		"dist/*.js"
 	],

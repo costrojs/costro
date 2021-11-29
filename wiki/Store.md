@@ -8,6 +8,8 @@ The store is accessible in the whole context of the Component class, including t
 
 ## Store methods​
 
+<!-- TODO:  store is not a method -->
+
 ### store
 
 View the content of the store of the component.
@@ -21,7 +23,7 @@ store: Map<string, object>
 **Example:**
 
 ```js
-import { Component } from 'router';
+import { Component } from 'costro';
 
 class Home extends Component {
   constructor(props) {
@@ -51,7 +53,7 @@ setStore(data: object): void
 **Example:**
 
 ```js
-import { Component } from 'router';
+import { Component } from 'costro';
 
 class Home extends Component {
   constructor(props) {
@@ -98,7 +100,7 @@ The data associated to the key.
 **Examples:**
 
 ```js
-import { Component } from 'router';
+import { Component } from 'costro';
 
 class Home extends Component {
   constructor(props) {

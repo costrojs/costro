@@ -2,11 +2,11 @@
 
 ## Getting started
 
-Router includes its own small router
+Costro includes its own small router
 
 ```js
-import { Component, App } from 'router';
-import { h, F } from 'router/jsx';
+import { Component, App } from 'costro';
+import { h, F } from 'costro/jsx';
 
 // 1. Define components.
 // The "component" can either be an Class Component or a Function component.
@@ -79,10 +79,10 @@ const routes = [
 
 ### Link component
 
-Router exposes the `Link` component to create links that matches route path in template, we use the custom component `<Link>`. This allows the router to change the url without reloading the page.
+Costro exposes the `Link` component to create links that matches route path in template, we use the custom component `<Link>`. This allows the router to change the url without reloading the page.
 
 ```js
-import { Link } from 'router';
+import { Link } from 'costro';
 ```
 
 **Signature:**
@@ -174,10 +174,10 @@ Link element with attributes and children.
 
 `navigate(to: string):void`
 
-Router exposes the `navigate` component to trigger navigation changes. it can be used with event handling (`onClick`) or anywhere in component Function or Class.
+Costro exposes the `navigate` component to trigger navigation changes. it can be used with event handling (`onClick`) or anywhere in component Function or Class.
 
 ```jsx
-import { navigate } from 'router';
+import { navigate } from 'costro';
 ```
 
 ### Navigate in event handling
