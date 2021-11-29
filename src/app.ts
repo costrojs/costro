@@ -129,7 +129,7 @@ export default class App {
 	 * Add events listeners
 	 */
 	addEvents() {
-		document.addEventListener('navigate', this.onNavigate)
+		document.addEventListener('costro::navigate', this.onNavigate)
 		this.target.addEventListener('click', this.onClickOnApp)
 	}
 
@@ -384,7 +384,7 @@ export default class App {
 	 */
 	destroy() {
 		this.location.destroy()
-		document.removeEventListener('navigate', this.onNavigate)
+		document.removeEventListener('costro::navigate', this.onNavigate)
 		this.target.removeEventListener('click', this.onClickOnApp)
 
 		this.currentRoute = undefined

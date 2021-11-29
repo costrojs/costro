@@ -327,7 +327,10 @@ describe('App', () => {
 			app.addEvents.mockRestore()
 			app.addEvents()
 
-			expect(document.addEventListener).toHaveBeenCalledWith('navigate', app.onNavigate)
+			expect(document.addEventListener).toHaveBeenCalledWith(
+				'costro::navigate',
+				app.onNavigate
+			)
 			expect(app.target.addEventListener).toHaveBeenCalledWith('click', app.onClickOnApp)
 		})
 	})
@@ -963,7 +966,10 @@ describe('App', () => {
 			app.destroy()
 
 			expect(app.location.destroy).toHaveBeenCalled()
-			expect(document.removeEventListener).toHaveBeenCalledWith('navigate', app.onNavigate)
+			expect(document.removeEventListener).toHaveBeenCalledWith(
+				'costro::navigate',
+				app.onNavigate
+			)
 			expect(app.target.removeEventListener).toHaveBeenCalledWith('click', app.onClickOnApp)
 			expect(app.currentRoute).toBe(undefined)
 			expect(app.previousRoute).toBe(undefined)

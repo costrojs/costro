@@ -7,7 +7,7 @@ describe('navigate', () => {
 
 		navigate('/home')
 
-		expect(window.CustomEvent).toHaveBeenCalledWith('navigate', {
+		expect(window.CustomEvent).toHaveBeenCalledWith('costro::navigate', {
 			detail: {
 				to: '/home'
 			}
