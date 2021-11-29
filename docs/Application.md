@@ -9,8 +9,12 @@ import { App } from 'costro';
 
 const app = new App({
   target: document.querySelector('#app'),
-  routes: [],
-  mode: 'hash'
+  routes: [
+    {
+      path: '/',
+      component: () => '<h2>Home</h2>'
+    }
+  ]
 });
 ```
 
@@ -23,15 +27,26 @@ App({
   mode = 'hash'
 }: {
   target: HTMLElement
-  routes: Route[]
+  routes: RouteConfig[]
   mode: string
 });
 ```
 
+Type declaration for RouteConfig:
+
+<!-- prettier-ignore -->
+```ts
+type RouteConfig = {
+  path: string
+  component: Component
+  props: any
+};
+```
+
 **Parameter**
 
-| Parameter |     Type      | Description                                    |
-| --------- | :-----------: | ---------------------------------------------- |
-| target    | `HTMLElement` | Unique `HTMLElement` to build the application  |
-| routes    |  `string[]`   | List of route definition                       |
-| mode      |   `string`    | Router mode (`hash\|history`). Default `hash`. |
+| Parameter |      Type       | Description                                    |
+| --------- | :-------------: | ---------------------------------------------- |
+| target    |  `HTMLElement`  | Unique `HTMLElement` to build the application  |
+| routes    | `RouteConfig[]` | Route definition list                          |
+| mode      |    `string`     | Router mode (`hash\|history`). Default `hash`. |

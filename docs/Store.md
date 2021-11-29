@@ -16,15 +16,14 @@ View the content of the store of the component.
 
 **Signature:**
 
+<!-- prettier-ignore -->
 ```ts
-store: Map<string, object>
+type store = Map<string, object>
 ```
 
 **Example:**
 
 ```js
-import { Component } from 'costro';
-
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -53,8 +52,6 @@ setStore(data: object): void
 **Example:**
 
 ```js
-import { Component } from 'costro';
-
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -100,8 +97,6 @@ The data associated to the key.
 **Examples:**
 
 ```js
-import { Component } from 'costro';
-
 class Home extends Component {
   constructor(props) {
     super(props);

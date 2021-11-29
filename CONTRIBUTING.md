@@ -62,11 +62,11 @@ npm run build
 ## Project structure
 
 - `./config` - Contains configuration files for ESLint, Jest, Prettier and Rollup.
+- `./docs` - Contains the documentation files for the GitHub Wiki.
 - `./src` - Contains the source code. The codebase is written in `ES2015` in TypeScript.
 - `./tests/fixtures`- Contains fixtures and a demo build with [webpack](https://webpack.js.org).
 - `./tests/unit`- Contains all tests. The unit tests are written with [Jest](https://jestjs.io).
 - `./types` - Contains TypeScript type definitions.
-- `./docs` - Contains the documentation files for the GitHub Wiki.
 
 ## Pull requests
 

@@ -8,7 +8,16 @@ Components, Router and Store in 3Kb
 
 If you have questions about anything related to Costro, you're always welcome to ask on [GitHub Discussions](https://github.com/yoriiis/costro/discussions).
 
-## How it works
+## Features
+
+- Function and Class Component
+- Local and global store
+- Router
+- Template string and JSX
+- No need for virtual dom
+- Only 3Kb
+
+## Getting started
 
 See the [Wiki](https://github.com/yoriiis/costro/wiki) for full documentation and examples.
 
@@ -16,28 +25,12 @@ See the [Wiki](https://github.com/yoriiis/costro/wiki) for full documentation an
 
 Costro supports the latest 2 versions of most modern browsers (Chrome, Firefox, Edge, Safari and Opera).
 
+## Used by
+
+- [Télé-Loisirs](https://www.programme-tv.net)
+
 ## Licence
 
 Costro is licensed under the [MIT License](https://opensource.org/licenses/MIT). Created with &#9825; by [@yoriiis](http://github.com/yoriiis).
 
-Utilisé par Prisma Media
-
----
-
-TODO:
-
-If you add a target="\_blank" to your a element, you must omit the `onClick={() => navigate('/')}` handler.
-You can just use class for CSS classes. className is still supported, but class is preferred.
-this.props and this.state are passed to render() for you
-SVG attribute
-
-Pas de virtual dom => expliquer pourquoi
-
-this.routes
-
-```js
-this.routes = {
-  path: '',
-  params: {}
-};
-```
+Copyright (c) 2021-present, Yoriiis (Joris DANIEL)

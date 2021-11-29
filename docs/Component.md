@@ -6,6 +6,8 @@ The simplest way to define a component is to write a JavaScript function:
 
 Component as a function
 
+**Example**
+
 ```js
 function Welcome(props) {
   return <h2>Hello, {props.name}</h2>;
@@ -14,10 +16,15 @@ function Welcome(props) {
 
 Component as an ES6 Class
 
-```js
-import { Component } from 'costro';
-import { h, F } from 'costro/jsx';
+**Import**
 
+```jsx
+import { Component } from 'costro';
+```
+
+**Example**
+
+```js
 class Welcome extends Component {
   render() {
     return <h2>Hello, {this.props.name}</h2>;
@@ -36,7 +43,7 @@ You can transform a function component to a class component with the following s
 
 ## Lifecycle hooks
 
-Lifecycle hooks are available on Class Components.
+Lifecycle hooks are available on **Class Components** only.
 
 We can declare special methods on the component class to run some code when a component is rendered or destroyed
 
@@ -45,9 +52,6 @@ We can declare special methods on the component class to run some code when a co
 The `beforeRender()` method runs before the component output has been rendered to the DOM.
 
 ```js
-import { Component } from 'costro';
-import { h, F } from 'costro/jsx';
-
 class Welcome extends Component {
   beforeRender() {
     // The component is not yet rendered to the DOM
@@ -64,9 +68,6 @@ class Welcome extends Component {
 The `afterRender()` method runs after the component output has been rendered to the DOM.
 
 ```js
-import { Component } from 'costro';
-import { h, F } from 'costro/jsx';
-
 class Welcome extends Component {
   render() {
     return <h2>Welcome</h2>;
@@ -83,9 +84,6 @@ class Welcome extends Component {
 The `beforeDestroy()` method runs before the component has been removed to the DOM.
 
 ```js
-import { Component } from 'costro';
-import { h, F } from 'costro/jsx';
-
 class Welcome extends Component {
   beforeDestroy() {
     // The component is not yet removed from the DOM
@@ -102,9 +100,6 @@ class Welcome extends Component {
 The `afterDestroy()` method runs after the component has been removed to the DOM.
 
 ```js
-import { Component } from 'costro';
-import { h, F } from 'costro/jsx';
-
 class Welcome extends Component {
   render() {
     return <h2>Welcome</h2>;
@@ -122,42 +117,36 @@ The component class exposes the `route` data as a class property.
 
 **Signature:**
 
+<!-- prettier-ignore -->
 ```ts
-route:{
+type route = {
   path: string
   params: {
     [key: string]: string
-  },
+  };
+};
+```
+
+**Returns**
+
+Current path in URL and list of dynamic segments with their values.
+
+```json
+// Route path "/person/:id"
+{
+  "path": "/person/42",
+  "params": {
+    "id": 42
+  }
 }
 ```
 
 **Example:**
 
 ```js
-import { Component } from 'costro';
-import { h, F } from 'costro/jsx';
-
 class Person extends Component {
-  constructor(props) {
-    super(props);
-
-    console.log(this.routes);
-  }
-}
-```
-
-| Property       |   Type   | Description                                |
-| -------------- | :------: | ------------------------------------------ |
-| `route.path`   | `string` | Current path in the URL                    |
-| `route.params` | `object` | List of dynamic segments with their values |
-
-Example with the component route path `/person/:id`, the `route` data will be as the following:
-
-```json
-{
-  "path": "/person/42",
-  "params": {
-    "id": 42
+  render() {
+    return <h2>Person ID: {this.route.params.id}</h2>;
   }
 }
 ```

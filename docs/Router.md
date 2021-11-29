@@ -2,12 +2,7 @@
 
 ## Getting started
 
-Costro includes its own small router
-
 ```js
-import { Component, App } from 'costro';
-import { h, F } from 'costro/jsx';
-
 // 1. Define components.
 // The "component" can either be an Class Component or a Function component.
 // These can be imported from other files.
@@ -16,10 +11,8 @@ class Home extends Component {
     return <h2>Home</h2>;
   }
 }
-class About extends Component {
-  render() {
-    return <h2>About</h2>;
-  }
+function About() {
+  return <h2>About</h2>;
 }
 
 // 2. Define routes.
@@ -42,7 +35,7 @@ const app = new App({
 });
 ```
 
-You can also check out this example live on [CodeSandbox](https://codesandbox.io).
+You can also check out the live example on [CodeSandbox](https://codesandbox.io).
 
 ## Dynamic Routing
 
@@ -61,7 +54,7 @@ const routes = [
 
 ### Not found route
 
-If no road path matches, the current component is automatically destroyed. To display a template instead, declare a component without the `path` in the route configuration passed to the app instance.
+If no road path matches, the current component is automatically destroyed. To display a template instead, declare a component **without** the `path` in the route configuration passed to the app instance.
 
 ```js
 function NotFound() {
@@ -80,6 +73,8 @@ const routes = [
 ### Link component
 
 Costro exposes the `Link` component to create links that matches route path in template, we use the custom component `<Link>`. This allows the router to change the url without reloading the page.
+
+**Import**
 
 ```js
 import { Link } from 'costro';
@@ -172,17 +167,23 @@ Link element with attributes and children.
 
 ## navigate
 
-`navigate(to: string):void`
-
 Costro exposes the `navigate` component to trigger navigation changes. it can be used with event handling (`onClick`) or anywhere in component Function or Class.
+
+**Import**
 
 ```jsx
 import { navigate } from 'costro';
 ```
 
+**Signature:**
+
+```ts
+navigate(to: string): void;
+```
+
 ### Navigate in event handling
 
-```js
+```jsx
 <button onClick={() => navigate('/about')}>About</button>
 ```
 
