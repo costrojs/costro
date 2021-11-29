@@ -1,4 +1,4 @@
-name: Build
+name: CI
 
 on:
   push:
@@ -38,7 +38,7 @@ jobs:
         run: npm run test:eslint
 
       - name: Test Typescript
-        run: npm run test:type-check
+        run: npm run test:types
 
       - name: Test Markdown
         run: npm run test:markdown
@@ -47,7 +47,7 @@ jobs:
         run: npm run build
 
       - name: Test Jest
-        run: npm run test
+        run: npm run test:unit
 
       - name: Test Fixtures
         run: npm run test:fixtures

@@ -1,8 +1,6 @@
-# dist
-node_modules
 .DS_Store
-coverage
-gh-pages
-dist/
-
+node_modules
+/coverage
+dist
+/types
 *.tgz

@@ -36,7 +36,7 @@ body:
       required: true
     attributes:
       label: Router
-      description: What version of the library are you using?
+      description: What version of Costro are you using?
       placeholder: e.g. 1.0.0
   - type: input
     validations:

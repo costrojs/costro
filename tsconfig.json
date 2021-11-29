@@ -4,7 +4,8 @@
 		"allowSyntheticDefaultImports": true,
 		"baseUrl": "./src",
 		"checkJs": false,
-		"declaration": false,
+		"declaration": true,
+		"declarationDir": "types",
 		"esModuleInterop": true,
 		"jsx": "react",
 		"jsxFactory": "h",
@@ -16,7 +17,8 @@
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"strict": true,
-		"target": "es2017"
+		"target": "es2017",
+		"removeComments": true
 	},
 	"include": ["./src/**/*.ts", "src/index.ts"]
 }
