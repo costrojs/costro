@@ -712,19 +712,26 @@ describe('App', () => {
 
 			expect(app.updateComponentRouteData).toHaveBeenCalled()
 			expect(app.currentRoute.component.beforeRender).toHaveBeenCalled()
+			expect(app.currentRoute.component.render).toHaveBeenCalled()
 			expect(result).toStrictEqual(<div>Component</div>)
 		})
 
 		it('should call the getComponentView function with not a component class', () => {
 			app.currentRoute = {
 				component: jest.fn().mockReturnValue(<div>Component</div>),
-				isComponentClass: false
+				isComponentClass: false,
+				props: {
+					name: 'John Doe'
+				}
 			}
 
 			const result = app.getComponentView()
 
-			expect(result).toStrictEqual(<div>Component</div>)
 			expect(app.updateComponentRouteData).not.toHaveBeenCalled()
+			expect(app.currentRoute.component).toHaveBeenCalledWith({
+				name: 'John Doe'
+			})
+			expect(result).toStrictEqual(<div>Component</div>)
 		})
 	})
 

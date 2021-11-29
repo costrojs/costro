@@ -292,7 +292,7 @@ export default class App {
 				this.currentRoute.component.beforeRender()
 				return this.currentRoute.component.render()
 			} else {
-				return this.currentRoute.component()
+				return this.currentRoute.component(this.currentRoute.props)
 			}
 		}
 	}
