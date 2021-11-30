@@ -35,7 +35,7 @@ const app = new App({
 });
 ```
 
-You can also check out the live example on [CodeSandbox](https://codesandbox.io).
+Try it on [CodeSandbox](https://codesandbox.io).
 
 ## Dynamic Routing
 
@@ -52,6 +52,8 @@ const routes = [
 ];
 ```
 
+Try it on [CodeSandbox](https://codesandbox.io).
+
 ### Not found route
 
 If no route path matches, the active component is automatically destroyed. To display a template instead, declare a component **without** the `path` in the route configuration passed to the app instance.
@@ -67,6 +69,8 @@ const routes = [
   }
 ];
 ```
+
+Try it on [CodeSandbox](https://codesandbox.io).
 
 ## Linking between pages
 
@@ -125,6 +129,8 @@ Link element with attributes and children.
 // <a href="/about" class="link" data-status><span>About</span></a>
 ```
 
+Try it on [CodeSandbox](https://codesandbox.io).
+
 #### Links in template string
 
 Simple link element
@@ -154,6 +160,8 @@ Link element with attributes and children.
 )}`;
 // <a href="/about" class="link" data-status><span>About</span></a>;
 ```
+
+Try it on [CodeSandbox](https://codesandbox.io).
 
 ### navigate
 
@@ -191,6 +199,8 @@ class Home extends Component {
 }
 ```
 
+Try it on [CodeSandbox](https://codesandbox.io).
+
 ## History mode
 
 The router's default mode is `hash` mode. It uses URL hash to perform URL navigation without reloading the page, e.g. `https://example.com/#/about`.
@@ -204,6 +214,8 @@ const app = new App({
   routes: []
 });
 ```
+
+Try it on [CodeSandbox](https://codesandbox.io).
 
 When using `history` mode, you need to add a fallback route to your server. If the URL does not match any static element, it must serve the same `index.html` page that your application resides on.
 

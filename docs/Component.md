@@ -24,6 +24,8 @@ class Welcome extends Component {
 }
 ```
 
+Try it on [CodeSandbox](https://codesandbox.io).
+
 ## Transform a Function to a Class
 
 You can transform a function component to a class component with the following steps:
@@ -57,7 +59,7 @@ const Home = class Home extends Component {
 };
 ```
 
-Props injection
+Inject props in the route
 
 ```js
 new App({
@@ -74,11 +76,15 @@ new App({
 });
 ```
 
+Try it on [CodeSandbox](https://codesandbox.io).
+
 ## Lifecycle hooks
 
 Lifecycle hooks are available on **Class Components** only.
 
-We can declare special methods on the component class to run some code when a component is rendered or destroyed
+We can declare special methods on the component class to run some code when a component is rendered or destroyed.
+
+Try it on [CodeSandbox](https://codesandbox.io).
 
 ### beforeRender
 
@@ -175,6 +181,8 @@ class Clock extends Component {
 }
 ```
 
+Try it on [CodeSandbox](https://codesandbox.io).
+
 ## Component route data
 
 The component class exposes the `route` data as a class property.
@@ -214,3 +222,5 @@ class Person extends Component {
   }
 }
 ```
+
+Try it on [CodeSandbox](https://codesandbox.io).
