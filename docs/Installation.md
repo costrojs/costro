@@ -1,4 +1,4 @@
-# Installation
+<!-- markdownlint-disable MD041 -->
 
 Costro can be integrated into a project in several ways depending on the needs.
 

@@ -1,12 +1,10 @@
-# Component
+<!-- markdownlint-disable MD041 -->
 
 ## Function and Class Components
 
 The simplest way to define a component is to write a JavaScript function:
 
 Component as a function
-
-**Example**
 
 ```js
 function Welcome(props) {
@@ -16,15 +14,9 @@ function Welcome(props) {
 
 Component as an ES6 Class
 
-**Import**
-
-```jsx
-import { Component } from 'costro';
-```
-
-**Example**
-
 ```js
+import { Component } from 'costro';
+
 class Welcome extends Component {
   render() {
     return <h2>Hello, {this.props.name}</h2>;
@@ -36,10 +28,51 @@ class Welcome extends Component {
 
 You can transform a function component to a class component with the following steps:
 
-1. Create an ES6 class, with the same name, that extends `Component`.
+1. Create an ES6 class with the same name, that extends `Component`.
 2. Add a single method `render()`.
 3. Move the content of the function into the `render()` method.
 4. Replace `props` with `this.props` in the `render()` content.
+
+## Props
+
+Props are inputs accepted by components.
+
+The function component accepts a single `props` object argument with data as a parameter. The class component has the same principle except that the `props` are exposed in the context of the class with `this.props`.
+
+For example, the following code renders "Hello, John Doe" on the page.
+
+Props on a function component
+
+```js
+const Home = (props) => `<h2>Hello, ${props.name}</h2>`;
+```
+
+Props on a class component
+
+```js
+const Home = class Home extends Component {
+  render() {
+    return `<h2>Hello, ${this.props.name}</h2>`;
+  }
+};
+```
+
+Props injection
+
+```js
+new App({
+  target: document.querySelector('#app'),
+  routes: [
+    {
+      path: '/',
+      component: Home,
+      props: {
+        name: 'John Doe'
+      }
+    }
+  ]
+});
+```
 
 ## Lifecycle hooks
 
@@ -107,6 +140,37 @@ class Welcome extends Component {
 
   afterDestroy() {
     // The component is removed from the DOM
+  }
+}
+```
+
+## Update the view
+
+Updating the view manually during state changes is much faster than using a virtual DOM with diff algorithms.
+
+The following example updates the UI every second.
+
+```js
+class Clock extends Component {
+  constructor(props) {
+    super(props);
+
+    const element = document.getElementById('time');
+    this.timer = setInterval(() => {
+      element.textContent = new Date().toLocaleTimeString();
+    }, 1000);
+  }
+
+  render() {
+    return (
+      <h2>
+        It is <span id="time">{new Date().toLocaleTimeString()}</span>.
+      </h2>
+    );
+  }
+
+  afterRender() {
+    clearInterval(this.timer);
   }
 }
 ```

@@ -1,14 +1,8 @@
-# Store
+<!-- markdownlint-disable MD041 -->
 
-The component store is a [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) object declared locally in the component itself as a class property.
+The component store is a [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) object declared locally in the component itself as a class property. Components can view, set and get data in their store and also get data from another component. The store is accessible in the whole context of the Component class, including the lifecycle hooks.
 
-Components can view, set and get data in their store and also get data from another component.
-
-The store is accessible in the whole context of the Component class, including the lifecycle hooks.
-
-## Store methods​
-
-<!-- TODO:  store is not a method -->
+## Store property
 
 ### store
 
@@ -33,9 +27,11 @@ class Home extends Component {
 }
 ```
 
+## Store methods​
+
 ### setStore
 
-Add data to the store of the current component.
+Add data to the store of the component.
 
 **Signature:**
 
@@ -47,7 +43,7 @@ setStore(data: object): void
 
 | Parameter |   Type   | Description                                                                     |
 | --------- | :------: | ------------------------------------------------------------------------------- |
-| `data`    | `object` | The data to add in the store. Each keys will be added associated to their value |
+| `data`    | `object` | The data to add to the store. Each key will be added associated with its value. |
 
 **Example:**
 
@@ -57,8 +53,7 @@ class Home extends Component {
     super(props);
 
     this.setStore({
-      name: 'John Doe',
-      age: 42
+      name: 'John Doe'
     });
   }
 }
@@ -68,14 +63,13 @@ The JSON representation of the component store will be:
 
 ```json
 {
-  "name": "John Doe",
-  "age": 42
+  "name": "John Doe"
 }
 ```
 
 ### getStore
 
-Get the data associated to the key in the store of the current component or in another component if the optional `path` parameter is specifiated.
+Get the data associated with the key in the component store or in another component if the optional `path` parameter is specified.
 
 **Signature:**
 
@@ -101,10 +95,10 @@ class Home extends Component {
   constructor(props) {
     super(props);
 
-    // Store key "name" from the current component
+    // The "name" key in the component store
     this.getStore('name');
 
-    // Store key "name" from the component with the path "/about"
+    // The "name" key in the external component "/about"
     this.getStore('name', '/about');
   }
 }

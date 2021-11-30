@@ -1,18 +1,18 @@
-# Router
+<!-- markdownlint-disable MD041 -->
 
 ## Getting started
 
 ```js
 // 1. Define components.
-// The "component" can either be an Class Component or a Function component.
+// The "component" can either be a Function component or a Class Component.
 // These can be imported from other files.
-class Home extends Component {
-  render() {
-    return <h2>Home</h2>;
-  }
+function Home() {
+  return <h2>Home</h2>;
 }
-function About() {
-  return <h2>About</h2>;
+class About extends Component {
+  render() {
+    return <h2>About</h2>;
+  }
 }
 
 // 2. Define routes.
@@ -39,9 +39,9 @@ You can also check out the live example on [CodeSandbox](https://codesandbox.io)
 
 ## Dynamic Routing
 
-Dynamic routes can be achieved by dynamic segments declared in the route `path`. Dynamic segments start with a colon. You can have multiple segments in the same route, and they will map to corresponding fields on `this.route.params` in the component class.
+Dynamic routes can be achieved by dynamic segments declared in the `path` of the route. Dynamic segments start with a colon. You can have multiple segments in the same route, and they will mapped to the corresponding fields on `this.route.params` in the component class.
 
-In addition to `this.route.params`, the `this.route` object also exposes other useful information such as `this.route.path` (current path in the URL), $route.hash, etc. You can check out the full details in the [Component reference](Component.md#Component-route-data).
+In addition to `this.route.params`, the `this.route` object also exposes other useful information such as `this.route.path` (current path in URL). You can see all the details in the [Component reference](Component.md#Component-route-data).
 
 ```js
 const routes = [
@@ -54,7 +54,7 @@ const routes = [
 
 ### Not found route
 
-If no road path matches, the current component is automatically destroyed. To display a template instead, declare a component **without** the `path` in the route configuration passed to the app instance.
+If no route path matches, the active component is automatically destroyed. To display a template instead, declare a component **without** the `path` in the route configuration passed to the app instance.
 
 ```js
 function NotFound() {
@@ -72,7 +72,7 @@ const routes = [
 
 ### Link component
 
-Costro exposes the `Link` component to create links that matches route path in template, we use the custom component `<Link>`. This allows the router to change the url without reloading the page.
+We use the `<Link>` custom component to create links that match route path in the template. This allows the router to change the url without reloading the page.
 
 **Import**
 
@@ -83,21 +83,25 @@ import { Link } from 'costro';
 **Signature:**
 
 ```ts
-Link(
-  {
-    to,
-    children = [],
-    ...attrs
-  }: {
-    to: string
-    children: any[]
-    attrs: {
-      [key: string]: string
-    },
-  },
-  isHtml: boolean = false
-): HTMLElement | string;
+export declare function Link(options: Options, isHtml: boolean): HTMLElement | string;
+
+type Options = {
+  to: string;
+  children: any[];
+  attrs: {
+    [key: string]: string;
+  };
+};
 ```
+
+**Parameters**
+
+| Parameter        |           Type            | Description                      |
+| ---------------- | :-----------------------: | -------------------------------- |
+| options.to       |         `String`          | Route path                       |
+| options.children | `(HTMLElement\|String)[]` | The children of the element      |
+| options.attrs    |        `...Object`        | The attributes of the element    |
+| isHtml           |         `Boolean`         | The function is called from HTML |
 
 **Return**
 
@@ -109,10 +113,7 @@ Simple link element
 
 ```js
 <Link to="/about">About</Link>
-
-// will render
-
-<a href="/about">About</a>
+// <a href="/about">About</a>
 ```
 
 Link element with attributes and children.
@@ -121,10 +122,7 @@ Link element with attributes and children.
 <Link to="/about" class="link" data-status>
   <span>About</span>
 </Link>
-
-// will render
-
-<a href="/about" class="link" data-status><span>About</span></a>
+// <a href="/about" class="link" data-status><span>About</span></a>
 ```
 
 #### Links in template string
@@ -139,10 +137,7 @@ Simple link element
   },
   true
 )}`;
-
-// will render
-
-<a href="/about">About</a>;
+// <a href="/about">About</a>;
 ```
 
 Link element with attributes and children.
@@ -157,17 +152,12 @@ Link element with attributes and children.
   },
   true
 )}`;
-
-// will render
-
-<a href="/about" class="link" data-status>
-  <span>About</span>
-</a>;
+// <a href="/about" class="link" data-status><span>About</span></a>;
 ```
 
-## navigate
+### navigate
 
-Costro exposes the `navigate` component to trigger navigation changes. it can be used with event handling (`onClick`) or anywhere in component Function or Class.
+We use the `navigate` function to trigger navigation changes. It can be used with event handling or anywhere in component.
 
 **Import**
 
@@ -181,13 +171,13 @@ import { navigate } from 'costro';
 navigate(to: string): void;
 ```
 
-### Navigate in event handling
+#### Navigate in event handling
 
 ```jsx
 <button onClick={() => navigate('/about')}>About</button>
 ```
 
-### Navigate in the component
+#### Navigate in the component
 
 ```js
 class Home extends Component {
@@ -241,5 +231,3 @@ location / {
   try_files $uri $uri/ /index.html;
 }
 ```
-
-## Passing Props to Route Components

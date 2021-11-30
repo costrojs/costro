@@ -11,7 +11,7 @@ Thanks for being interesting on Costro! Before submitting your contribution, be 
 2. After cloning the repository, run `npm install` at the root of the repository.
 3. To start the development server, run `npm run dev`.
 
-List of NPM scripts available:
+List of npm scripts available:
 
 **Development**
 
@@ -35,13 +35,13 @@ npm run test:types
 # Run Markdown linter
 npm run test:markdown
 
-# Run unit tests (needs npm run build before)
+# Run unit tests (⚠️ needs npm run build before)
 npm run test:unit
 
-# Run fixtures tests (needs npm run build before)
+# Run fixtures tests (⚠️ needs npm run build before)
 npm run test:fixtures
 
-# Run all tests (eslint, types, markdown, build, unit, fixtures)
+# Run all tests (eslint, types, markdown, unit, fixtures)
 npm run test
 ```
 
@@ -62,7 +62,6 @@ npm run build
 ## Project structure
 
 - `./config` - Contains configuration files for ESLint, Jest, Prettier and Rollup.
-- `./docs` - Contains the documentation files for the GitHub Wiki.
 - `./src` - Contains the source code. The codebase is written in `ES2015` in TypeScript.
 - `./tests/fixtures`- Contains fixtures and a demo build with [webpack](https://webpack.js.org).
 - `./tests/unit`- Contains all tests. The unit tests are written with [Jest](https://jestjs.io).
@@ -70,7 +69,7 @@ npm run build
 
 ## Pull requests
 
-You can learn how to work on your first pull request from this series of free video: [How to Contribute to an Open Source project on GitHub](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github)
+You can learn how to work on your first pull request from this series of free video: [How to contribute to an open source project on GitHub](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github)
 
 To request a new feature or improvement, you can submit an issue with the [feature template](https://github.com/yoriiis/costro/issues/new?template=feature_request.md).
 
@@ -84,7 +83,7 @@ Please ensure the following is done when submitting a pull request:
 
 ## Tests
 
-All tests are located in the `./tests/unit` folder.
+All unit tests are located in the `./tests/unit` folder.
 
 ```bash
 # Watch while writing tests

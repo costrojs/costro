@@ -1,4 +1,4 @@
-# Application
+<!-- markdownlint-disable MD041 -->
 
 ## Creating an Application Instance
 
@@ -20,22 +20,18 @@ const app = new App({
 
 **Signature:**
 
+<!-- prettier-ignore -->
 ```ts
-App({
-  target,
-  routes,
-  mode = 'hash'
-}: {
+export declare class App {
+  constructor(options: Options)
+}
+
+type Options = {
   target: HTMLElement
   routes: RouteConfig[]
   mode: string
-});
-```
+};
 
-Type declaration for RouteConfig:
-
-<!-- prettier-ignore -->
-```ts
 type RouteConfig = {
   path: string
   component: Component
@@ -43,10 +39,10 @@ type RouteConfig = {
 };
 ```
 
-**Parameter**
+**Parameters**
 
 | Parameter |      Type       | Description                                    |
 | --------- | :-------------: | ---------------------------------------------- |
-| target    |  `HTMLElement`  | Unique `HTMLElement` to build the application  |
-| routes    | `RouteConfig[]` | Route definition list                          |
+| target    |  `HTMLElement`  | Unique `HTMLElement` to build the application. |
+| routes    | `RouteConfig[]` | Route definition. list                         |
 | mode      |    `string`     | Router mode (`hash\|history`). Default `hash`. |

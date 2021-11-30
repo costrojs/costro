@@ -49,5 +49,39 @@ jobs:
       - name: Test Jest
         run: npm run test:unit
 
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v2
+        if: github.ref == 'refs/heads/main' &&
+            github.repository == 'yoriiis/costro' &&
+            github.event_name != 'pull_request'
+        with:
+          name: coverage
+          path: coverage
+
       - name: Test Fixtures
         run: npm run test:fixtures
+
+  deploy-coverage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: build
+    if: success() &&
+        github.ref == 'refs/heads/main' &&
+        github.repository == 'yoriiis/costro' &&
+        github.event_name != 'pull_request'
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download coverage artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: coverage
+          # The path is mandatory with actions/download-artifact@v2
+          # https://github.com/actions/download-artifact#compatibility-between-v1-and-v2
+          path: coverage
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: 'coverage/lcov.info'

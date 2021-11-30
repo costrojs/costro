@@ -1,4 +1,4 @@
-# Template Syntax
+<!-- markdownlint-disable MD041 -->
 
 Costro templates can be write in template string or with JSX, according to your needs.
 

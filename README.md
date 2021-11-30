@@ -1,36 +1,37 @@
 # Costro
 
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/yoriiis/costro/Build/main?style=for-the-badge) [![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/costro?color=%23ff5627&style=for-the-badge)](https://www.jsdelivr.com/package/npm/costro)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/yoriiis/costro/CI/main?style=for-the-badge) [![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/costro?color=ff236d&style=for-the-badge)](https://www.jsdelivr.com/package/npm/costro)
 
-Components, Router and Store in 3Kb
+Create web applications with **Co**mponents, **St**ore and **Ro**uter.
+A single light framework with everything you really need in 3KB!
 
-## What is `Costro`?
-
-If you have questions about anything related to Costro, you're always welcome to ask on [GitHub Discussions](https://github.com/yoriiis/costro/discussions).
+It uses modern JavaScript to be as light as possible and therefore only works on the latest version of modern browsers (e.g. Chrome, Firefox, Edge, Safari, Opera).
 
 ## Features
 
-- Function and Class Component
-- Local and global store
-- Router
-- Template string and JSX
-- No need for virtual dom
-- Only 3Kb
+- [**Components**](https://github.com/yoriiis/costro/wiki/Component) - Create function and class component.
+- [**Store**](https://github.com/yoriiis/costro/wiki/Store) - Access component store from any component.
+- [**Router**](https://github.com/yoriiis/costro/wiki/Router) - Map components to the routes.
+- [**Lifecycle hooks**](https://github.com/yoriiis/costro/wiki/Component#Lifecycle-hooks) - Act throughout the life cycle of your components.
+- [**Props**](https://github.com/yoriiis/costro/wiki/Component#Props) - Inject props into components.
+- [**Template string or JSX**](https://github.com/yoriiis/costro/wiki/Template-syntax) - Write your templates as you want.
+- [**JSX compiler**](<(https://github.com/yoriiis/costro/wiki/Template-syntax)>) - Transforms JSX syntax _(only 1KB)_
+- [**No virtual DOM**](TODO) - Manually updating the view when the state changes is much faster
 
-## Getting started
+## Documentation
 
-See the [Wiki](https://github.com/yoriiis/costro/wiki) for full documentation and examples.
+You can find the Costro documentation on the [Wiki](https://github.com/yoriiis/costro/wiki).
 
-## Browser support
+## Questions
 
-Costro supports the latest 2 versions of most modern browsers (Chrome, Firefox, Edge, Safari and Opera).
+For questions and support please use the [GitHub Discussions](https://github.com/yoriiis/costro/discussions). The list of issues in this repository is exclusively for bug reporting and feature requests.
 
 ## Used by
 
-- [Télé-Loisirs](https://www.programme-tv.net)
+- [Prisma Media](https://www.prismamedia.com)
 
 ## Licence
 
-Costro is licensed under the [MIT License](https://opensource.org/licenses/MIT). Created with &#9825; by [@yoriiis](http://github.com/yoriiis).
+[MIT](https://opensource.org/licenses/MIT)
 
 Copyright (c) 2021-present, Yoriiis (Joris DANIEL)
