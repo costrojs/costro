@@ -174,25 +174,23 @@ export default class App {
 		previousPath?: null | string
 	}) {
 		const route = this.getRouteMatch(currentPath)
+		if (route) {
+			this.currentRoute = route
 
-		if (!route && this.currentRoute) {
+			if (previousPath) {
+				this.previousRoute = this.getRouteMatch(previousPath)
+				this.previousRoute && this.destroyComponent()
+			}
+
+			this.createComponent()
+		} else if (this.currentRoute) {
 			console.info(`App::onRouteChange | Unknown route "${currentPath}"`)
 
 			this.previousRoute = this.currentRoute
 			this.currentRoute = undefined
 
 			this.destroyComponent()
-			return
 		}
-
-		this.currentRoute = route
-
-		if (previousPath) {
-			this.previousRoute = this.getRouteMatch(previousPath)
-			this.previousRoute && this.destroyComponent()
-		}
-
-		this.createComponent()
 	}
 
 	/**
