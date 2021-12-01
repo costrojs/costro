@@ -18,6 +18,8 @@ const app = new App({
 });
 ```
 
+Try it on [CodeSandbox](https://codesandbox.io).
+
 **Signature:**
 
 <!-- prettier-ignore -->
