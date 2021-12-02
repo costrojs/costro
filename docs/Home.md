@@ -18,7 +18,7 @@ Costro does not use virtual DOM because it is, by definition, slower than carefu
 
 > Virtual DOM is pure overhead.
 > -- <cite>[Rich Harris](https://svelte.dev/blog/virtual-dom-is-pure-overhead)</cite>
-
+>
 > Virtual DOM is ultimately a round-about way of performing DOM updates.
 > -- <cite>[Hajime Yamasaki Vukelic](https://medium.com/@hayavuk/why-virtual-dom-is-slower-2d9b964b4c9e)</cite>
 
