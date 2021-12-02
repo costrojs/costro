@@ -46,13 +46,7 @@ export interface Attributes {
 	[key: string]: string
 }
 
-export type onRouteChangeFunction = ({
-	currentPath,
-	previousPath
-}: {
-	currentPath: string
-	previousPath: null | string
-}) => void
+export type onRouteChangeFunction = (currentPath: string) => void
 
 export type privateGetExternalStore = (key: string, path: string) => object | undefined | null
 

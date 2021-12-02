@@ -4,9 +4,7 @@ export default class Location {
 	callback: onRouteChangeFunction
 	mode: string
 	isHashMode: boolean
-	defaultPath: string
 	currentPath: null | string
-	previousPath: null | string
 
 	/**
 	 * @constructor
@@ -18,11 +16,7 @@ export default class Location {
 		this.mode = mode
 		this.isHashMode = this.mode === 'hash'
 
-		// The getPath function can returns an empty string and not matched the "/" path
-		this.defaultPath = '/'
-
 		this.currentPath = this.getPath()
-		this.previousPath = null
 
 		this.onRouteChange = this.onRouteChange.bind(this)
 	}
@@ -41,25 +35,12 @@ export default class Location {
 		window.addEventListener(this.isHashMode ? 'hashchange' : 'popstate', this.onRouteChange)
 	}
 
-	onRouteChange = (e: Event) => {
-		this.previousPath = this.isHashMode
-			? this.getPreviousPath(e as HashChangeEvent)
-			: this.currentPath
-		this.currentPath = this.getPath()
-
-		this.callback({
-			currentPath: this.currentPath,
-			previousPath: this.previousPath
-		})
-	}
-
 	/**
-	 * Get the previous path
-	 * @param {Event} e Event data
-	 * @returns {(String|null)} Previous route or default hash or null
+	 * On route change
 	 */
-	getPreviousPath(e: HashChangeEvent): string | null {
-		return e && e.oldURL ? e.oldURL.split('#')[1] || this.defaultPath : null
+	onRouteChange() {
+		this.currentPath = this.getPath()
+		this.callback(this.currentPath)
 	}
 
 	/**
@@ -73,7 +54,8 @@ export default class Location {
 			const href = window.location.href
 			const index = href.indexOf('#')
 
-			return index >= 0 ? href.slice(index + 1) : this.defaultPath
+			// In case of empty string, return "/" to match this path
+			return index >= 0 ? href.slice(index + 1) : '/'
 		} else {
 			return window.location.pathname
 		}
@@ -84,18 +66,13 @@ export default class Location {
 	 * @param {String} path New path
 	 */
 	setPath(path: string) {
-		this.previousPath = this.getPath()
 		this.currentPath = path
 
 		if (this.isHashMode) {
-			window.location.hash = path
+			window.location.hash = this.currentPath
 		} else {
 			window.history.pushState({ path: this.currentPath }, '', `${path}`)
-
-			this.callback({
-				currentPath: this.currentPath,
-				previousPath: this.previousPath
-			})
+			this.callback(this.currentPath)
 		}
 	}
 
@@ -104,8 +81,6 @@ export default class Location {
 	 */
 	destroy() {
 		window.removeEventListener(this.isHashMode ? 'hashchange' : 'popstate', this.onRouteChange)
-
 		this.currentPath = null
-		this.previousPath = null
 	}
 }

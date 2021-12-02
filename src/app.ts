@@ -42,13 +42,14 @@ export default class App {
 			throw new Error(`App::constructor | Unknown mode "${mode}"`)
 		}
 
+		this.onNavigate = this.onNavigate.bind(this)
+		this.onClickOnApp = this.onClickOnApp.bind(this)
+
 		this.location = new Location(this.onRouteChange.bind(this), this.mode)
 		this.location.init()
 
 		this.addEvents()
-		this.onRouteChange({
-			currentPath: this.location.getPath()
-		})
+		this.onRouteChange(this.location.getPath())
 	}
 
 	/**
@@ -135,20 +136,18 @@ export default class App {
 
 	/**
 	 * On navigate event
-	 * Function is declared on constructor for private declaration without binding
 	 * @param {Event}  e Event data
 	 */
-	onNavigate = (e: Event) => {
+	onNavigate(e: Event) {
 		const { to } = (<CustomEvent>e).detail
 		typeof to === 'string' && this.location.setPath(to)
 	}
 
 	/**
 	 * On click on app event
-	 * Function is declared on constructor for private declaration without binding
 	 * @param {Event}  e Event data
 	 */
-	onClickOnApp = (e: Event) => {
+	onClickOnApp(e: Event) {
 		const target = e.target as HTMLElement
 
 		// @ts-ignore
@@ -162,34 +161,25 @@ export default class App {
 
 	/**
 	 * On route change event
-	 * @param {Object} options
-	 * @param {Object} options.currentPath Current path from location
-	 * @param {(Object|null)} options.previousPath Previous path from location
+	 * @param {Object} currentPath Current path from location
 	 */
-	onRouteChange({
-		currentPath,
-		previousPath = null
-	}: {
-		currentPath: string
-		previousPath?: null | string
-	}) {
+	onRouteChange(currentPath: string) {
 		const route = this.getRouteMatch(currentPath)
 		if (route) {
-			this.currentRoute = route
-
-			if (previousPath) {
-				this.previousRoute = this.getRouteMatch(previousPath)
-				this.previousRoute && this.destroyComponent()
+			if (this.currentRoute) {
+				if (route.path === this.currentRoute.path) {
+					// The route is already rendered, stop
+					return
+				} else {
+					this.destroyCurrentRoute()
+				}
 			}
 
+			this.currentRoute = route
 			this.createComponent()
 		} else if (this.currentRoute) {
-			console.info(`App::onRouteChange | Unknown route "${currentPath}"`)
-
-			this.previousRoute = this.currentRoute
-			this.currentRoute = undefined
-
-			this.destroyComponent()
+			// The route is unknown
+			this.destroyCurrentRoute()
 		}
 	}
 
@@ -216,6 +206,15 @@ export default class App {
 		// If any route is found, check if the noud found route exist
 		const notFoundRoute = this.routes.get('*')
 		return notFoundRoute && notFoundRoute
+	}
+
+	/**
+	 * Destroy current route
+	 */
+	destroyCurrentRoute() {
+		this.previousRoute = this.currentRoute
+		this.currentRoute = undefined
+		this.destroyComponent()
 	}
 
 	/**

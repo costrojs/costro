@@ -27,7 +27,7 @@ const getInstance = () => {
 }
 
 beforeEach(() => {
-	// Restet location because each test set it manually
+	// Reset location because each test set it manually
 	location = null
 })
 
@@ -47,9 +47,7 @@ describe('Location ', () => {
 			expect(location.callback).toBe(callback)
 			expect(location.mode).toBe('hash')
 			expect(location.isHashMode).toBe(true)
-			expect(location.defaultPath).toBe('/')
 			expect(location.currentPath).toBe('/document-fragment')
-			expect(location.previousPath).toBe(null)
 		})
 	})
 
@@ -120,69 +118,8 @@ describe('Location ', () => {
 			}
 			location.onRouteChange(event)
 
-			expect(location.getPreviousPath).toHaveBeenCalledWith(event)
 			expect(location.currentPath).toBe('/document-fragment')
-			expect(location.callback).toHaveBeenCalledWith({
-				currentPath: '/document-fragment',
-				previousPath: null
-			})
-		})
-
-		it('Should call the onRouteChange with hash mode', () => {
-			location.getPath.mockRestore()
-
-			location.getPreviousPath = jest.fn().mockReturnValue(null)
-			location.getPath = jest.fn().mockReturnValue('/document-fragment')
-			location.callback = jest.fn()
-
-			const event = {
-				preventDefault: jest.fn()
-			}
-			location.isHashMode = false
-			location.currentPath = '/string'
-			location.onRouteChange(event)
-
-			expect(location.getPreviousPath).not.toHaveBeenCalled()
-			expect(location.currentPath).toBe('/document-fragment')
-			expect(location.callback).toHaveBeenCalledWith({
-				currentPath: '/document-fragment',
-				previousPath: '/string'
-			})
-		})
-	})
-
-	describe('Location getPreviousPath', () => {
-		beforeEach(() => {
-			jest.spyOn(Location.prototype, 'getPath').mockImplementation(() => {
-				/* Empty */
-			})
-
-			location = getInstance()
-		})
-
-		it('Should call the getPreviousPath with a previous hash', () => {
-			const event = {
-				oldURL: 'http://localhost/#/document-fragment'
-			}
-			const result = location.getPreviousPath(event)
-
-			expect(result).toBe('/document-fragment')
-		})
-
-		it('Should call the getPreviousPath without previous hash but a default hash', () => {
-			const event = {
-				oldURL: 'http://localhost/'
-			}
-			const result = location.getPreviousPath(event)
-
-			expect(result).toBe('/')
-		})
-
-		it('Should call the getPreviousPath without the event oldURL key', () => {
-			const event = {}
-			const result = location.getPreviousPath(event)
-
-			expect(result).toBe(null)
+			expect(location.callback).toHaveBeenCalledWith('/document-fragment')
 		})
 	})
 
@@ -240,8 +177,6 @@ describe('Location ', () => {
 		})
 
 		afterEach(() => {
-			expect(location.getPath).toHaveBeenCalled()
-			expect(location.previousPath).toBe('/string')
 			expect(location.currentPath).toBe('/document-fragment')
 		})
 
@@ -277,10 +212,7 @@ describe('Location ', () => {
 				'',
 				'/document-fragment'
 			)
-			expect(location.callback).toHaveBeenCalledWith({
-				currentPath: '/document-fragment',
-				previousPath: '/string'
-			})
+			expect(location.callback).toHaveBeenCalledWith('/document-fragment')
 		})
 	})
 
@@ -293,11 +225,6 @@ describe('Location ', () => {
 			location = getInstance()
 
 			window.removeEventListener = jest.fn()
-		})
-
-		afterEach(() => {
-			expect(location.currentPath).toBe(null)
-			expect(location.previousPath).toBe(null)
 		})
 
 		it('Should call the destroy with hash mode', () => {
