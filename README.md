@@ -1,6 +1,6 @@
 # Costro
 
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/yoriiis/costro/CI/main?style=for-the-badge) [![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/costro?color=ff236d&style=for-the-badge)](https://www.jsdelivr.com/package/npm/costro)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/yoriiis/costro/CI/main?style=for-the-badge) [![Coverage Status](https://img.shields.io/coveralls/github/yoriiis/costro?style=for-the-badge)](https://coveralls.io/github/yoriiis/costro?branch=main) [![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/costro?color=ff236d&style=for-the-badge)](https://www.jsdelivr.com/package/npm/costro)
 
 Build web applications with **Co**mponents, **St**ore and **Ro**uter.
 A single light framework with everything you really need in 3 KB!
