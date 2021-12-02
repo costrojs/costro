@@ -758,13 +758,17 @@ describe('App', () => {
 					name: 'John Doe'
 				}
 			}
+			jest.spyOn(app.currentRoute.component, 'call')
 
 			const result = app.getComponentView()
 
 			expect(app.updateComponentRouteData).not.toHaveBeenCalled()
-			expect(app.currentRoute.component).toHaveBeenCalledWith({
-				name: 'John Doe'
-			})
+			expect(app.currentRoute.component.call).toHaveBeenCalledWith(
+				app.currentRoute.component,
+				{
+					name: 'John Doe'
+				}
+			)
 			expect(result).toStrictEqual(<div>Component</div>)
 		})
 	})
