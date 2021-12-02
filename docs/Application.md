@@ -18,7 +18,7 @@ const app = new App({
 });
 ```
 
-Try it on [CodeSandbox](https://codesandbox.io).
+Try it on [CodeSandbox](https://codesandbox.io/s/costro-application-instance-u1gqx).
 
 **Signature:**
 

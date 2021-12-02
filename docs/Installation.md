@@ -14,8 +14,6 @@ You can use Costro via the CDN links and a `<script>` tag. The library will be r
 <script src="https://cdn.jsdelivr.net/npm/costro@1" crossorigin></script>
 ```
 
-Try it on [CodeSandbox](https://codesandbox.io).
-
 ## Download and self host
 
 If you prefer self host the JavaScript file, you can download it from the CDN and host it using your own web server. You can then include it using a `<script>` tag.

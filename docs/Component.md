@@ -24,8 +24,6 @@ class Welcome extends Component {
 }
 ```
 
-Try it on [CodeSandbox](https://codesandbox.io).
-
 ## Transform a Function to a Class
 
 You can transform a function component to a class component with the following steps:
@@ -76,7 +74,7 @@ new App({
 });
 ```
 
-Try it on [CodeSandbox](https://codesandbox.io).
+Try it on [CodeSandbox](https://codesandbox.io/s/costro-props-9noop).
 
 ## Lifecycle hooks
 
@@ -84,7 +82,7 @@ Lifecycle hooks are available on **Class Components** only.
 
 We can declare special methods on the component class to run some code when a component is rendered or destroyed.
 
-Try it on [CodeSandbox](https://codesandbox.io).
+Try it on [CodeSandbox](https://codesandbox.io/s/costro-lifecycle-5v9d8).
 
 ### beforeRender
 
@@ -158,15 +156,6 @@ The following example updates the UI every second.
 
 ```js
 class Clock extends Component {
-  constructor(props) {
-    super(props);
-
-    const element = document.getElementById('time');
-    this.timer = setInterval(() => {
-      element.textContent = new Date().toLocaleTimeString();
-    }, 1000);
-  }
-
   render() {
     return (
       <h2>
@@ -176,12 +165,19 @@ class Clock extends Component {
   }
 
   afterRender() {
+    const element = document.getElementById('time');
+    this.timer = setInterval(() => {
+      element.textContent = new Date().toLocaleTimeString();
+    }, 1000);
+  }
+
+  beforeDestroy() {
     clearInterval(this.timer);
   }
 }
 ```
 
-Try it on [CodeSandbox](https://codesandbox.io).
+Try it on [CodeSandbox](https://codesandbox.io/s/costro-clock-4tilh).
 
 ## Component route data
 
@@ -223,4 +219,4 @@ class Person extends Component {
 }
 ```
 
-Try it on [CodeSandbox](https://codesandbox.io).
+Try it on [CodeSandbox](https://codesandbox.io/s/costro-dynamic-segments-3q8up).

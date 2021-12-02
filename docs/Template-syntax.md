@@ -24,6 +24,8 @@ class About extends Component {
 }
 ```
 
+Try it on [CodeSandbox](https://codesandbox.io/s/costro-template-string-kyjl1).
+
 ## JSX ⚡
 
 Out of the box, Costro provides the `createElement()` and `Fragment()` functions to transforms JSX syntax into valid DOM elements.
@@ -38,6 +40,8 @@ To further optimize the size of the generated file and pay homage to the [hypers
 > 💡 JSX is recommended when building large scale applications with Costro.
 >
 > Costro is also compatible with the [jsx-dom](https://github.com/proteriax/jsx-dom) package.
+
+Try it on [CodeSandbox](https://codesandbox.io/s/costro-jsx-template-k5zfs).
 
 **Import**
 
@@ -83,6 +87,8 @@ class About extends Component {
 ### SVG inside JSX
 
 Costro applies the SVG attributes as they are written. This means that you can copy and paste unmodified SVG directly into your code and have them work right away.
+
+Try it on [CodeSandbox](https://codesandbox.io/s/costro-svg-2ek63).
 
 ### Babel configuration
 

@@ -104,4 +104,4 @@ class Home extends Component {
 }
 ```
 
-Try it on [CodeSandbox](https://codesandbox.io).
+Try it on [CodeSandbox](https://codesandbox.io/s/costro-store-vf0v2).

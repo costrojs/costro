@@ -35,7 +35,7 @@ const app = new App({
 });
 ```
 
-Try it on [CodeSandbox](https://codesandbox.io).
+Try it on [CodeSandbox](https://codesandbox.io/s/costro-router-x8j4f).
 
 ## Dynamic Routing
 
@@ -52,7 +52,7 @@ const routes = [
 ];
 ```
 
-Try it on [CodeSandbox](https://codesandbox.io).
+Try it on [CodeSandbox](https://codesandbox.io/s/costro-dynamic-segments-3q8up).
 
 ### Not found route
 
@@ -70,7 +70,7 @@ const routes = [
 ];
 ```
 
-Try it on [CodeSandbox](https://codesandbox.io).
+Try it on [CodeSandbox](https://codesandbox.io/s/costro-not-found-g2quw).
 
 ## Linking between pages
 
@@ -129,7 +129,7 @@ Link element with attributes and children.
 // <a href="/about" class="link" data-status><span>About</span></a>
 ```
 
-Try it on [CodeSandbox](https://codesandbox.io).
+Try it on [CodeSandbox](https://codesandbox.io/s/costro-jsx-template-k5zfs).
 
 #### Links in template string
 
@@ -161,7 +161,7 @@ Link element with attributes and children.
 // <a href="/about" class="link" data-status><span>About</span></a>;
 ```
 
-Try it on [CodeSandbox](https://codesandbox.io).
+Try it on [CodeSandbox](https://codesandbox.io/s/costro-template-string-kyjl1).
 
 ### navigate
 
@@ -199,7 +199,7 @@ class Home extends Component {
 }
 ```
 
-Try it on [CodeSandbox](https://codesandbox.io).
+Try it on [CodeSandbox](https://codesandbox.io/s/costro-navigate-jys37).
 
 ## History mode
 
@@ -215,7 +215,7 @@ const app = new App({
 });
 ```
 
-Try it on [CodeSandbox](https://codesandbox.io).
+Try it on [CodeSandbox](https://codesandbox.io/s/costro-history-yd79x).
 
 When using `history` mode, you need to add a fallback route to your server. If the URL does not match any static element, it must serve the same `index.html` page that your application resides on.
 
