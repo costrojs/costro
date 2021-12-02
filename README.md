@@ -2,8 +2,8 @@
 
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/yoriiis/costro/CI/main?style=for-the-badge) [![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/costro?color=ff236d&style=for-the-badge)](https://www.jsdelivr.com/package/npm/costro)
 
-Create web applications with **Co**mponents, **St**ore and **Ro**uter.
-A single light framework with everything you really need in 3KB!
+Build web applications with **Co**mponents, **St**ore and **Ro**uter.
+A single light framework with everything you really need in 3 KB!
 
 It uses modern JavaScript to be as light as possible and therefore only works on the latest version of modern browsers (e.g. Chrome, Firefox, Edge, Safari, Opera).
 
@@ -12,7 +12,7 @@ It uses modern JavaScript to be as light as possible and therefore only works on
 - [**Components**](https://github.com/yoriiis/costro/wiki/Component) - Create function and class component.
 - [**Store**](https://github.com/yoriiis/costro/wiki/Store) - Access component store from any component.
 - [**Router**](https://github.com/yoriiis/costro/wiki/Router) - Map components to the routes.
-- [**Lifecycle hooks**](https://github.com/yoriiis/costro/wiki/Component#Lifecycle-hooks) - Act throughout the life cycle of your components.
+- [**Lifecycle hooks**](https://github.com/yoriiis/costro/wiki/Component#Lifecycle-hooks) - Take advantage of component lifecycle events.
 - [**Props**](https://github.com/yoriiis/costro/wiki/Component#Props) - Inject props into components.
 - [**Template string or JSX**](https://github.com/yoriiis/costro/wiki/Template-syntax) - Write your templates as you want.
 - [**JSX compiler**](<(https://github.com/yoriiis/costro/wiki/Template-syntax)>) - Transforms JSX syntax _(only 1KB)_

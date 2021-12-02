@@ -33,6 +33,8 @@ class Home extends Component {
 
 Add data to the store of the component.
 
+> 💡 When the key already exist in the Map object, Costro will perform deep cloning of the data.
+
 **Signature:**
 
 ```ts
