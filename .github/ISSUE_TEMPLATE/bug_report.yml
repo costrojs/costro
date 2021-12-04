@@ -15,11 +15,6 @@ body:
       label: Steps to reproduce
       description: |
         Steps to reproduce the problem.
-      placeholder: |
-        For example:
-        1. Enable plugin '...'
-        2. Click on the '...' button
-        3. See error
   - type: textarea
     validations:
       required: true
@@ -29,8 +24,7 @@ body:
   - type: textarea
     attributes:
       label: Screenshots and recordings
-      description: |
-        If applicable, add screenshots to help explain your problem
+      description: If applicable, add screenshots to help explain your problem.
   - type: textarea
     id: logs
     attributes:
@@ -50,7 +44,7 @@ body:
     id: severity
     attributes:
       label: Severity
-      description: Select the severity of this issue
+      description: Select the severity of this issue.
       options:
         - Annoyance
         - Blocking an upgrade
