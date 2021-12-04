@@ -19,7 +19,7 @@ export default function Link(
 		children?: any[]
 		to: string
 	},
-	isHtml: boolean = false
+	isHtml = false
 ): HTMLElement | string {
 	const element = document.createElement('a')
 	element.setAttribute('href', to)

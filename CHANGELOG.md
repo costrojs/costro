@@ -1,7 +1,7 @@
 # CHANGELOG
 
-## 1.0.0
+## 1.0.0-rc.0
 
 ### New features
 
-- First release of `Costro`
+- First Release Candidate of `Costro` 🚀
