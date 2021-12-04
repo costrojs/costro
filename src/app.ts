@@ -22,7 +22,7 @@ export default class App {
 		routes,
 		target
 	}: {
-		mode: string
+		mode?: 'hash' | 'history'
 		routes: Route[]
 		target: HTMLElement
 	}) {

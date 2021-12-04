@@ -15,11 +15,11 @@ export default function Link(
 		children = [],
 		...attrs
 	}: {
-		attrs: Attributes
-		children: any[]
+		attrs?: Attributes
+		children?: any[]
 		to: string
 	},
-	isHtml = false
+	isHtml: boolean = false
 ): HTMLElement | string {
 	const element = document.createElement('a')
 	element.setAttribute('href', to)

@@ -8,7 +8,7 @@ class Component {
 	__getExternalStore!: privateGetExternalStore
 
 	// @ts-ignore
-	constructor(props) {
+	constructor(props?: any) {
 		// @ts-ignore
 		this.props = props
 		this.route = {
