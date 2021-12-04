@@ -1,5 +1,5 @@
 name: Bug report
-description: Create a report to help us improve Router
+description: Create a report to help us improve Costro
 labels: 'bug'
 body:
   - type: textarea
@@ -31,27 +31,29 @@ body:
       label: Screenshots and recordings
       description: |
         If applicable, add screenshots to help explain your problem
-  - type: input
-    validations:
-      required: true
-    attributes:
-      label: Router
-      description: What version of Costro are you using?
-      placeholder: e.g. 1.0.0
-  - type: input
-    validations:
-      required: true
-    attributes:
-      label: Browser
-      description: Which browser and which version are you using?
-      placeholder: e.g. Chrome 92
-  - type: input
-    validations:
-      required: true
-    attributes:
-      label: OS
-      placeholder: e.g. macOS 11.5.2
   - type: textarea
+    id: logs
     attributes:
-      label: Additional context
-      description: Add any other context about the problem here. This can be providers, plugins, custom settings...
+      label: Logs
+      description: Please include the browser console (copy and paste log text) at the time this bug occurred.
+      render: shell
+  - type: textarea
+    id: system-info
+    attributes:
+      label: System Info
+      description: Output of `npx envinfo --system --npmPackages costro,rollup,webpack --binaries --browsers`
+      render: shell
+      placeholder: System, binaries, browsers
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: Select the severity of this issue
+      options:
+        - Annoyance
+        - Blocking an upgrade
+        - Blocking all usage of Costro
+    validations:
+      required: true

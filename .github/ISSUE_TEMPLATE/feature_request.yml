@@ -1,12 +1,7 @@
 name: Feature request
-description: Suggest a feature for Router
+description: Suggest a feature for Costro
 labels: 'feature'
 body:
-  - type: input
-    attributes:
-      label: If the feature request is for a plugin or provider, specify it here.
-      description: The name of the plugin or provider that you would like us to improve.
-      placeholder: e.g. Subtitle plugin, Youtube provider
   - type: textarea
     attributes:
       label: If the feature solves a problem you have, specify it here.
@@ -21,7 +16,7 @@ body:
   - type: textarea
     attributes:
       label: Describe alternatives you've considered
-      description: A description of any alternative solutions or features you've considered. This can also include other plugins or providers.
+      description: A description of any alternative solutions or features you've considered.
   - type: textarea
     attributes:
       label: Additional context
@@ -30,3 +25,14 @@ body:
     attributes:
       label: Related Issues
       description: Is there any open or closed issues that is related to this feature request? If so please link them below!
+  - type: dropdown
+    id: importance
+    attributes:
+      label: Importance
+      description: How important is this feature to you?
+      options:
+        - Nice to have
+        - Would make my life easier
+        - I cannot use Costro without it
+    validations:
+      required: true

@@ -71,11 +71,11 @@ npm run build
 
 You can learn how to work on your first pull request from this series of free video: [How to contribute to an open source project on GitHub](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github)
 
-To request a new feature or improvement, you can submit an issue with the [feature template](https://github.com/yoriiis/costro/issues/new?template=feature_request.md).
+To request a new feature or improvement, you can submit an issue with the [feature template](https://github.com/yoriiis/costro/issues/new?template=feature_request.yml).
 
 Keep the pull requests as small as possible, it's much easier to review. Make sure the PR only does one thing, otherwise please split it.
 
-Please ensure the following is done when submitting a pull request:
+Make sure the following is done when submitting a pull request:
 
 1. Fork [the repository](https://github.com/yoriiis/costro) and create your branch from `main`.
 1. Make sure to test your changes.
@@ -89,7 +89,7 @@ All unit tests are located in the `./tests/unit` folder.
 # Watch while writing tests
 npm run dev:unit
 
-# Run the test
+# Run the tests
 npm run test:unit
 ```
 
