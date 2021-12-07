@@ -1,5 +1,7 @@
 import link from '@src/link'
 
+const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
+
 describe('link', () => {
 	it('Should call the link function with HTML', () => {
 		const result = link(
@@ -57,6 +59,24 @@ describe('link', () => {
 		element.classList.add('btn', 'btn-info')
 		element.setAttribute('data-test', '')
 		element.innerHTML = '<span>Home</span>'
+
+		expect(result).toStrictEqual(element)
+		expect(result.isEqualNode(element)).toBe(true)
+		expect(result.outerHTML).toEqual(element.outerHTML)
+		expect(result.__customLink).toBe(true)
+	})
+
+	it('Should call the link function without HTML and SVG Element', () => {
+		const svg = document.createElementNS(SVG_NAMESPACE, 'svg')
+
+		const result = link({
+			children: [svg],
+			to: '/home'
+		})
+
+		const element = document.createElement('a')
+		element.setAttribute('href', '/home')
+		element.innerHTML = '<svg></svg>'
 
 		expect(result).toStrictEqual(element)
 		expect(result.isEqualNode(element)).toBe(true)

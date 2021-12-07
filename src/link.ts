@@ -28,7 +28,7 @@ export default function Link(
 	const fragment = document.createDocumentFragment()
 	for (let i = 0, length = children.length; i < length; i++) {
 		const child = children[i]
-		if (child instanceof HTMLElement) {
+		if (child.nodeType === Node.ELEMENT_NODE) {
 			fragment.appendChild(child)
 		} else if (typeof child === 'string') {
 			fragment.appendChild(document.createTextNode(child))
