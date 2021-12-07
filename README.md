@@ -9,22 +9,22 @@ It uses modern JavaScript to be as light as possible and therefore only works on
 
 ## Features
 
-- [**Components**](https://github.com/yoriiis/costro/wiki/Component) - Create function and class component.
-- [**Store**](https://github.com/yoriiis/costro/wiki/Store) - Access component store from any component.
-- [**Router**](https://github.com/yoriiis/costro/wiki/Router) - Map components to the routes.
-- [**Lifecycle hooks**](https://github.com/yoriiis/costro/wiki/Component#Lifecycle-hooks) - Take advantage of component lifecycle events.
-- [**Props**](https://github.com/yoriiis/costro/wiki/Component#Props) - Inject props into components.
-- [**Template string or JSX**](https://github.com/yoriiis/costro/wiki/Template-syntax) - Write your templates in a native template string or in JSX.
-- [**JSX compiler**](https://github.com/yoriiis/costro/wiki/Template-syntax#jsx-) - Transforms JSX syntax into valid DOM elements _(only 1KB)_.
-- [**No virtual DOM**](https://github.com/yoriiis/costro/wiki#virtual-dom) - Manually updating the view when the state changes is much faster.
+- [**Components**](https://yoriiis.github.io/costro/docs/component) - Create function and class component.
+- [**Store**](https://yoriiis.github.io/costro/docs/store) - Access component store from any component.
+- [**Router**](https://yoriiis.github.io/costro/docs/router) - Map components to the routes.
+- [**Lifecycle hooks**](https://yoriiis.github.io/costro/docs/component#lifecycle-hooks) - Take advantage of component lifecycle events.
+- [**Props**](https://yoriiis.github.io/costro/docs/component#props) - Inject props into components.
+- [**Template string or JSX**](https://yoriiis.github.io/costro/docs/template-syntax) - Write your templates in a native template string or in JSX.
+- [**JSX compiler**](https://yoriiis.github.io/costro/docs/template-syntax#jsx-) - Transforms JSX syntax into valid DOM elements _(only 1KB)_.
+- [**No virtual DOM**](https://yoriiis.github.io/costro/docs/intro#virtual-dom) - Manually updating the view when the state changes is much faster.
 
 ## Documentation
 
-You can find the Costro documentation and examples on the [Wiki](https://github.com/yoriiis/costro/wiki).
+You can find the Costro documentation and examples on the [GitHub Pages](https://yoriiis.github.io/costro).
 
 ## Questions
 
-For questions and support please use the [GitHub Discussions](https://github.com/yoriiis/costro/discussions). The list of issues in this repository is exclusively for bug reporting and feature requests.
+For questions and support please use the [GitHub Discussions](https://github.com/yoriiis/costro/discussions). For bug report or feature request, please use the [issues on GitHub](https://github.com/yoriiis/costro/issues).<br />Prs are also welcome!
 
 ## Used by
 
