@@ -15,7 +15,7 @@
 		"store",
 		"template-string"
 	],
-	"homepage": "https://github.com/yoriiis/costro",
+	"homepage": "https://yoriiis.github.io/costro",
 	"bugs": {
 		"url": "https://github.com/yoriiis/costro/issues"
 	},
@@ -48,8 +48,8 @@
 	"scripts": {
 		"build": "rm -rf ./dist/ && rollup --config ./config/rollup.config.js --environment ENV:production",
 		"dev": "rm -rf ./dist/ && rollup --config ./config/rollup.config.js --environment ENV:development --watch --sourcemap",
-		"dev:test": "rm -rf ./coverage/ && jest --config ./config/jest.config.js --watchAll --coverage",
 		"dev:types": "tsc --noEmit --watch",
+		"dev:unit": "rm -rf ./coverage/ && jest --config ./config/jest.config.js --watchAll --coverage",
 		"pre:publish": "npm run build && npm run tsc:d:only && npm run test",
 		"test": "npm run test:eslint && npm run test:types && npm run test:markdown && npm run test:unit && npm run test:fixtures",
 		"test:eslint": "eslint . -c ./config/.eslintrc.js --ignore-pattern node_modules --ignore-pattern dist --ignore-pattern types",

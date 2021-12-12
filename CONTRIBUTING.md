@@ -20,7 +20,7 @@ List of npm scripts available:
 npm run dev
 
 # Watch while writing tests
-npm run dev:test
+npm run dev:unit
 ```
 
 **Tests**
