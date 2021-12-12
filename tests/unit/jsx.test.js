@@ -194,6 +194,69 @@ describe('createElement', () => {
 		expect(div.outerHTML).toStrictEqual(result.outerHTML)
 	})
 
+	it('Should call the createElement function with a class and __isComponent prototype and attributes', () => {
+		class CustomComponent {
+			render() {
+				return getElement()
+			}
+		}
+		CustomComponent.prototype.__isComponent = true
+
+		const result = createElement(CustomComponent, {
+			class: 'container',
+			'data-track': true,
+			dataset: {
+				name: 'element',
+				params: 1
+			},
+			innerHTML: '<span class="span"><em class="em">Hello</em></span>',
+			style: 'align-items: center; display: flex;'
+		})
+
+		expect(result).toStrictEqual(element)
+		expect(result.isEqualNode(element)).toBe(true)
+		expect(element.outerHTML).toStrictEqual(result.outerHTML)
+	})
+
+	it('Should call the createElement function with a class and isReactComponent prototype and attributes', () => {
+		class CustomComponent {
+			render() {
+				return getElement()
+			}
+		}
+		CustomComponent.prototype.isReactComponent = {}
+
+		const result = createElement(CustomComponent, {
+			class: 'container',
+			'data-track': true,
+			dataset: {
+				name: 'element',
+				params: 1
+			},
+			innerHTML: '<span class="span"><em class="em">Hello</em></span>',
+			style: 'align-items: center; display: flex;'
+		})
+
+		expect(result).toStrictEqual(element)
+		expect(result.isEqualNode(element)).toBe(true)
+		expect(element.outerHTML).toStrictEqual(result.outerHTML)
+	})
+
+	it('Should call the createElement function with a class and __isComponent prototype and without attributes', () => {
+		class CustomComponent {
+			render() {
+				return getElement()
+			}
+		}
+		CustomComponent.prototype.__isComponent = true
+
+		const result = createElement(CustomComponent)
+
+		expect(result).toStrictEqual(element)
+		expect(result.isEqualNode(element)).toBe(true)
+		expect(element.outerHTML).toStrictEqual(result.outerHTML)
+	})
+
 	it('Should call the createElement function with a child text', () => {
 		const div = document.createElement('div')
 		div.appendChild(document.createTextNode('Hello'))
@@ -244,5 +307,19 @@ describe('Fragment', () => {
 		const result = Fragment()
 
 		expect(result).toStrictEqual(document.createDocumentFragment())
+	})
+
+	it('Should call the Fragment function with children', () => {
+		const div = document.createElement('div')
+
+		const result = Fragment({
+			children: [div, 'Hello']
+		})
+
+		const fragment = document.createDocumentFragment()
+		fragment.appendChild(document.createElement('div'))
+		fragment.appendChild(document.createTextNode('Hello'))
+
+		expect(result).toStrictEqual(fragment)
 	})
 })

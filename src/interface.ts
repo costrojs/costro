@@ -19,8 +19,9 @@ export interface Component {
 	getStore: (key: string) => object | undefined | Map<string, object>
 	prototype: {
 		__isComponent: boolean
+		isReactComponent: object
 	}
-	render: Fn
+	render: () => DocumentFragment | HTMLElement | SVGElement | string
 	route: RouteComponent
 	setStore: (data: any) => void
 }
@@ -58,6 +59,10 @@ export interface ElementAttributes {
 	[key: string]: string | Fn
 }
 
-export type createElementFunction = (
-	attributes: null | ElementAttributes
-) => HTMLElement | SVGElement
+export type createElementFunction = ({
+	children,
+	...attributes
+}: {
+	attributes?: ElementAttributes
+	children: string[] | HTMLElement[] | SVGElement[]
+}) => DocumentFragment | HTMLElement | SVGElement | string

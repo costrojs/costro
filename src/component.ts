@@ -95,4 +95,9 @@ class Component {
 // @ts-ignore
 Component.prototype.__isComponent = true
 
+// Used by jsx-dom to check if the function is a class component
+// The class will be initialized and the render function automatically called
+// @ts-ignore
+Component.prototype.isReactComponent = {}
+
 export default Component

@@ -114,7 +114,7 @@ export default class App {
 	 * @returns {Boolean} Interface type is granted
 	 */
 	isInterfaceTypeFromComponentGranted(component: Fn | Component): boolean {
-		return !!(component instanceof Function || this.isComponentClass(component))
+		return !!(typeof component === 'function' || this.isComponentClass(component))
 	}
 
 	/**

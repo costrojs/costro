@@ -1,4 +1,4 @@
-import { ElementAttributes, createElementFunction } from './interface'
+import { ElementAttributes, createElementFunction, Constructable, Component } from './interface'
 
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 const XML_NAMESPACE = 'http://www.w3.org/XML/1998/namespace'
@@ -131,10 +131,17 @@ function appendChildren(
 
 /**
  * Create the fragment from <></>
- * @returns {DocumentFragment} Document fragment
+ * @param {Object} options
+ * @param {Array} options.children The children of the fragment
+ * @returns {DocumentFragment} Document fragment with his children
  */
-function Fragment(): DocumentFragment {
+function Fragment({
+	children = []
+}: {
+	children?: string[] | HTMLElement[] | SVGElement[]
+} = {}): DocumentFragment {
 	const fragment = document.createDocumentFragment()
+	children.length && appendChildren(fragment, children)
 	return fragment
 }
 
@@ -146,10 +153,10 @@ function Fragment(): DocumentFragment {
  * @returns {(HTMLElement|null)} Element or null
  */
 function createElement(
-	tag: string | createElementFunction,
+	tag: string | createElementFunction | Constructable<Component>,
 	attributes: null | ElementAttributes,
 	...children: string[] | HTMLElement[] | SVGElement[]
-): HTMLElement | SVGElement | null {
+): DocumentFragment | HTMLElement | SVGElement | string | null {
 	let element = null
 	if (typeof tag === 'string') {
 		const isSvg = SVG_TAGS.includes(tag)
@@ -160,7 +167,7 @@ function createElement(
 			for (let i = 0, length = attributeName.length; i < length; i++) {
 				const name = attributeName[i]
 				const value = attributes[name]
-				if (name.startsWith('on') && value instanceof Function) {
+				if (name.startsWith('on') && typeof value === 'function') {
 					// @ts-ignore
 					element[name.toLowerCase()] = value
 				} else {
@@ -168,11 +175,18 @@ function createElement(
 				}
 			}
 		}
-	} else if (tag instanceof Function) {
-		element = tag(attributes || {})
+		children.length && appendChildren(element, children)
+	} else if (typeof tag === 'function') {
+		const isComponentClass = !!(
+			tag.prototype &&
+			(tag.prototype.__isComponent || tag.prototype.isReactComponent)
+		)
+		if (isComponentClass) {
+			element = new (tag as Constructable<Component>)(attributes || {}).render()
+		} else {
+			element = (tag as createElementFunction)({ ...(attributes || {}), children })
+		}
 	}
-
-	element && children.length && appendChildren(element, children)
 
 	return element
 }
