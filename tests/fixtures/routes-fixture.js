@@ -50,7 +50,7 @@ class CustomComponent1 extends Component {
 			<>
 				<Navigation />
 				<h2>Custom Component 1</h2>
-				<p>{this.props.title}</p>
+				<CustomSubComponent title={this.props.title} />
 			</>
 		)
 	}
@@ -59,6 +59,12 @@ class CustomComponent1 extends Component {
 		this.setStore({
 			name: this.props.title
 		})
+	}
+}
+
+class CustomSubComponent extends Component {
+	render() {
+		return <p>{this.props.title}</p>
 	}
 }
 
