@@ -46,11 +46,6 @@ const routeDocumentFragment = {
 	props: undefined
 }
 
-const customComponent1 = routesFixtures[2].component
-customComponent1.__isComponent = true
-const customComponent2 = routesFixtures[3].component
-customComponent2.__isComponent = true
-
 const routes = new Map([
 	[
 		'/',
@@ -69,7 +64,7 @@ const routes = new Map([
 	[
 		'/custom-component/:id/:name',
 		{
-			component: customComponent1,
+			component: routesFixtures[2].component,
 			dynamicSegments: ['id', 'name'],
 			interfaceType: null,
 			isComponentClass: true,
@@ -82,7 +77,7 @@ const routes = new Map([
 	[
 		'/custom-component-2',
 		{
-			component: customComponent2,
+			component: routesFixtures[3].component,
 			dynamicSegments: [],
 			interfaceType: null,
 			isComponentClass: true,
