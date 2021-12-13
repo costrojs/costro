@@ -119,7 +119,7 @@ function appendChildren(
 ) {
 	for (let i = 0, length = children.length; i < length; i++) {
 		const child = children[i]
-		if (typeof child === 'string') {
+		if (typeof child === 'string' || typeof child === 'number') {
 			element.appendChild(document.createTextNode(child))
 		} else if (child instanceof Node) {
 			element.appendChild(child)

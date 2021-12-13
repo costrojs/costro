@@ -1,4 +1,4 @@
-import { createElement, Fragment } from '@src/jsx'
+import { createElement, Fragment, h } from '@src/jsx'
 
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 
@@ -181,7 +181,7 @@ describe('createElement', () => {
 		expect(element.outerHTML).toStrictEqual(result.outerHTML)
 	})
 
-	it('Should call the createElement function with a tag function without attributes', () => {
+	it('Should call the createElement function with a tag function and no attributes', () => {
 		const div = document.createElement('div')
 		const tagFn = () => {
 			return div
@@ -242,7 +242,33 @@ describe('createElement', () => {
 		expect(element.outerHTML).toStrictEqual(result.outerHTML)
 	})
 
-	it('Should call the createElement function with a class and __isComponent prototype and without attributes', () => {
+	it('Should call the createElement function with a class and __isComponent prototype and a nested component', () => {
+		class NestedCustomComponent {
+			constructor(props) {
+				this.props = props
+			}
+
+			render() {
+				return <h2>{this.props.title}</h2>
+			}
+		}
+		NestedCustomComponent.prototype.__isComponent = true
+
+		class CustomComponent {
+			render() {
+				return <NestedCustomComponent title="Nested component" />
+			}
+		}
+		CustomComponent.prototype.__isComponent = true
+
+		const result = createElement(CustomComponent)
+
+		expect(result).toStrictEqual(<h2>Nested component</h2>)
+		expect(result.isEqualNode(<h2>Nested component</h2>)).toBe(true)
+		expect((<h2>Nested component</h2>).outerHTML).toStrictEqual(result.outerHTML)
+	})
+
+	it('Should call the createElement function with a class and __isComponent prototype and no attributes', () => {
 		class CustomComponent {
 			render() {
 				return getElement()
@@ -257,11 +283,22 @@ describe('createElement', () => {
 		expect(element.outerHTML).toStrictEqual(result.outerHTML)
 	})
 
-	it('Should call the createElement function with a child text', () => {
+	it('Should call the createElement function with a child as a string', () => {
 		const div = document.createElement('div')
 		div.appendChild(document.createTextNode('Hello'))
 
 		const result = createElement('div', {}, 'Hello')
+
+		expect(result).toStrictEqual(div)
+		expect(result.isEqualNode(div)).toBe(true)
+		expect(div.outerHTML).toStrictEqual(result.outerHTML)
+	})
+
+	it('Should call the createElement function with a child as a number', () => {
+		const div = document.createElement('div')
+		div.appendChild(document.createTextNode(1))
+
+		const result = createElement('div', {}, 1)
 
 		expect(result).toStrictEqual(div)
 		expect(result.isEqualNode(div)).toBe(true)
