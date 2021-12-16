@@ -7,6 +7,7 @@ body:
       label: If the feature solves a problem you have, specify it here.
       description: A description of what the problem is.
       placeholder: Ex. I'm always frustrated when...
+    validations:
       required: true
   - type: textarea
     attributes:
