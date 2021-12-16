@@ -10,11 +10,11 @@ It uses modern JavaScript to be as light as possible and therefore only works on
 ## Features
 
 - [**Components**](https://yoriiis.github.io/costro/docs/component) - Create function and class component.
-- [**Store**](https://yoriiis.github.io/costro/docs/store) - Access component store from any component.
 - [**Router**](https://yoriiis.github.io/costro/docs/router) - Map components to the routes.
+- [**Store**](https://yoriiis.github.io/costro/docs/store) - Access component store from any component.
 - [**Lifecycle hooks**](https://yoriiis.github.io/costro/docs/component#lifecycle-hooks) - Take advantage of component lifecycle events.
 - [**Props**](https://yoriiis.github.io/costro/docs/component#props) - Inject props into components.
-- [**Template string or JSX**](https://yoriiis.github.io/costro/docs/template-syntax) - Write your templates in a native template string or in JSX.
+- [**Template string or JSX**](https://yoriiis.github.io/costro/docs/template-syntax) - Write your templates in a native Template String or in JSX.
 - [**JSX compiler**](https://yoriiis.github.io/costro/docs/template-syntax#jsx-) - Transforms JSX syntax into valid DOM elements _(only 1KB)_.
 - [**No virtual DOM**](https://yoriiis.github.io/costro/docs/intro#virtual-dom) - Manually updating the view when the state changes is much faster.
 
