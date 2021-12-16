@@ -16,7 +16,6 @@ It uses modern JavaScript to be as light as possible and therefore only works on
 - [**Props**](https://yoriiis.github.io/costro/docs/component#props) - Inject props into components.
 - [**Template string or JSX**](https://yoriiis.github.io/costro/docs/template-syntax) - Write your templates in a native Template String or in JSX.
 - [**JSX compiler**](https://yoriiis.github.io/costro/docs/template-syntax#jsx-) - Transforms JSX syntax into valid DOM elements _(only 1KB)_.
-- [**No virtual DOM**](https://yoriiis.github.io/costro/docs/intro#virtual-dom) - Manually updating the view when the state changes is much faster.
 
 ## Documentation
 
