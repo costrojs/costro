@@ -1,6 +1,6 @@
 # Costro
 
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/yoriiis/costro/CI/main?style=for-the-badge) [![Coverage Status](https://img.shields.io/coveralls/github/yoriiis/costro?style=for-the-badge)](https://coveralls.io/github/yoriiis/costro?branch=main)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/costrojs/costro/CI/main?style=for-the-badge) [![Coverage Status](https://img.shields.io/coveralls/github/costrojs/costro?style=for-the-badge)](https://coveralls.io/github/costrojs/costro?branch=main)
 
 Build web applications with **Co**mponents, **St**ore and **Ro**uter.
 One lightweight framework with everything you really need in 3 KB!
@@ -9,21 +9,21 @@ It uses modern JavaScript to be as light as possible and therefore only works on
 
 ## Features
 
-- [**Components**](https://yoriiis.github.io/costro/docs/component) - Create function and class component.
-- [**Router**](https://yoriiis.github.io/costro/docs/router) - Map components to the routes.
-- [**Store**](https://yoriiis.github.io/costro/docs/store) - Access component store from any component.
-- [**Lifecycle hooks**](https://yoriiis.github.io/costro/docs/component#lifecycle-hooks) - Take advantage of component lifecycle events.
-- [**Props**](https://yoriiis.github.io/costro/docs/component#props) - Inject props into components.
-- [**Template string or JSX**](https://yoriiis.github.io/costro/docs/template-syntax) - Write your templates in a native Template String or in JSX.
-- [**JSX compiler**](https://yoriiis.github.io/costro/docs/template-syntax#jsx-) - Transforms JSX syntax into valid DOM elements _(only 1KB)_.
+- [**Components**](https://costrojs.github.io/docs/component) - Create function and class component.
+- [**Router**](https://costrojs.github.io/docs/router) - Map components to the routes.
+- [**Store**](https://costrojs.github.io/docs/store) - Access component store from any component.
+- [**Lifecycle hooks**](https://costrojs.github.io/docs/component#lifecycle-hooks) - Take advantage of component lifecycle events.
+- [**Props**](https://costrojs.github.io/docs/component#props) - Inject props into components.
+- [**Template string or JSX**](https://costrojs.github.io/docs/template-syntax) - Write your templates in a native Template String or in JSX.
+- [**JSX compiler**](https://costrojs.github.io/docs/template-syntax#jsx-) - Transforms JSX syntax into valid DOM elements _(only 1KB)_.
 
 ## Documentation
 
-You can find the Costro documentation and examples on the [GitHub Pages](https://yoriiis.github.io/costro).
+You can find the Costro documentation and examples on the [GitHub Pages](https://costrojs.github.io/costro).
 
 ## Questions
 
-For questions and support please use the [GitHub Discussions](https://github.com/yoriiis/costro/discussions). For bug report or feature request, please use the [issues on GitHub](https://github.com/yoriiis/costro/issues).<br />Prs are also welcome!
+For questions and support please use the [GitHub Discussions](https://github.com/costrojs/costro/discussions). For bug report or feature request, please use the [issues on GitHub](https://github.com/costrojs/costro/issues).<br />Prs are also welcome!
 
 ## Used by
 

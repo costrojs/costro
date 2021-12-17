@@ -1,6 +1,6 @@
 {
 	"name": "costro",
-	"version": "1.0.0-rc.0",
+	"version": "1.0.0-rc.1",
 	"description": "Build web applications with Components, Store and Router in 3KB",
 	"keywords": [
 		"costro",
@@ -15,13 +15,13 @@
 		"store",
 		"template-string"
 	],
-	"homepage": "https://yoriiis.github.io/costro",
+	"homepage": "https://costrojs.github.io",
 	"bugs": {
-		"url": "https://github.com/yoriiis/costro/issues"
+		"url": "https://github.com/costrojs/costro/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/yoriiis/costro.git"
+		"url": "https://github.com/costrojs/costro.git"
 	},
 	"license": "MIT",
 	"author": "Joris DANIEL",

@@ -52,7 +52,7 @@ jobs:
       - name: Upload coverage artifacts
         uses: actions/upload-artifact@v2
         if: github.ref == 'refs/heads/main' &&
-            github.repository == 'yoriiis/costro' &&
+            github.repository == 'costrojs/costro' &&
             github.event_name != 'pull_request'
         with:
           name: coverage
@@ -67,7 +67,7 @@ jobs:
     needs: build
     if: success() &&
         github.ref == 'refs/heads/main' &&
-        github.repository == 'yoriiis/costro' &&
+        github.repository == 'costrojs/costro' &&
         github.event_name != 'pull_request'
     steps:
       - uses: actions/checkout@v2
