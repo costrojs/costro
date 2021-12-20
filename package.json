@@ -15,7 +15,7 @@
 		"store",
 		"template-string"
 	],
-	"homepage": "https://costrojs.github.io",
+	"homepage": "https://costro.js.org",
 	"bugs": {
 		"url": "https://github.com/costrojs/costro/issues"
 	},

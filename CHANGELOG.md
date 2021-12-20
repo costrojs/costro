@@ -9,7 +9,7 @@
 
 ### New features
 
-- Documentation has been moved from Wiki to [Github pages](https://costrojs.github.io)
+- Documentation has been moved from Wiki to [Github pages](https://costro.js.org)
 - Add compatibility with nested components ([46b35b7](https://github.com/costrojs/costro/commit/46b35b781b9761077ea8f0be789077f4c7ff46ce))
 
 ## 1.0.0-rc.0

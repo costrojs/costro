@@ -9,17 +9,17 @@ It uses modern JavaScript to be as light as possible and therefore only works on
 
 ## Features
 
-- [**Components**](https://costrojs.github.io/docs/component) - Create function and class component.
-- [**Router**](https://costrojs.github.io/docs/router) - Map components to the routes.
-- [**Store**](https://costrojs.github.io/docs/store) - Access component store from any component.
-- [**Lifecycle hooks**](https://costrojs.github.io/docs/component#lifecycle-hooks) - Take advantage of component lifecycle events.
-- [**Props**](https://costrojs.github.io/docs/component#props) - Inject props into components.
-- [**Template string or JSX**](https://costrojs.github.io/docs/template-syntax) - Write your templates in a native Template String or in JSX.
-- [**JSX compiler**](https://costrojs.github.io/docs/template-syntax#jsx-) - Transforms JSX syntax into valid DOM elements _(only 1KB)_.
+- [**Components**](https://costro.js.org/docs/component) - Create function and class component.
+- [**Router**](https://costro.js.org/docs/router) - Map components to the routes.
+- [**Store**](https://costro.js.org/docs/store) - Access component store from any component.
+- [**Lifecycle hooks**](https://costro.js.org/docs/component#lifecycle-hooks) - Take advantage of component lifecycle events.
+- [**Props**](https://costro.js.org/docs/component#props) - Inject props into components.
+- [**Template string or JSX**](https://costro.js.org/docs/template-syntax) - Write your templates in a native Template String or in JSX.
+- [**JSX compiler**](https://costro.js.org/docs/template-syntax#jsx-) - Transforms JSX syntax into valid DOM elements _(only 1KB)_.
 
 ## Documentation
 
-You can find the Costro documentation and examples on the [GitHub Pages](https://costrojs.github.io/costro).
+You can find the Costro documentation and examples on the [GitHub Pages](https://costro.js.org).
 
 ## Questions
 
