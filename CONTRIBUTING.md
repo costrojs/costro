@@ -55,6 +55,9 @@ npm run tsc:d:only
 **Production**
 
 ```bash
+# Build code, generate TypeScript declaration files and run tests
+npm run pre:publish
+
 # Build the source code for distribution
 npm run build
 ```
