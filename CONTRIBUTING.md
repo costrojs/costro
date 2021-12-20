@@ -78,8 +78,8 @@ Keep the pull requests as small as possible, it's much easier to review. Make su
 Make sure the following is done when submitting a pull request:
 
 1. Fork [the repository](https://github.com/costrojs/costro) and create your branch from `main`.
-1. Make sure to test your changes.
-1. Make sure test passes, run `npm run test`.
+2. Make sure to test your changes.
+3. Make sure test passes, run `npm run test`.
 
 ## Tests
 

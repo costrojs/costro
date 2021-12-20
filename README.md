@@ -23,7 +23,7 @@ You can find the Costro documentation and examples on the [GitHub Pages](https:/
 
 ## Questions
 
-For questions and support please use the [GitHub Discussions](https://github.com/costrojs/costro/discussions). For bug report or feature request, please use the [issues on GitHub](https://github.com/costrojs/costro/issues).<br />Prs are also welcome!
+For questions and support please use the [GitHub Discussions](https://github.com/costrojs/costro/discussions). For bug report or feature request, please use the [issues on GitHub](https://github.com/costrojs/costro/issues).<br />Pull Requests are welcome!
 
 ## Used by
 
