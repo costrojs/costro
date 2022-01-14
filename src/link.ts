@@ -20,7 +20,9 @@ export default function Link(
 		to: string
 	},
 	isHtml = false
-): HTMLElement | string {
+): HTMLElement | string | any {
+	// @types/react-dom break with string returns, add any to resolve.
+
 	const element = document.createElement('a')
 	element.setAttribute('href', to)
 
