@@ -16,7 +16,7 @@ export default function Link(
 		...attrs
 	}: {
 		attrs?: Attributes
-		children?: any[]
+		children?: any[] | string
 		to: string
 	},
 	isHtml = false
