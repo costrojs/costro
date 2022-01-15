@@ -21,7 +21,7 @@ export default function Link(
 	},
 	isHtml = false
 ): HTMLElement | string | any {
-	// @types/react-dom break with string returns, add any to resolve.
+	// @types/react-dom displays a warning if the Link component returns a JSX element OR a String (compatibility with JSX & Template String). The "any" type solves this problem.
 
 	const element = document.createElement('a')
 	element.setAttribute('href', to)
