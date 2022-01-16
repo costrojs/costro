@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 60
-    trategy:
+    strategy:
       matrix:
         node: [12, 14, 16]
     steps:
