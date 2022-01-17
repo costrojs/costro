@@ -131,10 +131,10 @@ describe('createElement', () => {
 
 	it('Should call the createElement function with event listener', () => {
 		const onClick = (e) => {
-			console.log(e)
+			/* Empty */
 		}
 		const onSubmit = (e) => {
-			console.log(e)
+			/* Empty */
 		}
 
 		const result = createElement(
