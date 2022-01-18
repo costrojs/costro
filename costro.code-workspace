@@ -5,30 +5,12 @@
 		}
     ],
     "settings": {
-        "[javascript]": {
-            "editor.formatOnSave": true
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "[javascript][typescript][postcss][html][markdown][json]": {
+            "editor.formatOnSave": true,
+            "editor.tabSize": 4,
+            "editor.rulers": [100]
         },
-        "[typescript]": {
-            "editor.formatOnSave": true
-        },
-        "[postcss]": {
-            "editor.formatOnSave": true
-        },
-        "[html]": {
-            "editor.formatOnSave": true
-        },
-        "[markdown]": {
-            "editor.formatOnSave": true
-        },
-        "[json]": {
-            "editor.formatOnSave": true
-        },
-        "editor.codeActionsOnSave": {
-            "source.fixAll.eslint": true,
-            "source.fixAll.stylelint": true
-        },
-        "editor.formatOnSave": false,
-        "editor.tabSize": 4,
         "files.associations": {
             "*.css": "postcss",
             "*.html": "html",
@@ -36,20 +18,15 @@
             "*.json": "json"
         },
         "files.trimTrailingWhitespace": true,
-        "javascript.format.enable": false,
-        "javascript.validate.enable": false,
-        "typescript.validate.enable": false,
         "search.exclude": {
             "**/node_modules": true
         },
-        "editor.rulers": [100]
     },
     "extensions": {
         "recommendations": [
             "davidanson.vscode-markdownlint",
             "esbenp.prettier-vscode",
-            "dbaeumer.vscode-eslint",
-            "mhmadhamster.postcss-language",
+            "dbaeumer.vscode-eslint"
         ]
     }
 }
