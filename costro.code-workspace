@@ -6,7 +6,7 @@
     ],
     "settings": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
-        "[javascript][typescript][postcss][html][markdown][json]": {
+        "[javascript][typescript][postcss][html][markdown][json][markdown]": {
             "editor.formatOnSave": true,
             "editor.tabSize": 4,
             "editor.rulers": [100]

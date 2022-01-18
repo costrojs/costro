@@ -2,6 +2,12 @@
 
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/costrojs/costro/CI/main?style=for-the-badge) [![Coverage Status](https://img.shields.io/coveralls/github/costrojs/costro?style=for-the-badge)](https://coveralls.io/github/costrojs/costro?branch=main)
 
+<p align="center">
+    <a href="https://costro.js.org" title="Costro">
+        <img src="https://yoriiis.github.io/cdn/static/costro/costro.svg" alt="Costro logo" width="250" />
+    </a>
+</p>
+
 Build web applications with **Co**mponents, **St**ore and **Ro**uter.
 One lightweight framework with everything you really need in 3 KB!
 
