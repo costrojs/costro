@@ -5,6 +5,7 @@ import { getDynamicSegmentsFromPath, createRegExpFromPath } from './utils'
 export default class App {
 	target: HTMLElement
 	mode: string
+	basePath: string
 	routes: Map<string, RouteData>
 	location: any
 	currentRoute: undefined | RouteData
@@ -16,18 +17,22 @@ export default class App {
 	 * @param {Object} options.mode Location mode
 	 * @param {Object} options.routes Definition of routes
 	 * @param {Object} options.target HTMLElement target
+	 * @param {Object} options.basePath Site base path
 	 */
 	constructor({
 		mode = 'hash',
 		routes,
-		target
+		target,
+		basePath = '/' // The default value is important, do not change it
 	}: {
+		basePath: string
 		mode?: 'hash' | 'history'
 		routes: Route[]
 		target: HTMLElement
 	}) {
 		this.mode = mode
 		this.target = target
+		this.basePath = basePath
 		this.currentRoute = undefined
 		this.previousRoute = undefined
 
@@ -44,11 +49,15 @@ export default class App {
 		this.onNavigate = this.onNavigate.bind(this)
 		this.onClickOnApp = this.onClickOnApp.bind(this)
 
-		this.location = new Location(this.onRouteChange.bind(this), this.mode)
+		this.location = new Location({
+			basePath: this.basePath,
+			callback: this.onRouteChange.bind(this),
+			mode: this.mode
+		})
 		this.location.init()
 
 		this.addEvents()
-		this.onRouteChange(this.location.getPath())
+		this.onRouteChange(this.location.currentPath)
 	}
 
 	/**
