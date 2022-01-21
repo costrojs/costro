@@ -25,7 +25,7 @@ export default class App {
 		target,
 		basePath = '/' // The default value is important, do not change it!
 	}: {
-		basePath: string
+		basePath?: string
 		mode?: 'hash' | 'history'
 		routes: Route[]
 		target: HTMLElement
