@@ -1,6 +1,6 @@
 {
 	"name": "costro",
-	"version": "1.0.0-rc.1",
+	"version": "1.0.0",
 	"description": "Build web applications with Components, Store and Router in 3KB",
 	"keywords": [
 		"costro",

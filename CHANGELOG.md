@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 1.0.0
+
+### Fixes
+
+- Fix broken types for the Link component with `@types/react-dom` ([69444e3](https://github.com/costrojs/costro/commit/69444e33905ccf6897ce3f264eb39b28db892eef), [89e0a0c](https://github.com/costrojs/costro/commit/89e0a0c9305b3ecf82ff7802da931a29322f4e79))
+
+### New features
+
+- Add router base path ([#3](https://github.com/costrojs/costro/pull/3))
+
 ## 1.0.0-rc.1
 
 ### Fixes
