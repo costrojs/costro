@@ -5,7 +5,7 @@ export default class Location {
 	mode: string
 	basePath: string
 	isHashMode: boolean
-	currentPath: null | string
+	currentPath: string
 
 	/**
 	 * @constructor
@@ -37,7 +37,7 @@ export default class Location {
 	 * Normalize the site base path
 	 * Add leading slash and remove trailing slash
 	 * @param {String} basePath Base path
-	 * @returns Normalized base path
+	 * @returns {String} Normalized base path
 	 */
 	normalizeBasePath(basePath: string): string {
 		return basePath.replace(/\/+$/, '').replace(/^\/*/, '/')
@@ -130,6 +130,7 @@ export default class Location {
 	 */
 	destroy() {
 		window.removeEventListener(this.isHashMode ? 'hashchange' : 'popstate', this.onRouteChange)
+		// @ts-ignore Use only for the destroy context
 		this.currentPath = null
 	}
 }

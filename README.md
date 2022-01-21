@@ -22,10 +22,11 @@ It uses modern JavaScript to be as light as possible and therefore only works on
 - [**Props**](https://costro.js.org/docs/component#props) - Inject props into components.
 - [**Template string or JSX**](https://costro.js.org/docs/template-syntax) - Write your templates in a native Template String or in JSX.
 - [**JSX compiler**](https://costro.js.org/docs/template-syntax#jsx-) - Transforms JSX syntax into valid DOM elements _(only 1KB)_.
+- [**CLI**](cli) - Create a new Costro app in seconds with an interactive experience.
 
 ## Documentation
 
-You can find the Costro documentation and examples on the [GitHub Pages](https://costro.js.org).
+You can find the Costro documentation and examples on the [Costrojs website](https://costro.js.org).
 
 ## Questions
 

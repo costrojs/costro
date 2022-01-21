@@ -23,7 +23,7 @@ export default class App {
 		mode = 'hash',
 		routes,
 		target,
-		basePath = '/' // The default value is important, do not change it
+		basePath = '/' // The default value is important, do not change it!
 	}: {
 		basePath: string
 		mode?: 'hash' | 'history'

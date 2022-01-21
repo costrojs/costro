@@ -22,7 +22,7 @@ const callback = () => {
 	/* Empty */
 }
 const getInstance = () => {
-	const instance = new Location({ basePath: '', callback, mode: 'hash' })
+	const instance = new Location({ basePath: '/', callback, mode: 'hash' })
 	return instance
 }
 
@@ -38,6 +38,7 @@ afterEach(() => {
 describe('Location ', () => {
 	describe('Location constructor', () => {
 		beforeEach(() => {
+			jest.spyOn(Location.prototype, 'normalizeBasePath').mockReturnValue('/')
 			jest.spyOn(Location.prototype, 'getPath').mockReturnValue('/document-fragment')
 		})
 
@@ -49,12 +50,17 @@ describe('Location ', () => {
 			expect(location.basePath).toBe('/')
 			expect(location.isHashMode).toBe(true)
 			expect(location.currentPath).toBe('/document-fragment')
+			expect(location.normalizeBasePath).toHaveBeenCalledWith('/')
+			expect(location.getPath).toHaveBeenCalled()
 		})
 	})
 
 	describe('Location normalizeBasePath', () => {
 		beforeEach(() => {
 			jest.spyOn(Location.prototype, 'getPath').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(Location.prototype, 'normalizeBasePath').mockImplementation(() => {
 				/* Empty */
 			})
 
@@ -64,6 +70,7 @@ describe('Location ', () => {
 		it('Should call the normalizeBasePath function and add the leading slash', () => {
 			location.addEvents = jest.fn()
 
+			location.normalizeBasePath.mockRestore()
 			const result = location.normalizeBasePath('app/')
 
 			expect(result).toBe('/app')
@@ -72,6 +79,7 @@ describe('Location ', () => {
 		it('Should call the normalizeBasePath function and remove the trailing slash', () => {
 			location.addEvents = jest.fn()
 
+			location.normalizeBasePath.mockRestore()
 			const result = location.normalizeBasePath('/app/')
 
 			expect(result).toBe('/app')
@@ -81,6 +89,9 @@ describe('Location ', () => {
 	describe('Location init', () => {
 		beforeEach(() => {
 			jest.spyOn(Location.prototype, 'getPath').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(Location.prototype, 'normalizeBasePath').mockImplementation(() => {
 				/* Empty */
 			})
 
@@ -99,6 +110,9 @@ describe('Location ', () => {
 	describe('Location addEvents', () => {
 		beforeEach(() => {
 			jest.spyOn(Location.prototype, 'getPath').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(Location.prototype, 'normalizeBasePath').mockImplementation(() => {
 				/* Empty */
 			})
 
@@ -131,6 +145,9 @@ describe('Location ', () => {
 			jest.spyOn(Location.prototype, 'getPath').mockImplementation(() => {
 				/* Empty */
 			})
+			jest.spyOn(Location.prototype, 'normalizeBasePath').mockImplementation(() => {
+				/* Empty */
+			})
 
 			location = getInstance()
 		})
@@ -153,6 +170,9 @@ describe('Location ', () => {
 	describe('Location getPath', () => {
 		beforeEach(() => {
 			jest.spyOn(Location.prototype, 'getPath').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(Location.prototype, 'normalizeBasePath').mockImplementation(() => {
 				/* Empty */
 			})
 
@@ -181,22 +201,28 @@ describe('Location ', () => {
 			expect(result).toBe('/')
 		})
 
-		it('Should call the getPath with hash mode and no hash in the url', () => {
+		it('Should call the getPath with history mode', () => {
 			mockWindowLocation({
 				pathname: '/document-fragment'
 			})
+			location.stripBasePath = jest.fn().mockReturnValue('/document-fragment')
 
 			location.getPath.mockRestore()
 			location.isHashMode = false
+			location.basePath = '/'
 			const result = location.getPath()
 
 			expect(result).toBe('/document-fragment')
+			expect(location.stripBasePath).toHaveBeenCalledWith('/document-fragment', '/')
 		})
 	})
 
 	describe('Location stripBasePath', () => {
 		beforeEach(() => {
 			jest.spyOn(Location.prototype, 'getPath').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(Location.prototype, 'normalizeBasePath').mockImplementation(() => {
 				/* Empty */
 			})
 
@@ -237,6 +263,9 @@ describe('Location ', () => {
 			jest.spyOn(Location.prototype, 'getPath').mockImplementation(() => {
 				/* Empty */
 			})
+			jest.spyOn(Location.prototype, 'normalizeBasePath').mockImplementation(() => {
+				/* Empty */
+			})
 
 			location = getInstance()
 		})
@@ -259,8 +288,10 @@ describe('Location ', () => {
 		it('Should call the setPath with history mode', () => {
 			window.history.pushState = jest.fn()
 			location.callback = jest.fn()
+			location.normalizeBasePath = jest.fn().mockReturnValue('/')
 
 			location.isHashMode = false
+			location.basePath = '/'
 			location.setPath('/document-fragment')
 
 			expect(window.history.pushState).toHaveBeenCalledWith(
@@ -276,6 +307,7 @@ describe('Location ', () => {
 		it('Should call the setPath with history mode and a custom base path', () => {
 			window.history.pushState = jest.fn()
 			location.callback = jest.fn()
+			location.normalizeBasePath = jest.fn().mockReturnValue('/app')
 
 			location.isHashMode = false
 			location.basePath = '/app'
@@ -295,6 +327,9 @@ describe('Location ', () => {
 	describe('Location destroy', () => {
 		beforeEach(() => {
 			jest.spyOn(Location.prototype, 'getPath').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(Location.prototype, 'normalizeBasePath').mockImplementation(() => {
 				/* Empty */
 			})
 
