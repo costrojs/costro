@@ -8,7 +8,7 @@ const dir = path.resolve(__dirname, '../dist')
 const banner =
 	'/*!\n' +
 	` * Costro v${require('../package.json').version}\n` +
-	` * (c) 2020-${new Date().getFullYear()} Yoriiis\n` +
+	` * (c) 2021-${new Date().getFullYear()} Yoriiis\n` +
 	' * Released under the MIT License.\n' +
 	' */'
 
