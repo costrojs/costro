@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.0.1
+
+### Fixes
+
+- Fix types for the optional parameter basePath ([5973658](https://github.com/costrojs/costro/commit/59736586c5561b4da7331ff3f71856fe5119433b))
+
 ## 1.0.0
 
 ### Fixes
