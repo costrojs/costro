@@ -6,6 +6,7 @@ import routesFixtures from '../fixtures/routes-fixture'
 jest.mock('@src/location', () => {
 	return jest.fn().mockImplementation(() => {
 		return {
+			currentPath: '/document-fragment',
 			destroy: jest.fn(),
 			getPath: jest.fn().mockReturnValue('/document-fragment'),
 			init: jest.fn(),
@@ -139,11 +140,16 @@ describe('App', () => {
 			const app = getInstance()
 
 			expect(app.mode).toBe('hash')
+			expect(app.basePath).toBe('/')
 			expect(app.target).toBe(document.querySelector('#app'))
 			expect(app.currentRoute).toBe(undefined)
 			expect(app.previousRoute).toBe(undefined)
 			expect(app.routes).toStrictEqual(routes)
-			expect(Location).toHaveBeenCalledWith(expect.any(Function), 'hash')
+			expect(Location).toHaveBeenCalledWith({
+				basePath: '/',
+				callback: expect.any(Function),
+				mode: 'hash'
+			})
 			expect(app.location.init).toHaveBeenCalled()
 			expect(app.createRoutesData).toHaveBeenCalled()
 			expect(app.addEvents).toHaveBeenCalled()
