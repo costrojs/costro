@@ -6,6 +6,7 @@ export default class App {
 	target: HTMLElement
 	mode: string
 	basePath: string
+	silentOnNotFound: Boolean
 	routes: Map<string, RouteData>
 	location: any
 	currentRoute: undefined | RouteData
@@ -23,16 +24,19 @@ export default class App {
 		mode = 'hash',
 		routes,
 		target,
-		basePath = '/' // The default value is important, do not change it!
+		basePath = '/', // The default value is important, do not change it!
+		silentOnNotFound = false
 	}: {
 		basePath?: string
 		mode?: 'hash' | 'history'
 		routes: Route[]
 		target: HTMLElement
+		silentOnNotFound: Boolean
 	}) {
 		this.mode = mode
 		this.target = target
 		this.basePath = basePath
+		this.silentOnNotFound = silentOnNotFound
 		this.currentRoute = undefined
 		this.previousRoute = undefined
 
@@ -185,7 +189,7 @@ export default class App {
 
 			this.currentRoute = route
 			this.createComponent()
-		} else if (this.currentRoute) {
+		} else if (this.currentRoute && !this.silentOnNotFound) {
 			// The route is unknown
 			this.destroyCurrentRoute()
 		}
@@ -211,9 +215,10 @@ export default class App {
 			}
 		}
 
-		// If any route is found, check if the noud found route exist
-		const notFoundRoute = this.routes.get('*')
-		return notFoundRoute && notFoundRoute
+		if (!this.silentOnNotFound) {
+			// If any route is found, check if the noud found route exist
+			return this.routes.get('*')
+		}
 	}
 
 	/**

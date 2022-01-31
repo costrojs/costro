@@ -141,6 +141,7 @@ describe('App', () => {
 
 			expect(app.mode).toBe('hash')
 			expect(app.basePath).toBe('/')
+			expect(app.silentOnNotFound).toBe(false)
 			expect(app.target).toBe(document.querySelector('#app'))
 			expect(app.currentRoute).toBe(undefined)
 			expect(app.previousRoute).toBe(undefined)
@@ -474,6 +475,22 @@ describe('App', () => {
 			expect(app.destroyCurrentRoute).not.toHaveBeenCalled()
 			expect(app.createComponent).not.toHaveBeenCalled()
 		})
+
+		it('should call the onRouteChange function with an unknown route and the silent mode enabled and without a current route to destroy', () => {
+			app.currentRoute = routeDocumentFragment
+
+			app.getRouteMatch = jest.fn().mockReturnValue(undefined)
+			app.destroyCurrentRoute = jest.fn()
+			app.createComponent = jest.fn()
+
+			app.silentOnNotFound = true
+			app.onRouteChange.mockRestore()
+			app.onRouteChange('/unknown-route')
+
+			expect(app.getRouteMatch).toHaveBeenCalledWith('/unknown-route')
+			expect(app.destroyCurrentRoute).not.toHaveBeenCalled()
+			expect(app.createComponent).not.toHaveBeenCalled()
+		})
 	})
 
 	describe('getRouteMatch', () => {
@@ -487,6 +504,11 @@ describe('App', () => {
 			})
 
 			app = getInstance()
+		})
+
+		// Remove the not found route added in these tests
+		afterEach(() => {
+			customRoutes.delete('*')
 		})
 
 		it('should call the getRouteMatch function with a valid route', () => {
@@ -506,17 +528,6 @@ describe('App', () => {
 			expect(result).toStrictEqual(app.routes.get('/custom-component/:id/:name'))
 		})
 
-		it('should call the getRouteMatch function with a unknown route', () => {
-			jest.spyOn(app.routes, 'get')
-
-			const result = app.getRouteMatch('/unknown-route')
-
-			expect(app.routes.get).toHaveBeenCalledTimes(2)
-			expect(app.routes.get).toHaveBeenCalledWith('/unknown-route')
-			expect(app.routes.get).toHaveBeenCalledWith('*')
-			expect(result).toStrictEqual(undefined)
-		})
-
 		it('should call the getRouteMatch function with a not found route', () => {
 			jest.spyOn(app.routes, 'get')
 
@@ -534,9 +545,42 @@ describe('App', () => {
 			const result = app.getRouteMatch('/unknown-route')
 
 			expect(app.routes.get).toHaveBeenCalledTimes(2)
+			expect(app.routes.get).toHaveBeenNthCalledWith(1, '/unknown-route')
+			expect(app.routes.get).toHaveBeenNthCalledWith(2, '*')
+			expect(result).toStrictEqual(app.routes.get('*'))
+		})
+
+		it('should call the getRouteMatch function with the silent mode enabled and a not found route', () => {
+			jest.spyOn(app.routes, 'get')
+
+			const notFoundRoute = {
+				component: () => <h1>Not found</h1>,
+				dynamicSegments: [],
+				interfaceType: null,
+				isComponentClass: false,
+				isComponentClassReady: false,
+				path: '*',
+				pathRegExp: '^*$',
+				props: undefined
+			}
+			app.routes.set('*', notFoundRoute)
+			app.silentOnNotFound = true
+			const result = app.getRouteMatch('/unknown-route')
+
+			expect(app.routes.get).toHaveBeenCalledTimes(1)
+			expect(app.routes.get).toHaveBeenNthCalledWith(1, '/unknown-route')
+			expect(result).toStrictEqual(undefined)
+		})
+
+		it('should call the getRouteMatch function with an unknown route', () => {
+			jest.spyOn(app.routes, 'get')
+
+			const result = app.getRouteMatch('/unknown-route')
+
+			expect(app.routes.get).toHaveBeenCalledTimes(2)
 			expect(app.routes.get).toHaveBeenCalledWith('/unknown-route')
 			expect(app.routes.get).toHaveBeenCalledWith('*')
-			expect(result).toStrictEqual(app.routes.get('*'))
+			expect(result).toStrictEqual(undefined)
 		})
 	})
 
