@@ -6,7 +6,7 @@ export default class App {
 	target: HTMLElement
 	mode: string
 	basePath: string
-	silentOnNotFound: Boolean
+	silentOnNotFound: boolean
 	routes: Map<string, RouteData>
 	location: any
 	currentRoute: undefined | RouteData
@@ -30,8 +30,8 @@ export default class App {
 		basePath?: string
 		mode?: 'hash' | 'history'
 		routes: Route[]
+		silentOnNotFound: boolean
 		target: HTMLElement
-		silentOnNotFound: Boolean
 	}) {
 		this.mode = mode
 		this.target = target
