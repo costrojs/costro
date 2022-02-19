@@ -216,7 +216,7 @@ export default class App {
 		}
 
 		if (!this.silentOnNotFound) {
-			// If any route is found, check if the noud found route exist
+			// If no route is found, check if the not found route exists
 			return this.routes.get('*')
 		}
 	}

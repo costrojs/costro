@@ -448,7 +448,7 @@ describe('App', () => {
 			expect(app.createComponent).toHaveBeenCalled()
 		})
 
-		it('should call the onRouteChange function with an unknown route and a current route to destroy', () => {
+		it('should call the onRouteChange function with an unknown route and a current route to destroy (true && true)', () => {
 			app.currentRoute = routeDocumentFragment
 
 			app.getRouteMatch = jest.fn().mockReturnValue(undefined)
@@ -463,7 +463,7 @@ describe('App', () => {
 			expect(app.createComponent).not.toHaveBeenCalled()
 		})
 
-		it('should call the onRouteChange function with an unknown route and without a current route to destroy', () => {
+		it('should call the onRouteChange function with an unknown route and without a current route to destroy (false && true)', () => {
 			app.getRouteMatch = jest.fn().mockReturnValue(undefined)
 			app.destroyCurrentRoute = jest.fn()
 			app.createComponent = jest.fn()
@@ -476,8 +476,24 @@ describe('App', () => {
 			expect(app.createComponent).not.toHaveBeenCalled()
 		})
 
-		it('should call the onRouteChange function with an unknown route and the silent mode enabled and without a current route to destroy', () => {
+		it('should call the onRouteChange function with an unknown route and the silent mode enabled and with a current route to destroy (true && false)', () => {
 			app.currentRoute = routeDocumentFragment
+
+			app.getRouteMatch = jest.fn().mockReturnValue(undefined)
+			app.destroyCurrentRoute = jest.fn()
+			app.createComponent = jest.fn()
+
+			app.silentOnNotFound = true
+			app.onRouteChange.mockRestore()
+			app.onRouteChange('/unknown-route')
+
+			expect(app.getRouteMatch).toHaveBeenCalledWith('/unknown-route')
+			expect(app.createComponent).not.toHaveBeenCalled()
+			expect(app.destroyCurrentRoute).not.toHaveBeenCalled()
+		})
+
+		it('should call the onRouteChange function with an unknown route and the silent mode enabled and without a current route to destroy (false && false)', () => {
+			app.currentRoute = undefined
 
 			app.getRouteMatch = jest.fn().mockReturnValue(undefined)
 			app.destroyCurrentRoute = jest.fn()
