@@ -31,7 +31,7 @@ export default class App {
 		basePath?: string
 		mode?: 'hash' | 'history'
 		routes: Route[]
-		silentOnNotFound: boolean
+		silentOnNotFound?: boolean
 		target: HTMLElement
 	}) {
 		this.mode = mode
