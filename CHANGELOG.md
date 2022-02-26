@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.0.3
+
+### Fixes
+
+- Fix types for the optional parameter `silentOnNotFound` ([5973658](https://github.com/costrojs/costro/commit/cf2c4a9fa670aa80f8ae11dc9e6b73736072c6bf))
+
 ## 1.0.2
 
 ### New features
@@ -10,7 +16,7 @@
 
 ### Fixes
 
-- Fix types for the optional parameter basePath ([5973658](https://github.com/costrojs/costro/commit/59736586c5561b4da7331ff3f71856fe5119433b))
+- Fix types for the optional parameter `basePath` ([5973658](https://github.com/costrojs/costro/commit/59736586c5561b4da7331ff3f71856fe5119433b))
 
 ## 1.0.0
 
