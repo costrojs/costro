@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.0.2
+
+### New features
+
+- Add the `silentOnNotFound` parameter. Useful when the route changes and the application wants to ignore these changes ([#4](https://github.com/costrojs/costro/pull/4))
+
 ## 1.0.1
 
 ### Fixes
