@@ -15,10 +15,11 @@ export default class App {
 	/**
 	 * @constructor
 	 * @param {Object} options
-	 * @param {Object} options.mode Location mode
-	 * @param {Object} options.routes Definition of routes
-	 * @param {Object} options.target HTMLElement target
-	 * @param {Object} options.basePath Site base path
+	 * @param {String} options.mode Location mode (hash|history)
+	 * @param {Array} options.routes Definition of routes
+	 * @param {HTMLElement} options.target HTMLElement target
+	 * @param {String} options.basePath Site base path
+	 * @param {Boolean} options.silentOnNotFound Silent not found routes
 	 */
 	constructor({
 		mode = 'hash',
