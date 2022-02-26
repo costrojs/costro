@@ -4,7 +4,7 @@
 
 <p align="center">
     <a href="https://costro.js.org" title="Costro">
-        <img src="https://yoriiis.github.io/cdn/static/costro/costro.svg" alt="Costro logo" width="250" />
+        <img src="https://yoriiis.github.io/cdn/static/costro/costro-1280.png" alt="Costro logo" width="250" />
     </a>
 </p>
 
