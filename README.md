@@ -8,10 +8,17 @@
     </a>
 </p>
 
-Build web applications with **Co**mponents, **St**ore and **Ro**uter.
-One lightweight framework with everything you really need in 3 KB!
+## What is Costro?
 
-It uses modern JavaScript to be as light as possible and therefore only works on the latest version of modern browsers (e.g. Chrome, Firefox, Edge, Safari, Opera).
+Costro is a new lightweight framework with a different approach: helping you **build fast web applications** with a **low level of dependency**. If you are concerned about your app's loading performance, this library makes sense as it is extremely lightweight compared to the competition _(only 3 KB)_.
+
+Costro allows you to create components with store and a router in one lightweight easy-to-use package. It does not use virtual DOM because it is, by definition, slower than carefully crafted manual updates.
+
+### Motivation
+
+1. Finding the framework that matches your needs without impacting web performance is not that easy these days. Popular librairies generally embed more and more code as the community and popularity increase.
+2. Single Web Applications do not benefit from page reloading to improve performance, so the JavaScript code embedded during the first load is heavier.
+3. In addition, we do not use 100% of the features included in the frontend frameworks and generally, the dependency part can be larger than the actual written code.
 
 ## Features
 
@@ -35,6 +42,10 @@ For questions and support please use the [GitHub Discussions](https://github.com
 ## Used by
 
 - [Prisma Media](https://www.prismamedia.com)
+
+## Browser support
+
+It uses modern JavaScript to be as light as possible and therefore only works on the latest version of modern browsers (e.g. Chrome, Firefox, Edge, Safari, Opera).
 
 ## Licence
 
