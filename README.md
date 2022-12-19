@@ -1,6 +1,6 @@
 # Costro
 
-![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/costrojs/costro/CI/main?style=for-the-badge) [![Coverage Status](https://img.shields.io/coveralls/github/costrojs/costro?style=for-the-badge)](https://coveralls.io/github/costrojs/costro?branch=main)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/costrojs/costro/ci.yml?branch=main&style=for-the-badge) [![Coverage Status](https://img.shields.io/coveralls/github/costrojs/costro?style=for-the-badge)](https://coveralls.io/github/costrojs/costro?branch=main)
 
 <p align="center">
     <a href="https://costro.js.org" title="Costro">
