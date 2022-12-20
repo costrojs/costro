@@ -74,6 +74,8 @@ function createAttributes(
 	isSvg = false
 ) {
 	const valueIsString = typeof value === 'string'
+	const valueIsNumber = typeof value === 'number'
+
 	if (name === 'style') {
 		if (typeof value === 'string') {
 			element.setAttribute('style', value)
@@ -102,7 +104,7 @@ function createAttributes(
 		element.setAttributeNS(XML_NAMESPACE, attributesWithColon, value)
 	} else if (value === true) {
 		element.setAttribute(name, '')
-	} else if (value !== false && value !== null && valueIsString) {
+	} else if (value !== false && value !== null && (valueIsString || valueIsNumber)) {
 		element.setAttribute(name, value)
 	}
 }
@@ -123,6 +125,14 @@ function appendChildren(
 			element.appendChild(document.createTextNode(child))
 		} else if (child instanceof Node) {
 			element.appendChild(child)
+		} else if (Array.isArray(child as Array<Node>)) {
+			// Used by .map() function
+			for (let j = 0, length = (child as Array<any>).length; j < length; j++) {
+				const subChild = child[j]
+				if ((subChild as any) instanceof Node) {
+					element.appendChild(subChild)
+				}
+			}
 		}
 	}
 
