@@ -4,8 +4,7 @@
 
 ### Fixes
 
-- JSX, fix array of children ignored
-  ([#5](https://github.com/costrojs/costro/pull/5))
+- JSX, fix array of children ignored ([#5](https://github.com/costrojs/costro/pull/5))
 
 ## 1.0.3
 
