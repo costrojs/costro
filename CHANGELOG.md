@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.0.5
+
+### Fixes
+
+- JSX, trim empty class name ([654582c](https://github.com/costrojs/costro/commit/654582c9710de8746cacd4547086ecee48dc4f2f))
+
 ## 1.0.4
 
 ### Fixes
@@ -10,7 +16,7 @@
 
 ### Fixes
 
-- Fix types for the optional parameter `silentOnNotFound` ([5973658](https://github.com/costrojs/costro/commit/cf2c4a9fa670aa80f8ae11dc9e6b73736072c6bf))
+- Fix types for the optional parameter `silentOnNotFound` ([cf2c4a9](https://github.com/costrojs/costro/commit/cf2c4a9fa670aa80f8ae11dc9e6b73736072c6bf))
 
 ## 1.0.2
 

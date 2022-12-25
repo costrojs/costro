@@ -43,15 +43,15 @@ describe('JSX', () => {
 
 		it('Should call the createElement function with a string tag and style attribute in object format', () => {
 			const result = createElement('div', {
+				class: 'box',
 				style: {
 					alignItems: 'center',
 					display: 'flex'
-				},
-				class: 'box'
+				}
 			})
 
 			expect(result.outerHTML).toStrictEqual(
-				'<div style="align-items: center; display: flex;" class="box"></div>'
+				'<div class="box" style="align-items: center; display: flex;"></div>'
 			)
 		})
 
