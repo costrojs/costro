@@ -22,7 +22,7 @@ describe('JSX', () => {
 				/** Empty */
 			}
 			const result = createElement('div', {
-				className: 'box',
+				className: ' box ',
 				'data-ignore-boolean': false,
 				'data-ignore-null': null,
 				'data-track': true,
@@ -46,11 +46,12 @@ describe('JSX', () => {
 				style: {
 					alignItems: 'center',
 					display: 'flex'
-				}
+				},
+				class: 'box'
 			})
 
 			expect(result.outerHTML).toStrictEqual(
-				'<div style="align-items: center; display: flex;"></div>'
+				'<div style="align-items: center; display: flex;" class="box"></div>'
 			)
 		})
 

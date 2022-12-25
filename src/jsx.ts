@@ -95,7 +95,7 @@ function createAttributes(
 	} else if (name === 'innerHTML' && valueIsString) {
 		element.innerHTML = value
 	} else if (['class', 'className'].includes(name) && valueIsString) {
-		const cssClass = value.split(' ')
+		const cssClass = value.trim().split(' ')
 		for (let i = 0, length = cssClass.length; i < length; i++) {
 			element.classList.add(cssClass[i])
 		}
