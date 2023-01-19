@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.0.6
+
+### Fixes
+
+- Add fallback for replaceChildren support ([#6](https://github.com/costrojs/costro/pull/6))
+
 ## 1.0.5
 
 ### Fixes

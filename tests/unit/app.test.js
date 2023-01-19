@@ -657,6 +657,24 @@ describe('App', () => {
 			expect(app.target.replaceChildren).toHaveBeenCalled()
 			expect(app.previousRoute.component.afterDestroy).toHaveBeenCalled()
 		})
+
+		it('should call the destroyComponent function without replaceChildren support', () => {
+			app.previousRoute = {
+				component: {
+					afterDestroy: jest.fn(),
+					beforeDestroy: jest.fn()
+				},
+				isComponentClass: true
+			}
+
+			Element.prototype.replaceChildren = undefined
+
+			app.destroyComponent()
+
+			expect(app.previousRoute.component.beforeDestroy).toHaveBeenCalled()
+			expect(app.target.innerHTML).toStrictEqual('')
+			expect(app.previousRoute.component.afterDestroy).toHaveBeenCalled()
+		})
 	})
 
 	describe('createComponent', () => {
