@@ -237,7 +237,12 @@ export default class App {
 	destroyComponent() {
 		if (this.previousRoute) {
 			this.previousRoute.isComponentClass && this.previousRoute.component.beforeDestroy()
-			this.target.replaceChildren()
+
+			if (typeof Element.prototype.replaceChildren === 'function') {
+				this.target.replaceChildren()
+			} else {
+				this.target.innerHTML = ''
+			}
 			this.previousRoute.isComponentClass && this.previousRoute.component.afterDestroy()
 		}
 	}
