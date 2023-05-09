@@ -29,8 +29,8 @@ describe('JSX', () => {
 				'data-track-id': 1,
 				'data-track-params': 'home',
 				dataset: { foo: 'bar' },
-				innerHTML: '<span>Inner</span>',
 				htmlFor: 'name',
+				innerHTML: '<span>Inner</span>',
 				onClick: onClickFn,
 				style: 'align-items: center; display: flex;'
 			})
