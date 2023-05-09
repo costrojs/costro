@@ -1,4 +1,5 @@
 module.exports = {
+	clearMocks: true,
 	coverageDirectory: 'coverage',
 	coveragePathIgnorePatterns: ['<rootDir>/dist', '<rootDir>/tests/fixtures'],
 	moduleFileExtensions: ['js', 'ts', 'css'],
@@ -7,6 +8,7 @@ module.exports = {
 	},
 	modulePaths: ['<rootDir>/src'],
 	preset: 'ts-jest/presets/js-with-babel',
+	resetMocks: true,
 	resetModules: true,
 	rootDir: '../',
 	testEnvironment: 'jsdom',
