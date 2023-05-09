@@ -99,6 +99,8 @@ function createAttributes(
 		for (let i = 0, length = cssClass.length; i < length; i++) {
 			element.classList.add(cssClass[i])
 		}
+	} else if (name === 'htmlFor' && valueIsString) {
+		element.setAttribute('for', value)
 	} else if (isSvg && SVG_ATTRIBUTES_CAMEL_CASE.includes(name) && valueIsString) {
 		const attributesWithColon = name.replace(/[A-Z]/g, (match) => ':' + match.toLowerCase())
 		element.setAttributeNS(XML_NAMESPACE, attributesWithColon, value)

@@ -29,13 +29,14 @@ describe('JSX', () => {
 				'data-track-id': 1,
 				'data-track-params': 'home',
 				dataset: { foo: 'bar' },
+				htmlFor: 'name',
 				innerHTML: '<span>Inner</span>',
 				onClick: onClickFn,
 				style: 'align-items: center; display: flex;'
 			})
 
 			expect(result.outerHTML).toStrictEqual(
-				'<div class="box" data-track="" data-track-id="1" data-track-params="home" data-foo="bar" style="align-items: center; display: flex;"><span>Inner</span></div>'
+				'<div class="box" data-track="" data-track-id="1" data-track-params="home" data-foo="bar" for="name" style="align-items: center; display: flex;"><span>Inner</span></div>'
 			)
 			expect(result.onclick).toStrictEqual(onClickFn)
 			expect(result.dataset.foo).toStrictEqual('bar')
