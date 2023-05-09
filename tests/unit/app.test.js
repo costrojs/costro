@@ -95,14 +95,6 @@ const routes = new Map([
 ])
 
 beforeEach(() => {
-	Location.mockImplementation(() => ({
-		currentPath: '/document-fragment',
-		destroy: jest.fn(),
-		getPath: jest.fn().mockReturnValue('/document-fragment'),
-		init: jest.fn(),
-		setPath: jest.fn()
-	}))
-
 	document.body.appendChild(
 		<div id="app">
 			<a href="/document-fragment" className="link"></a>
@@ -125,6 +117,13 @@ afterEach(() => {
 describe('App', () => {
 	describe('Constructor', () => {
 		beforeEach(() => {
+			Location.mockImplementation(() => ({
+				currentPath: '/document-fragment',
+				destroy: jest.fn(),
+				getPath: jest.fn().mockReturnValue('/document-fragment'),
+				init: jest.fn(),
+				setPath: jest.fn()
+			}))
 			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
 			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
 				/* Empty */
