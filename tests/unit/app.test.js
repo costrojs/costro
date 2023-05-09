@@ -3,17 +3,7 @@ import Location from '@src/location'
 import { h } from '../../dist/jsx'
 import routesFixtures from '../fixtures/routes-fixture'
 
-jest.mock('@src/location', () => {
-	return jest.fn().mockImplementation(() => {
-		return {
-			currentPath: '/document-fragment',
-			destroy: jest.fn(),
-			getPath: jest.fn().mockReturnValue('/document-fragment'),
-			init: jest.fn(),
-			setPath: jest.fn()
-		}
-	})
-})
+jest.mock('@src/location')
 
 let app
 let customRoutes
@@ -127,6 +117,13 @@ afterEach(() => {
 describe('App', () => {
 	describe('Constructor', () => {
 		beforeEach(() => {
+			Location.mockImplementation(() => ({
+				currentPath: '/document-fragment',
+				destroy: jest.fn(),
+				getPath: jest.fn().mockReturnValue('/document-fragment'),
+				init: jest.fn(),
+				setPath: jest.fn()
+			}))
 			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
 			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
 				/* Empty */

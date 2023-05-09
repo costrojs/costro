@@ -348,7 +348,11 @@ export default class App {
 	getInterfaceTypeFromView(component: string | Node): string | null {
 		if (typeof component === 'string') {
 			return 'STRING'
-		} else if ([Node.ELEMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE].includes(component.nodeType)) {
+		} else if (
+			([Node.ELEMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE] as number[]).includes(
+				component.nodeType
+			)
+		) {
 			return 'ELEMENT_NODE'
 		}
 
