@@ -1,9 +1,16 @@
-name: CI
+name: Build
 
 on:
   push:
     branches:
-    pull_request:
+      - main
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -11,11 +18,12 @@ jobs:
     timeout-minutes: 60
     strategy:
       matrix:
-        node: [12, 14, 16, 18]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: [16, 18, 20]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
           cache: 'npm'
@@ -40,10 +48,12 @@ jobs:
         run: npm run test:unit
 
       - name: Upload coverage artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: github.ref == 'refs/heads/main' &&
-            github.repository == 'costrojs/costro' &&
-            github.event_name != 'pull_request'
+          github.repository == 'costrojs/costro' &&
+          github.event_name != 'pull_request' &&
+          matrix.node == '16' &&
+          matrix.os == 'ubuntu-latest'
         with:
           name: coverage
           path: coverage
@@ -60,14 +70,12 @@ jobs:
         github.repository == 'costrojs/costro' &&
         github.event_name != 'pull_request'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Download coverage artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: coverage
-          # The path is mandatory with actions/download-artifact@v2
-          # https://github.com/actions/download-artifact#compatibility-between-v1-and-v2
           path: coverage
 
       - name: Coveralls
