@@ -70,7 +70,8 @@ jobs:
     if: success() &&
         github.ref == 'refs/heads/main' &&
         github.repository == 'costrojs/costro' &&
-        github.event_name != 'pull_request'
+        github.event_name != 'pull_request' &&
+        github.event_name != 'release'
     steps:
       - uses: actions/checkout@v3
 
