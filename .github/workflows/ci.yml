@@ -7,6 +7,8 @@ on:
   pull_request:
     branches:
       - main
+  release:
+    types: [published]
 
 concurrency:
   group: ${{ github.ref }}
@@ -83,3 +85,34 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: 'coverage/lcov.info'
+
+  publish-npm:
+    runs-on: ubuntu-latest
+    if: success() &&
+      github.event_name == 'release' &&
+      github.event.release.target_commitish == 'main'
+    environment: npm
+    needs: build
+    concurrency:
+      group: ${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: dist
+          path: dist
+
+      - uses: actions/setup-node@v3
+        with:
+          cache: 'npm'
+          cache-dependency-path: ./package-lock.json
+          node-version: 16
+          registry-url: 'https://registry.npmjs.org'
+
+      - run: |
+          echo 'npm publish'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
