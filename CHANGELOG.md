@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 2.0.0
+
+### ⚠️ Breaking changes
+
+- Minimum supported `Node.js` version is `16.20.0` ([#8](https://github.com/costrojs/costro/pull/8))
+
+### Fixes
+
+- Fix `htmlFor` attribute not transformed ([#7](https://github.com/costrojs/costro/pull/7))
+
 ## 1.0.6
 
 ### Fixes
