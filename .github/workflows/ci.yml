@@ -49,7 +49,7 @@ jobs:
         uses: actions/upload-artifact@v3
         if: github.ref == 'refs/heads/main' &&
           github.repository == 'costrojs/costro' &&
-          github.event_name != 'pull_request' &&
+          github.event_name == 'release' &&
           matrix.node == '16' &&
           matrix.os == 'ubuntu-latest'
         with:
