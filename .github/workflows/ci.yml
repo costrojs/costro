@@ -14,9 +14,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 60
-    concurrency:
-      group: ${{ github.ref }}
-      cancel-in-progress: true
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
