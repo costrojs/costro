@@ -54,6 +54,7 @@ jobs:
           matrix.os == 'ubuntu-latest'
         with:
           name: coverage
+          path: coverage
 
       - name: Upload package artifacts
         uses: actions/upload-artifact@v3
@@ -85,7 +86,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: coverage
-          path: coverage
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
