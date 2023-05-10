@@ -14,7 +14,7 @@
 
 ### Fixes
 
-- Add fallback for replaceChildren support ([#6](https://github.com/costrojs/costro/pull/6))
+- Add fallback for `replaceChildren` support ([#6](https://github.com/costrojs/costro/pull/6))
 
 ## 1.0.5
 
