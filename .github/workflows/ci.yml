@@ -50,6 +50,7 @@ jobs:
         if: github.ref == 'refs/heads/main' &&
           github.repository == 'costrojs/costro' &&
           github.event_name != 'pull_request' &&
+          github.event_name != 'release' &&
           matrix.node == '16' &&
           matrix.os == 'ubuntu-latest'
         with:
@@ -82,10 +83,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Download artifacts
+      - name: Download coverage artifacts
         uses: actions/download-artifact@v3
         with:
           name: coverage
+          path: coverage
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
@@ -103,10 +105,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Download artifacts
+      - name: Download package artifacts
         uses: actions/download-artifact@v3
         with:
           name: package
+          path: |
+            dist
+            types
 
       - uses: actions/setup-node@v3
         with:
