@@ -57,7 +57,7 @@
 		"test:markdown": "markdownlint-cli2 '**/*.md' '.github/*.md'",
 		"test:types": "tsc --noEmit",
 		"test:unit": "rm -rf ./coverage/ && jest --config ./config/jest.config.js --verbose --coverage",
-		"tsc:d:only": "rm -rf ./types && tsc --emitDeclarationOnly"
+		"tsc:d:only": "rm -rf ./types && tsc --declaration --emitDeclarationOnly --declarationDir './types'"
 	},
 	"prettier": "./config/prettier.config.js",
 	"devDependencies": {
