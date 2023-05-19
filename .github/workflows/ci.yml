@@ -118,9 +118,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: package
-          path: |
-            dist
-            types
 
       - uses: actions/setup-node@v3
         with:
