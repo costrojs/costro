@@ -40,7 +40,9 @@ jobs:
         run: npm run test:markdown
 
       - name: Build
-        run: npm run build
+        run: |
+          npm run build
+          npm run tsc:d:only
 
       - name: Test Jest
         run: npm run test:unit
