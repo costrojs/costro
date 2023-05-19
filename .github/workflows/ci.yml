@@ -66,9 +66,16 @@ jobs:
           matrix.os == 'ubuntu-latest'
         with:
           name: package
-          path: |
-            dist
-            types
+          path: dist
+
+      - name: Upload package artifacts
+        uses: actions/upload-artifact@v3
+        if: github.event_name == 'release' &&
+          matrix.node == '16' &&
+          matrix.os == 'ubuntu-latest'
+        with:
+          name: package
+          path: types
 
       - name: Test Fixtures
         run: npm run test:fixtures
