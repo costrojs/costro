@@ -59,7 +59,7 @@ jobs:
           name: coverage
           path: coverage
 
-      - name: Upload package artifacts
+      - name: Upload package dist artifacts
         uses: actions/upload-artifact@v3
         if: github.event_name == 'release' &&
           matrix.node == '16' &&
@@ -68,7 +68,7 @@ jobs:
           name: package-dist
           path: dist
 
-      - name: Upload package artifacts
+      - name: Upload package types artifacts
         uses: actions/upload-artifact@v3
         if: github.event_name == 'release' &&
           matrix.node == '16' &&
