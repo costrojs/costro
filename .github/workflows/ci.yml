@@ -65,7 +65,7 @@ jobs:
           matrix.node == '16' &&
           matrix.os == 'ubuntu-latest'
         with:
-          name: package
+          name: package-dist
           path: dist
 
       - name: Upload package artifacts
@@ -74,7 +74,7 @@ jobs:
           matrix.node == '16' &&
           matrix.os == 'ubuntu-latest'
         with:
-          name: package
+          name: package-types
           path: types
 
       - name: Test Fixtures
@@ -114,10 +114,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Download package artifacts
+      - name: Download package dist artifacts
         uses: actions/download-artifact@v3
         with:
-          name: package
+          name: package-dist
+          path: dist
+
+      - name: Download package types artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: package-types
+          path: types
 
       - uses: actions/setup-node@v3
         with:
