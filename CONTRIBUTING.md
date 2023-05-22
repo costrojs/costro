@@ -7,7 +7,7 @@ Thanks for being interesting on Costro! Before submitting your contribution, be 
 
 ## Installation
 
-1. Make sure that [Node.js](https://nodejs.org) **version 12+** and npm are installed.
+1. Make sure that [Node.js](https://nodejs.org) **version 16+** and npm are installed.
 2. After cloning the repository, run `npm install` at the root of the repository.
 3. To start the development server, run `npm run dev`.
 
