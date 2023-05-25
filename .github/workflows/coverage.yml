@@ -8,3 +8,5 @@ on:
 jobs:
   coverage:
     uses: yoriiis/actions/.github/workflows/coverage.yml@main
+    with:
+      command: npm run build && npm run test:unit
