@@ -37,6 +37,7 @@ module.exports = {
 		'@typescript-eslint/no-explicit-any': 'off',
 		'@typescript-eslint/no-var-requires': 'off',
 		indent: ['error', 'tab', { ignoredNodes: ['TemplateLiteral > *'] }],
+		'linebreak-style': ['error', 'unix'],
 		'no-console': 0,
 		'no-tabs': 0,
 		'react/prop-types': 0,

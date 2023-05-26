@@ -1,5 +1,6 @@
 module.exports = {
 	arrowParens: 'always',
+	endOfLine: 'lf',
 	overrides: [
 		{
 			files: '*.md',
