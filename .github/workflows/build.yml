@@ -20,4 +20,4 @@ jobs:
       os: ${{ matrix.os }}
       command-test: npm run build && npm run test
       # Build already executed before in the test npm script
-      command-build: npm run tsd:d:only
+      command-build: npm run tsc:d:only
