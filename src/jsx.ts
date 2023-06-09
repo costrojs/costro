@@ -1,5 +1,7 @@
 import { ElementAttributes, createElementFunction, Constructable, Component } from './interface'
 
+type ChildrenAsArray = string[] | HTMLElement[] | SVGElement[]
+
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 const XML_NAMESPACE = 'http://www.w3.org/XML/1998/namespace'
 const SVG_ATTRIBUTES_CAMEL_CASE = ['xmlLang']
@@ -62,10 +64,10 @@ const SVG_TAGS = [
 
 /**
  * Create attribute on element
- * @param {(HTMLElement|SVGElement)} element Element
- * @param {String} name Attribute name
- * @param {(String|Object|Boolean)} value Attribute value
- * @param {Boolean} isSvg Element is SVG
+ * @param element Element
+ * @param name Attribute name
+ * @param value Attribute value
+ * @param isSvg Element is SVG
  */
 function createAttributes(
 	element: HTMLElement | SVGElement,
@@ -119,17 +121,21 @@ function createAttributes(
  */
 function appendChildren(
 	element: DocumentFragment | HTMLElement | SVGElement,
-	children: Array<string | Node>
+	children: ChildrenAsArray
 ) {
+	if (!Array.isArray(children)) {
+		children = [children]
+	}
+
 	for (let i = 0, length = children.length; i < length; i++) {
 		const child = children[i]
 		if (typeof child === 'string' || typeof child === 'number') {
 			element.appendChild(document.createTextNode(child))
 		} else if (child instanceof Node) {
 			element.appendChild(child)
-		} else if (Array.isArray(child as Array<Node>)) {
+		} else if (Array.isArray(child as Node[])) {
 			// Used by .map() function
-			for (let j = 0, length = (child as Array<any>).length; j < length; j++) {
+			for (let j = 0, length = (child as any[]).length; j < length; j++) {
 				const subChild = child[j]
 				if ((subChild as any) instanceof Node) {
 					element.appendChild(subChild)
@@ -143,14 +149,14 @@ function appendChildren(
 
 /**
  * Create the fragment from <></>
- * @param {Object} options
- * @param {Array} options.children The children of the fragment
- * @returns {DocumentFragment} Document fragment with his children
+ * @param options
+ * @param options.children The children of the fragment
+ * @returns Document fragment with his children
  */
 function Fragment({
 	children = []
 }: {
-	children?: string[] | HTMLElement[] | SVGElement[]
+	children?: ChildrenAsArray
 } = {}): DocumentFragment {
 	const fragment = document.createDocumentFragment()
 	children.length && appendChildren(fragment, children)
@@ -158,16 +164,41 @@ function Fragment({
 }
 
 /**
- * Create the element
- * @param {(String|Function)} tag Tag or function
- * @param {Object} attributes The attributes of the tag
- * @param {Array} children The children of the tag
- * @returns {(HTMLElement|null)} Element or null
+ * Used by:
+ * @babel/preset-react with jsx-runtime "classic"
+ * @babel/plugin-transform-react-jsx
+ * @param tag Tag or function
+ * @param attributes The attributes of the tag
+ * @param children The children of the tag
+ * @returns Element or null
  */
 function createElement(
 	tag: string | createElementFunction | Constructable<Component>,
 	attributes: null | ElementAttributes,
 	...children: string[] | HTMLElement[] | SVGElement[]
+): DocumentFragment | HTMLElement | SVGElement | string | null {
+	return jsx(tag, { children, ...attributes })
+}
+
+/**
+ * Used by:
+ * createElement function itself
+ * @babel/preset-react with jsx-runtime "automatic"
+ * @param tag Tag or function
+ * @param props
+ * @param props.attributes The attributes of the tag
+ * @param props.children The children of the tag
+ * @returns Element or null
+ */
+function jsx(
+	tag: string | createElementFunction | Constructable<Component>,
+	{
+		children,
+		...attributes
+	}: {
+		attributes?: null | ElementAttributes
+		children: string[] | HTMLElement[] | SVGElement[]
+	}
 ): DocumentFragment | HTMLElement | SVGElement | string | null {
 	let element = null
 	if (typeof tag === 'string') {
@@ -178,6 +209,7 @@ function createElement(
 			const attributeName = Object.keys(attributes)
 			for (let i = 0, length = attributeName.length; i < length; i++) {
 				const name = attributeName[i]
+				// @ts-ignore
 				const value = attributes[name]
 				if (name.startsWith('on') && typeof value === 'function') {
 					// @ts-ignore
@@ -187,20 +219,28 @@ function createElement(
 				}
 			}
 		}
-		children.length && appendChildren(element, children)
+		children && appendChildren(element, children)
 	} else if (typeof tag === 'function') {
 		const isComponentClass = !!(
 			tag.prototype &&
 			(tag.prototype.__isComponent || tag.prototype.isReactComponent)
 		)
+
+		const options = {
+			...(attributes || {}),
+			children
+		} as {
+			attributes: ElementAttributes
+			children: ChildrenAsArray
+		}
 		if (isComponentClass) {
-			element = new (tag as Constructable<Component>)(attributes || {}).render()
+			element = new (tag as Constructable<Component>)(options).render()
 		} else {
-			element = (tag as createElementFunction)({ ...(attributes || {}), children })
+			element = (tag as createElementFunction)(options)
 		}
 	}
 
 	return element
 }
 
-export { createElement, createElement as h, Fragment, Fragment as F }
+export { jsx, createElement, createElement as h, Fragment, Fragment as F }

@@ -41,6 +41,18 @@
 			"import": "./dist/jsx.esm.mjs",
 			"require": "./dist/jsx.cjs.js",
 			"default": "./dist/jsx.js"
+		},
+		"./jsx-runtime": {
+			"types": "./types/jsx.d.ts",
+			"import": "./dist/jsx-runtime.esm.js",
+			"require": "./dist/jsx-runtime.cjs.js",
+			"default": "./dist/jsx-runtime.cjs.js"
+		},
+		"./jsx-dev-runtime": {
+			"types": "./types/jsx.d.ts",
+			"import": "./dist/jsx-dev-runtime.esm.js",
+			"require": "./dist/jsx-dev-runtime.cjs.js",
+			"default": "./dist/jsx-dev-runtime.cjs.js"
 		}
 	},
 	"main": "dist/costro.cjs.js",

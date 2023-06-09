@@ -1,6 +1,30 @@
-import { createElement, Fragment, h } from '@src/jsx'
+import { createElement, Fragment, jsx, h } from '@src/jsx'
 
 describe('JSX', () => {
+	describe('jsx to support automatic runtime', () => {
+		it('Should call the jsx function with an empty div', () => {
+			const result = jsx('div', {})
+			expect(result.outerHTML).toStrictEqual('<div></div>')
+		})
+
+		it('Should call the jsx function with a div and a single child as text', () => {
+			const result = jsx('div', { children: 'Hello' })
+			expect(result.outerHTML).toStrictEqual('<div>Hello</div>')
+		})
+
+		it('Should call the jsx function with a div and a single chil as element', () => {
+			const result = jsx('div', { children: <p>Hello</p> })
+			expect(result.outerHTML).toStrictEqual('<div><p>Hello</p></div>')
+		})
+
+		it('Should call the jsx function with a div and multiple children as element', () => {
+			const result = jsx('div', {
+				children: [<p>Hello</p>, <span>guys</span>]
+			})
+			expect(result.outerHTML).toStrictEqual('<div><p>Hello</p><span>guys</span></div>')
+		})
+	})
+
 	describe('createElement', () => {
 		it('Should call the createElement function with a string tag and without attribute', () => {
 			const result = createElement('div', null)

@@ -40,6 +40,7 @@ module.exports = {
 		'linebreak-style': ['error', 'unix'],
 		'no-console': 0,
 		'no-tabs': 0,
+		'react/jsx-key': 0,
 		'react/prop-types': 0,
 		'sort-keys': ['error', 'asc', { caseSensitive: true, minKeys: 2, natural: true }],
 		'space-before-function-paren': [

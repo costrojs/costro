@@ -83,5 +83,49 @@ export default [
 			}),
 			buble()
 		].concat(isProduction ? [terserConfig] : [])
+	},
+	{
+		input: 'src/jsx-runtime.ts',
+		output: [
+			{
+				banner,
+				file: `${dir}/jsx-runtime.esm.js`,
+				format: 'es'
+			},
+			{
+				banner,
+				file: `${dir}/jsx-runtime.cjs.js`,
+				format: 'cjs'
+			}
+		],
+		plugins: [
+			typescript({
+				include: 'src/**',
+				typescript: require('typescript')
+			}),
+			buble()
+		].concat(isProduction ? [terserConfig] : [])
+	},
+	{
+		input: 'src/jsx-dev-runtime.ts',
+		output: [
+			{
+				banner,
+				file: `${dir}/jsx-dev-runtime.esm.js`,
+				format: 'es'
+			},
+			{
+				banner,
+				file: `${dir}/jsx-dev-runtime.cjs.js`,
+				format: 'cjs'
+			}
+		],
+		plugins: [
+			typescript({
+				include: 'src/**',
+				typescript: require('typescript')
+			}),
+			buble()
+		].concat(isProduction ? [terserConfig] : [])
 	}
 ]
