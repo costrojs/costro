@@ -28,7 +28,7 @@ Costro allows you to create components with store and a router in one lightweigh
 - [**Lifecycle hooks**](https://costro.js.org/docs/component#lifecycle-hooks) - Take advantage of component lifecycle events.
 - [**Props**](https://costro.js.org/docs/component#props) - Inject props into components.
 - [**Template string or JSX**](https://costro.js.org/docs/template-syntax) - Write your templates in a native Template String or in JSX.
-- [**JSX compiler**](https://costro.js.org/docs/template-syntax#jsx-) - Transforms JSX syntax into valid DOM elements _(only 1KB)_.
+- [**JSX compiler**](https://costro.js.org/docs/template-syntax#jsx-) - Transforms JSX syntax into valid DOM elements with `jsx-dom`
 - [**CLI**](https://costro.js.org/cli) - Create a new Costro app in seconds with an interactive experience.
 
 ## Documentation

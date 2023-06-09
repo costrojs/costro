@@ -55,33 +55,5 @@ export default [
 			}),
 			buble({ transforms: { forOf: false } })
 		].concat(isProduction ? [terserConfig] : [])
-	},
-	{
-		input: 'src/jsx.ts',
-		output: [
-			{
-				banner,
-				file: `${dir}/jsx.js`,
-				format: 'umd',
-				name: 'Costro.jsx'
-			},
-			{
-				banner,
-				file: `${dir}/jsx.esm.js`,
-				format: 'es'
-			},
-			{
-				banner,
-				file: `${dir}/jsx.cjs.js`,
-				format: 'cjs'
-			}
-		],
-		plugins: [
-			typescript({
-				include: 'src/**',
-				typescript: require('typescript')
-			}),
-			buble()
-		].concat(isProduction ? [terserConfig] : [])
 	}
 ]

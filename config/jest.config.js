@@ -14,7 +14,25 @@ module.exports = {
 	testEnvironment: 'jsdom',
 	testMatch: ['<rootDir>/tests/unit/*.test.js'],
 	transform: {
-		'^.+\\.(ts|tsx|js)$': 'ts-jest'
+		'^.+\\.(ts|tsx|js)$': [
+			'ts-jest',
+			{
+				babelConfig: {
+					plugins: [],
+					presets: [
+						'@babel/preset-env',
+						'@babel/preset-typescript',
+						[
+							'@babel/preset-react',
+							{
+								importSource: 'jsx-dom-cjs',
+								runtime: 'automatic'
+							}
+						]
+					]
+				}
+			}
+		]
 	},
 	verbose: true
 }

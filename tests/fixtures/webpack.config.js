@@ -15,16 +15,18 @@ module.exports = {
 						loader: 'babel-loader',
 						options: {
 							configFile: false,
-							plugins: [
+							plugins: [],
+							presets: [
+								'@babel/preset-env',
+								'@babel/preset-typescript',
 								[
-									'@babel/plugin-transform-react-jsx',
+									'@babel/preset-react',
 									{
-										pragma: 'h', // createElement or h
-										pragmaFrag: 'F' // Fragment or F
+										importSource: 'jsx-dom-cjs',
+										runtime: 'automatic'
 									}
 								]
-							],
-							presets: [['@babel/preset-env']]
+							]
 						}
 					}
 				]

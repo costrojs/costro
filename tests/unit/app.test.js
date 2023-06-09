@@ -1,6 +1,5 @@
 import App from '@src/app'
 import Location from '@src/location'
-import { h } from '../../dist/jsx'
 import routesFixtures from '../fixtures/routes-fixture'
 
 jest.mock('@src/location')

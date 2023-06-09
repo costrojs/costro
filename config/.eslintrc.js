@@ -40,7 +40,9 @@ module.exports = {
 		'linebreak-style': ['error', 'unix'],
 		'no-console': 0,
 		'no-tabs': 0,
+		'react/jsx-uses-react': 'off',
 		'react/prop-types': 0,
+		'react/react-in-jsx-scope': 'off',
 		'sort-keys': ['error', 'asc', { caseSensitive: true, minKeys: 2, natural: true }],
 		'space-before-function-paren': [
 			'error',
@@ -55,8 +57,6 @@ module.exports = {
 
 	settings: {
 		react: {
-			fragment: 'F', // Fragment
-			pragma: 'h', // createElement
 			version: '0' // Remove the warning of the missing React package
 		}
 	}
