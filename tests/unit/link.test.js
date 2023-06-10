@@ -1,7 +1,5 @@
 import link from '@src/link'
 
-const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
-
 describe('link', () => {
 	it('Should call the link function with HTML', () => {
 		const result = link(
@@ -30,6 +28,21 @@ describe('link', () => {
 		)
 
 		expect(result).toBe('<a href="/home" class="btn btn-info __customLink">Home</a>')
+	})
+
+	it('Should call the link function with children without array', () => {
+		const result = link(
+			{
+				children: document.createElement('span'),
+				className: 'btn btn-info',
+				to: '/home'
+			},
+			true
+		)
+		console.log(result)
+		expect(result).toStrictEqual(
+			'<a href="/home" class="btn btn-info __customLink"><span></span></a>'
+		)
 	})
 
 	it('Should call the link function with HTML and without children', () => {
@@ -67,7 +80,7 @@ describe('link', () => {
 	})
 
 	it('Should call the link function without HTML and SVG Element', () => {
-		const svg = document.createElementNS(SVG_NAMESPACE, 'svg')
+		const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
 
 		const result = link({
 			children: [svg],

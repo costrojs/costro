@@ -23,6 +23,9 @@ export default function Link(
 ): HTMLElement | string | any {
 	// @types/react-dom displays a warning if the Link component returns a JSX element OR a String (compatibility with JSX & Template String). The "any" type solves this problem.
 
+	// JSX runtime automatic can send child without an array
+	children = ([] as any[]).concat(children)
+
 	const element = document.createElement('a')
 	element.setAttribute('href', to)
 
