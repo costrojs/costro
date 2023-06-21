@@ -38,7 +38,7 @@ export default [
 			{
 				banner,
 				exports: 'named',
-				file: `${dir}/costro.esm.js`,
+				file: `${dir}/costro.esm.mjs`,
 				format: 'es'
 			},
 			{
@@ -67,7 +67,7 @@ export default [
 			},
 			{
 				banner,
-				file: `${dir}/jsx.esm.js`,
+				file: `${dir}/jsx.esm.mjs`,
 				format: 'es'
 			},
 			{

@@ -32,13 +32,13 @@
 	"exports": {
 		".": {
 			"types": "./types/index.d.ts",
-			"import": "./dist/costro.esm.js",
+			"import": "./dist/costro.esm.mjs",
 			"require": "./dist/costro.cjs.js",
 			"default": "./dist/costro.js"
 		},
 		"./jsx": {
 			"types": "./types/jsx.d.ts",
-			"import": "./dist/jsx.esm.js",
+			"import": "./dist/jsx.esm.mjs",
 			"require": "./dist/jsx.cjs.js",
 			"default": "./dist/jsx.js"
 		}
