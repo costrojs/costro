@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2.1.0
+
+### New features
+
+- Add JSX runtime ([#9](https://github.com/costrojs/costro/pull/9))
+
 ## 2.0.1
 
 ### ⚠️ Breaking changes
