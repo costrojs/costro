@@ -62,11 +62,11 @@
 		"types"
 	],
 	"scripts": {
-		"build": "rm -rf ./dist/ && rollup --config ./config/rollup.config.js --bundleConfigAsCjs --environment ENV:production",
+		"build": "rm -rf ./dist/ && rollup --config ./config/rollup.config.js --bundleConfigAsCjs --environment ENV:production && npm run tsc:d:only",
 		"dev": "rm -rf ./dist/ && rollup --config ./config/rollup.config.js --bundleConfigAsCjs --environment ENV:development --watch --sourcemap",
 		"dev:types": "tsc --noEmit --watch",
 		"dev:unit": "rm -rf ./coverage/ && jest --config ./config/jest.config.js --watchAll --coverage",
-		"pre:publish": "npm run build && npm run tsc:d:only && npm run test",
+		"pre:publish": "npm run build && npm run test",
 		"test": "npm run test:eslint && npm run test:types && npm run test:markdown && npm run test:unit && npm run test:fixtures",
 		"test:eslint": "eslint . -c ./config/.eslintrc.js --ignore-pattern node_modules --ignore-pattern dist --ignore-pattern types",
 		"test:fixtures": "rm -rf ./fixtures/dist && webpack --mode=production --config=./tests/fixtures/webpack.config.js",

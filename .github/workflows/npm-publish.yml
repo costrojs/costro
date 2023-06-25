@@ -8,6 +8,7 @@ jobs:
   npm:
     uses: yoriiis/actions/.github/workflows/npm-publish.yml@main
     with:
-      node-version: 16
+      node-version: 18
+      command-test: npm run build && npm run test
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
