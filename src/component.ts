@@ -1,5 +1,5 @@
 import { extend } from './utils'
-import { privateGetExternalStore, RouteComponent } from './interface'
+import { privateGetExternalStore, RouteComponent } from './types'
 
 class Component {
 	store: Map<string, object>
@@ -55,7 +55,7 @@ class Component {
 
 	/**
 	 * Set the component store
-	 * @param {Object} data Data to store
+	 * @param data Data to store
 	 */
 	setStore(data: any) {
 		const keys = Object.keys(data) as string[]
@@ -75,9 +75,9 @@ class Component {
 	/**
 	 * Get store from a key
 	 * Store can be retrieved from an external Component
-	 * @param {String} key Store key
-	 * @param {String} path Cmponent path
-	 * @returns {(any|null)} Content of the store key
+	 * @param key Store key
+	 * @param path Cmponent path
+	 * @returns Content of the store key
 	 */
 	getStore(key: string, path?: string): object | undefined | null {
 		if (key) {

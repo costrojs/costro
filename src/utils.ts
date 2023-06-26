@@ -1,8 +1,8 @@
 /**
  * Check whether an object has the property
- * @param {Object} obj Object reference
- * @param {String} key Object property key inside the object
- * @returns {Boolean} Object has the property key
+ * @param obj Object reference
+ * @param key Object property key inside the object
+ * @returns Object has the property key
  */
 function hasOwn(obj: any, key: string): any {
 	return Object.prototype.hasOwnProperty.call(obj, key)
@@ -10,8 +10,8 @@ function hasOwn(obj: any, key: string): any {
 
 /**
  * Deep clone for multiple objects
- * @param {Boolean} deep Deep clone
- * @param {Array<Object>} objects List of objects to merged
+ * @param deep Deep clone
+ * @param>} objects List of objects to merged
  * @returns Merged object
  */
 function extend(deep = false, ...objects: any[]): any {
@@ -48,8 +48,8 @@ const PATTERN_DYNAMIC_SEGMENT = `\/:([^\/]*)`
 
 /**
  * Get dynamic segments from path
- * @param {String} path Path
- * @returns {Array<String>} List of dynamic segments as key (without the "/:"")
+ * @param path Path
+ * @returns List of dynamic segments as key (without the "/:"")
  */
 function getDynamicSegmentsFromPath(path: string): string[] {
 	const segments = path.match(new RegExp(PATTERN_DYNAMIC_SEGMENT, 'g')) || []
@@ -68,8 +68,8 @@ function getDynamicSegmentsFromPath(path: string): string[] {
 /**
  * Create RegExp from path
  * Used to match path with dynamic segments ("/:id/:name" = "/42/john-doe")
- * @param {String} path Path
- * @returns {String} Path transformed in RegExp
+ * @param path Path
+ * @returns Path transformed in RegExp
  */
 function createRegExpFromPath(path: string): string {
 	return (

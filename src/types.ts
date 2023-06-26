@@ -1,17 +1,15 @@
 export type Fn = () => void
 
-export interface Constructable<T> {
+export type Constructable<T> = {
 	new (...args: any): T
 }
 
-export interface RouteComponent {
-	params: {
-		[key: string]: string
-	}
+export type RouteComponent = {
+	params: Record<string, string>
 	path: string
 }
 
-export interface Component {
+export type Component = {
 	afterDestroy: Fn
 	afterRender: Fn
 	beforeDestroy: Fn
@@ -26,13 +24,13 @@ export interface Component {
 	setStore: (data: any) => void
 }
 
-export interface Route {
+export type Route = {
 	component: Constructable<Component> | Fn | any // Multi types with constructor and function fails
 	path: string
 	props?: any
 }
 
-export interface RouteData {
+export type RouteData = {
 	component: any
 	dynamicSegments: string[]
 	interfaceType: string | null
@@ -43,21 +41,17 @@ export interface RouteData {
 	props: any
 }
 
-export interface Attributes {
-	[key: string]: string
-}
+export type Attributes = Record<string, string>
 
 export type onRouteChangeFunction = (currentPath: string) => void
 
 export type privateGetExternalStore = (key: string, path: string) => object | undefined | null
 
-export interface HelperFunction {
+export type HelperFunction = {
 	__getExternalStore: privateGetExternalStore
 }
 
-export interface ElementAttributes {
-	[key: string]: string | Fn
-}
+export type ElementAttributes = Record<string, string | Fn>
 
 export type createElementFunction = ({
 	children,

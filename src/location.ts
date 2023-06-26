@@ -1,4 +1,4 @@
-import { onRouteChangeFunction } from './interface'
+import { onRouteChangeFunction } from './types'
 
 export default class Location {
 	callback: onRouteChangeFunction
@@ -9,10 +9,10 @@ export default class Location {
 
 	/**
 	 * @constructor
-	 * @param {Object} options
-	 * @param {Function} options.callback On route change callback function
-	 * @param {Boolean} options.mode Location mode (hash|history)
-	 * @param {Boolean} options.basePath Site base path
+	 * @param options
+	 * @param options.callback On route change callback function
+	 * @param options.mode Location mode (hash|history)
+	 * @param options.basePath Site base path
 	 */
 	constructor({
 		callback,
@@ -36,8 +36,8 @@ export default class Location {
 	/**
 	 * Normalize the site base path
 	 * Add leading slash and remove trailing slash
-	 * @param {String} basePath Base path
-	 * @returns {String} Normalized base path
+	 * @param basePath Base path
+	 * @returns Normalized base path
 	 */
 	normalizeBasePath(basePath: string): string {
 		return basePath.replace(/\/+$/, '').replace(/^\/*/, '/')
@@ -68,7 +68,7 @@ export default class Location {
 	/**
 	 * Get the current path
 	 * In history mode, the path does not contains the base path
-	 * @returns {String} Current path or default path
+	 * @returns Current path or default path
 	 */
 	getPath(): string {
 		if (this.isHashMode) {
@@ -86,9 +86,9 @@ export default class Location {
 
 	/**
 	 * Extract the base path from the pathname
-	 * @param {String} pathname Loation pathname
-	 * @param {String} basePath Normalized base path
-	 * @returns {String} Pathname without the base path
+	 * @param pathname Loation pathname
+	 * @param basePath Normalized base path
+	 * @returns Pathname without the base path
 	 */
 	stripBasePath(pathname: string, basePath: string): string {
 		// Default base path
@@ -105,7 +105,7 @@ export default class Location {
 
 	/**
 	 * Set the new path
-	 * @param {String} path New path
+	 * @param path New path
 	 */
 	setPath(path: string) {
 		this.currentPath = path

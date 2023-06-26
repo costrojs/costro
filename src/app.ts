@@ -1,5 +1,5 @@
 import Location from './location'
-import { RouteData, Route, HelperFunction, Fn, Component } from './interface'
+import { RouteData, Route, HelperFunction, Fn, Component } from './types'
 import { getDynamicSegmentsFromPath, createRegExpFromPath } from './utils'
 
 export default class App {
@@ -14,12 +14,12 @@ export default class App {
 
 	/**
 	 * @constructor
-	 * @param {Object} options
-	 * @param {String} options.mode Location mode (hash|history)
-	 * @param {Array} options.routes Definition of routes
-	 * @param {HTMLElement} options.target HTMLElement target
-	 * @param {String} options.basePath Site base path
-	 * @param {Boolean} options.silentOnNotFound Silent not found routes
+	 * @param options
+	 * @param options.mode Location mode (hash|history)
+	 * @param options.routes Definition of routes
+	 * @param options.target HTMLElement target
+	 * @param options.basePath Site base path
+	 * @param options.silentOnNotFound Silent not found routes
 	 */
 	constructor({
 		mode = 'hash',
@@ -67,8 +67,8 @@ export default class App {
 
 	/**
 	 * Create routes data
-	 * @param {Array<Route>} routes Definition of routes
-	 * @returns {Object} Routes data parsed
+	 * @param routes Definition of routes
+	 * @returns Routes data parsed
 	 */
 	createRoutesData(routes: Route[]): Map<string, RouteData> {
 		const inValidRoutes = routes
@@ -123,8 +123,8 @@ export default class App {
 
 	/**
 	 * Check if the component interface type is granted
-	 * @param {Function} component Component
-	 * @returns {Boolean} Interface type is granted
+	 * @param component Component
+	 * @returns Interface type is granted
 	 */
 	isInterfaceTypeFromComponentGranted(component: Fn | Component): boolean {
 		return !!(typeof component === 'function' || this.isComponentClass(component))
@@ -132,8 +132,8 @@ export default class App {
 
 	/**
 	 * Check if the component is a class component (extends from Component)
-	 * @param {Function} component Component
-	 * @returns {Boolean} The component extends from the Component class
+	 * @param component Component
+	 * @returns The component extends from the Component class
 	 */
 	isComponentClass(component: Fn | Component): boolean {
 		return component.prototype ? !!component.prototype.__isComponent : false
@@ -149,7 +149,7 @@ export default class App {
 
 	/**
 	 * On navigate event
-	 * @param {Event}  e Event data
+	 * @param  e Event data
 	 */
 	onNavigate(e: Event) {
 		const { to } = (<CustomEvent>e).detail
@@ -158,7 +158,7 @@ export default class App {
 
 	/**
 	 * On click on app event
-	 * @param {Event}  e Event data
+	 * @param  e Event data
 	 */
 	onClickOnApp(e: Event) {
 		const target = e.target as HTMLElement
@@ -174,7 +174,7 @@ export default class App {
 
 	/**
 	 * On route change event
-	 * @param {Object} currentPath Current path from location
+	 * @param currentPath Current path from location
 	 */
 	onRouteChange(currentPath: string) {
 		const route = this.getRouteMatch(currentPath)
@@ -199,8 +199,8 @@ export default class App {
 	/**
 	 * Search the route from the path
 	 * Path can contain transformed segments
-	 * @param {String} path Path
-	 * @returns {(Route|undefined)} The route that matches the path or undefined
+	 * @param path Path
+	 * @returns The route that matches the path or undefined
 	 */
 	getRouteMatch(path: string): RouteData | undefined {
 		const route = this.routes.get(path)
@@ -299,7 +299,7 @@ export default class App {
 	/**
 	 * Get the component view
 	 * From the render function is Component, or from the component itself
-	 * @returns {(Node.ELEMENT_NODE|Node.DOCUMENT_FRAGMENT_NODE)} The component view
+	 * @returns The component view
 	 */
 	getComponentView() {
 		if (this.currentRoute) {
@@ -342,8 +342,8 @@ export default class App {
 
 	/**
 	 * Get the interface type from the component view
-	 * @param {(Node.ELEMENT_NODE|Node.DOCUMENT_FRAGMENT_NODE)} component Component view
-	 * @returns {(String|null)} Component type or null
+	 * @param.ELEMENT_NODE|Node.DOCUMENT_FRAGMENT_NODE)} component Component view
+	 * @returns Component type or null
 	 */
 	getInterfaceTypeFromView(component: string | Node): string | null {
 		if (typeof component === 'string') {
@@ -361,8 +361,8 @@ export default class App {
 
 	/**
 	 * Transform links inside string component into router friendly links
-	 * @param {(Node.ELEMENT_NODE|Node.DOCUMENT_FRAGMENT_NODE)} component Component view
-	 * @returns {Node.DOCUMENT_FRAGMENT_NODE} View of components with links compatible with the router
+	 * @param.ELEMENT_NODE|Node.DOCUMENT_FRAGMENT_NODE)} component Component view
+	 * @returns View of components with links compatible with the router
 	 */
 	transformLinksInStringComponent(component: string): DocumentFragment {
 		const template = document.createElement('template')
@@ -387,7 +387,7 @@ export default class App {
 	/**
 	 * Get component helper functions
 	 * Function are inject as dependencies in the Component
-	 * @returns {Object} List of helper function
+	 * @returns List of helper function
 	 */
 	getComponentHelpers(): HelperFunction {
 		return {

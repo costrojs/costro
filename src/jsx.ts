@@ -1,4 +1,4 @@
-import { ElementAttributes, createElementFunction, Constructable, Component } from './interface'
+import { ElementAttributes, createElementFunction, Constructable, Component } from './types'
 
 type ChildrenAsArray = string[] | HTMLElement[] | SVGElement[]
 

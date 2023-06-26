@@ -1,13 +1,13 @@
-import { Attributes } from './interface'
+import { Attributes } from './types'
 
 /**
  * Create the link
- * @param {Object} options
- * @param {Object} options.to Location path
- * @param {Object} options.children The children of the element
- * @param {Object} options.attrs The attributes of the element
- * @param {Boolean} isHtml The function is called from HTML
- * @returns {(String|HTMLElement)} Element as string or HTMLElement
+ * @param options
+ * @param options.to Location path
+ * @param options.children The children of the element
+ * @param options.attrs The attributes of the element
+ * @param isHtml The function is called from HTML
+ * @returns Element as string or HTMLElement
  */
 export default function Link(
 	{
