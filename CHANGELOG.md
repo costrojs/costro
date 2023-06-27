@@ -1,6 +1,12 @@
 # CHANGELOG
 
-## 2.1.0
+## 2.1.2
+
+### Fixes
+
+- Fix missing mjs files and Link with JSX runtime ([#11](https://github.com/costrojs/costro/pull/11))
+
+## 2.1.1
 
 ### New features
 
