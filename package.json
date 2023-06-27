@@ -58,7 +58,8 @@
 	"main": "dist/costro.cjs.js",
 	"types": "./types/index.d.ts",
 	"files": [
-		"dist/*.js",
+		"dist",
+		"!dist/**/*.map",
 		"types"
 	],
 	"scripts": {
