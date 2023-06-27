@@ -4,7 +4,7 @@
 
 ### Fixes
 
-- Fix missing mjs files and Link with JSX runtime ([#11](https://github.com/costrojs/costro/pull/11))
+- Fix missing `.mjs` files and Link with JSX runtime ([#11](https://github.com/costrojs/costro/pull/11))
 
 ## 2.1.1
 
