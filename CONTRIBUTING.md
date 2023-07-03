@@ -26,22 +26,13 @@ npm run dev:unit
 **Tests**
 
 ```bash
-# Run ESLint linter
-npm run test:eslint
-
-# Run TypeScript types linter
-npm run test:types
-
-# Run Markdown linter
-npm run test:markdown
-
 # Run unit tests (⚠️ needs npm run build before)
 npm run test:unit
 
 # Run fixtures tests (⚠️ needs npm run build before)
 npm run test:fixtures
 
-# Run all tests (eslint, types, markdown, unit, fixtures)
+# Run all tests (unit, fixtures)
 npm run test
 ```
 
