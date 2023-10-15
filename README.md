@@ -51,4 +51,4 @@ It uses modern JavaScript to be as light as possible and therefore only works on
 
 [MIT](https://opensource.org/licenses/MIT)
 
-Copyright (c) 2021-present, Yoriiis (Joris DANIEL)
+Copyright (c) 2021-present, Yoriiis
