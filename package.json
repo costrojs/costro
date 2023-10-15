@@ -28,7 +28,7 @@
 		"url": "https://github.com/sponsors/yoriiis"
 	},
 	"license": "MIT",
-	"author": "Joris DANIEL",
+	"author": "Yoriiis",
 	"exports": {
 		".": {
 			"types": "./types/index.d.ts",
