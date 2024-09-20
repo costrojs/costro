@@ -247,14 +247,6 @@ export default class App {
 		}
 	}
 
-	updateView() {
-		if (typeof Element.prototype.replaceChildren === 'function') {
-			this.target.replaceChildren()
-		} else {
-			this.target.innerHTML = ''
-		}
-	}
-
 	/**
 	 * Create the current component
 	 */
