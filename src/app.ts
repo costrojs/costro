@@ -247,34 +247,40 @@ export default class App {
 		}
 	}
 
+	updateView() {
+		if (typeof Element.prototype.replaceChildren === 'function') {
+			this.target.replaceChildren()
+		} else {
+			this.target.innerHTML = ''
+		}
+	}
+
 	/**
 	 * Create the current component
 	 */
 	createComponent() {
-		const currentRoute = this.currentRoute
-		if (currentRoute) {
-			if (currentRoute.isComponentClass && !currentRoute.isComponentClassReady) {
+		if (this.currentRoute) {
+			if (this.currentRoute.isComponentClass && !this.currentRoute.isComponentClassReady) {
 				this.initComponentInCache()
 			}
 
 			const responseComponentView = this.getComponentView()
 
-			responseComponentView &&
-				responseComponentView.then((componentView: any) => {
-					if (componentView) {
-						if (!currentRoute.interfaceType) {
-							currentRoute.interfaceType =
-								this.getInterfaceTypeFromView(componentView)
-							this.routes.set(currentRoute.path, currentRoute)
-						}
-
-						if (currentRoute.interfaceType === 'STRING') {
-							componentView = this.transformLinksInStringComponent(componentView)
-						}
-						this.target.appendChild(componentView)
-						currentRoute.isComponentClass && currentRoute.component.afterRender()
+			responseComponentView.then((componentView: any) => {
+				if (componentView && this.currentRoute) {
+					if (!this.currentRoute.interfaceType) {
+						this.currentRoute.interfaceType =
+							this.getInterfaceTypeFromView(componentView)
+						this.routes.set(this.currentRoute.path, this.currentRoute)
 					}
-				})
+
+					if (this.currentRoute.interfaceType === 'STRING') {
+						componentView = this.transformLinksInStringComponent(componentView)
+					}
+					this.target.appendChild(componentView)
+					this.currentRoute.isComponentClass && this.currentRoute.component.afterRender()
+				}
+			})
 		}
 	}
 
@@ -308,23 +314,29 @@ export default class App {
 	 * @returns The component view
 	 */
 	getComponentView() {
-		const currentRoute = this.currentRoute
-		if (currentRoute) {
-			return new Promise((resolve) => {
-				if (currentRoute.isComponentClass) {
-					this.updateComponentRouteData()
-					const beforeRenderFn = currentRoute.component.beforeRender()
+		if (this.currentRoute) {
+			if (this.currentRoute.isComponentClass) {
+				this.updateComponentRouteData()
+				const beforeRenderFn = this.currentRoute.component.beforeRender()
 
-					if (beforeRenderFn instanceof Promise) {
-						beforeRenderFn.then(() => resolve(currentRoute.component.render()))
-					} else {
-						resolve(currentRoute.component.render())
-					}
+				if (beforeRenderFn instanceof Promise) {
+					return Promise.resolve(beforeRenderFn).then(
+						() => this.currentRoute && this.currentRoute.component.render()
+					)
 				} else {
-					resolve(currentRoute.component.call(currentRoute.component, currentRoute.props))
+					return Promise.resolve(this.currentRoute.component.render())
 				}
-			})
+			} else {
+				return Promise.resolve(
+					this.currentRoute.component.call(
+						this.currentRoute.component,
+						this.currentRoute.props
+					)
+				)
+			}
 		}
+
+		return Promise.reject()
 	}
 
 	/**
