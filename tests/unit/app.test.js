@@ -744,6 +744,34 @@ describe('App', () => {
 			expect(app.target.appendChild).toHaveBeenCalledWith(<div></div>)
 			expect(app.currentRoute.component.afterRender).toHaveBeenCalled()
 		})
+
+		it('should call the createComponent function with a promise rejected', async () => {
+			app.currentRoute = {
+				component: {
+					afterRender: jest.fn()
+				},
+				interfaceType: null,
+				isComponentClass: true,
+				isComponentClassReady: false
+			}
+
+			app.initComponentInCache = jest.fn()
+			app.getComponentView = jest.fn()
+			app.getInterfaceTypeFromView = jest.fn()
+			app.transformLinksInStringComponent = jest.fn()
+			app.target.appendChild = jest.fn()
+			console.warn = jest.fn()
+
+			await app.createComponent()
+
+			expect(app.initComponentInCache).toHaveBeenCalled()
+			expect(app.getComponentView).toHaveBeenCalled()
+			expect(app.getInterfaceTypeFromView).not.toHaveBeenCalled()
+			expect(app.transformLinksInStringComponent).not.toHaveBeenCalled()
+			expect(app.target.appendChild).not.toHaveBeenCalled()
+			expect(app.currentRoute.component.afterRender).not.toHaveBeenCalled()
+			expect(console.warn).toHaveBeenCalledWith('getComponentView::promise rejected')
+		})
 	})
 
 	describe('initComponentInCache', () => {
@@ -809,7 +837,7 @@ describe('App', () => {
 		})
 
 		describe('Component', () => {
-			it('should call the getComponentView function with a component class with before render not asynchrone', async () => {
+			it('should call the getComponentView function with a component class with before render not a promise', async () => {
 				app.currentRoute = {
 					component: {
 						afterRender: jest.fn(),
@@ -818,31 +846,63 @@ describe('App', () => {
 					},
 					isComponentClass: true
 				}
+				app.runRenderWhenReady = jest.fn()
 
 				const result = await app.getComponentView()
 
 				expect(app.updateComponentRouteData).toHaveBeenCalled()
 				expect(app.currentRoute.component.beforeRender).toHaveBeenCalled()
+				expect(app.runRenderWhenReady).not.toHaveBeenCalled()
 				expect(app.currentRoute.component.render).toHaveBeenCalled()
 				expect(result).toStrictEqual(<div>Component</div>)
 			})
 
-			it('should call the getComponentView function with a component class with before render asynchrone', async () => {
+			it('should call the getComponentView function with a component class with before render as a promise', async () => {
 				app.currentRoute = {
 					component: {
 						afterRender: jest.fn(),
-						beforeRender: jest.fn().mockResolvedValue(),
-						render: jest.fn().mockReturnValue(<div>Component</div>)
+						beforeRender: jest
+							.fn()
+							.mockImplementation(
+								() => new Promise((resolve) => setTimeout(resolve, 2000))
+							),
+						render: jest.fn()
 					},
 					isComponentClass: true
 				}
+				app.runRenderWhenReady = jest.fn().mockResolvedValue(<div>Component</div>)
 
 				const result = await app.getComponentView()
 
 				expect(app.updateComponentRouteData).toHaveBeenCalled()
 				expect(app.currentRoute.component.beforeRender).toHaveBeenCalled()
-				// TODO check execution order
-				expect(app.currentRoute.component.render).toHaveBeenCalled()
+				expect(app.runRenderWhenReady).toHaveBeenCalled()
+				expect(app.currentRoute.component.render).not.toHaveBeenCalled()
+				expect(result).toStrictEqual(<div>Component</div>)
+			})
+
+			it('should call the getComponentView function with a component class with before render as a promise and route has changed', async () => {
+				const beforeRenderMock = jest.fn().mockResolvedValue()
+
+				app.currentRoute = {
+					component: {
+						afterRender: jest.fn(),
+						beforeRender: beforeRenderMock,
+						render: jest.fn()
+					},
+					isComponentClass: true
+				}
+				app.runRenderWhenReady = jest.fn().mockResolvedValue(<div>Component</div>)
+
+				const result = await app.getComponentView()
+
+				expect(app.updateComponentRouteData).toHaveBeenCalled()
+				expect(app.currentRoute.component.beforeRender).toHaveBeenCalled()
+				expect(app.runRenderWhenReady).toHaveBeenCalledWith(
+					app.currentRoute,
+					expect.any(Promise)
+				)
+				expect(app.currentRoute.component.render).not.toHaveBeenCalled()
 				expect(result).toStrictEqual(<div>Component</div>)
 			})
 		})
@@ -869,6 +929,69 @@ describe('App', () => {
 				)
 				expect(result).toStrictEqual(<div>Component</div>)
 			})
+		})
+
+		it('should call the getComponentView function with a promise rejection', async () => {
+			await expect(app.getComponentView()).rejects.toStrictEqual(
+				new Error('getComponentView::promise not resolved')
+			)
+		})
+	})
+
+	describe('runRenderWhenReady', () => {
+		beforeEach(() => {
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
+			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
+				/* Empty */
+			})
+
+			app = getInstance()
+			app.updateComponentRouteData = jest.fn()
+		})
+
+		it('should call the runRenderWhenReady function with render function called', async () => {
+			app.currentRoute = {
+				component: {
+					render: jest.fn().mockReturnValue(<div>Component</div>)
+				},
+				isComponentClass: true,
+				path: '/home'
+			}
+
+			const result = await app.runRenderWhenReady(
+				app.currentRoute,
+				jest.fn().mockResolvedValue()
+			)
+
+			expect(app.currentRoute.component.render).toHaveBeenCalled()
+			expect(result).toStrictEqual(<div>Component</div>)
+		})
+
+		it('should call the runRenderWhenReady function with route changed and render function not called', async () => {
+			app.currentRoute = {
+				component: {
+					render: jest.fn().mockReturnValue(<div>Component</div>)
+				},
+				path: '/page-2'
+			}
+
+			const previousRoute = {
+				component: {
+					render: jest.fn().mockReturnValue(<div>Component</div>)
+				},
+				path: '/page-1'
+			}
+
+			const result = await app.runRenderWhenReady(
+				previousRoute,
+				jest.fn().mockResolvedValue()
+			)
+
+			expect(app.currentRoute.component.render).not.toHaveBeenCalled()
+			expect(result).toStrictEqual(undefined)
 		})
 	})
 
