@@ -256,8 +256,8 @@ export default class App {
 				this.initComponentInCache()
 			}
 
-			try {
-				this.getComponentView().then((componentView) => {
+			this.getComponentView()
+				.then((componentView) => {
 					if (componentView && this.currentRoute) {
 						if (!this.currentRoute.interfaceType) {
 							this.currentRoute.interfaceType =
@@ -273,9 +273,9 @@ export default class App {
 							this.currentRoute.component.afterRender()
 					}
 				})
-			} catch (error) {
-				console.warn('getComponentView::promise rejected')
-			}
+				.catch((error) => {
+					console.warn('getComponentView::promise rejected', error)
+				})
 		}
 	}
 
