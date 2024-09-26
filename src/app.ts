@@ -256,19 +256,26 @@ export default class App {
 				this.initComponentInCache()
 			}
 
-			let componentView = this.getComponentView()
-			if (componentView) {
-				if (!this.currentRoute.interfaceType) {
-					this.currentRoute.interfaceType = this.getInterfaceTypeFromView(componentView)
-					this.routes.set(this.currentRoute.path, this.currentRoute)
-				}
+			this.getComponentView()
+				.then((componentView) => {
+					if (componentView && this.currentRoute) {
+						if (!this.currentRoute.interfaceType) {
+							this.currentRoute.interfaceType =
+								this.getInterfaceTypeFromView(componentView)
+							this.routes.set(this.currentRoute.path, this.currentRoute)
+						}
 
-				if (this.currentRoute.interfaceType === 'STRING') {
-					componentView = this.transformLinksInStringComponent(componentView)
-				}
-				this.target.appendChild(componentView)
-				this.currentRoute.isComponentClass && this.currentRoute.component.afterRender()
-			}
+						if (this.currentRoute.interfaceType === 'STRING') {
+							componentView = this.transformLinksInStringComponent(componentView)
+						}
+						this.target.appendChild(componentView)
+						this.currentRoute.isComponentClass &&
+							this.currentRoute.component.afterRender()
+					}
+				})
+				.catch((error) => {
+					console.warn('getComponentView::promise rejected', error)
+				})
 		}
 	}
 
@@ -305,15 +312,39 @@ export default class App {
 		if (this.currentRoute) {
 			if (this.currentRoute.isComponentClass) {
 				this.updateComponentRouteData()
-				this.currentRoute.component.beforeRender()
-				return this.currentRoute.component.render()
-			} else {
-				return this.currentRoute.component.call(
+				const beforeRenderFn = this.currentRoute.component.beforeRender()
+
+				if (beforeRenderFn instanceof Promise) {
+					return this.runRenderWhenReady(this.currentRoute, beforeRenderFn)
+				}
+
+				return Promise.resolve(this.currentRoute.component.render())
+			}
+
+			return Promise.resolve(
+				this.currentRoute.component.call(
 					this.currentRoute.component,
 					this.currentRoute.props
 				)
-			}
+			)
 		}
+
+		return Promise.reject(new Error('getComponentView::promise not resolved'))
+	}
+
+	/**
+	 * Run render function when asynchronous before render is resolved
+	 * @param currentRoute Current route
+	 * @param beforeRenderFn Before render promise
+	 * @returns The render content
+	 */
+	runRenderWhenReady(currentRoute: RouteData, beforeRenderFn: Promise<unknown>) {
+		return Promise.resolve(beforeRenderFn).then(() => {
+			// Check is route has changed before the promise resolution
+			if (this.currentRoute && this.currentRoute.path === currentRoute.path) {
+				return currentRoute.component.render()
+			}
+		})
 	}
 
 	/**

@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2.2.0
+
+### New features
+
+- Add asynchronous `beforeRender` hook ([#20](https://github.com/costrojs/costro/pull/20))
+
 ## 2.1.2
 
 ### Fixes

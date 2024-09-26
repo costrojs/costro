@@ -687,7 +687,7 @@ describe('App', () => {
 			app = getInstance()
 		})
 
-		it('should call the createComponent function with a component and HTMLElement', () => {
+		it('should call the createComponent function with a component and HTMLElement', async () => {
 			app.currentRoute = {
 				component: {
 					afterRender: jest.fn()
@@ -698,12 +698,12 @@ describe('App', () => {
 			}
 
 			app.initComponentInCache = jest.fn()
-			app.getComponentView = jest.fn().mockReturnValue(<div>Component</div>)
+			app.getComponentView = jest.fn().mockResolvedValue(<div>Component</div>)
 			app.getInterfaceTypeFromView = jest.fn().mockReturnValue('ELEMENT_NODE')
 			app.transformLinksInStringComponent = jest.fn()
 			app.target.appendChild = jest.fn()
 
-			app.createComponent()
+			await app.createComponent()
 
 			expect(app.initComponentInCache).toHaveBeenCalled()
 			expect(app.getComponentView).toHaveBeenCalled()
@@ -714,7 +714,7 @@ describe('App', () => {
 			expect(app.currentRoute.component.afterRender).toHaveBeenCalled()
 		})
 
-		it('should call the createComponent function with a component and String', () => {
+		it('should call the createComponent function with a component and String', async () => {
 			app.currentRoute = {
 				component: {
 					afterRender: jest.fn()
@@ -727,12 +727,12 @@ describe('App', () => {
 			app.initComponentInCache = jest.fn()
 			app.getComponentView = jest
 				.fn()
-				.mockReturnValue('<div><a href="" class="customLink">Link</a></div>')
+				.mockResolvedValue('<div><a href="" class="customLink">Link</a></div>')
 			app.getInterfaceTypeFromView = jest.fn().mockReturnValue('STRING')
 			app.transformLinksInStringComponent = jest.fn().mockReturnValue(<div></div>)
 			app.target.appendChild = jest.fn()
 
-			app.createComponent()
+			await app.createComponent()
 
 			expect(app.initComponentInCache).toHaveBeenCalled()
 			expect(app.getComponentView).toHaveBeenCalled()
@@ -743,6 +743,62 @@ describe('App', () => {
 			)
 			expect(app.target.appendChild).toHaveBeenCalledWith(<div></div>)
 			expect(app.currentRoute.component.afterRender).toHaveBeenCalled()
+		})
+
+		it('should call the createComponent function with a promise returning undefined (route has changed)', async () => {
+			app.currentRoute = {
+				component: {
+					afterRender: jest.fn()
+				},
+				interfaceType: null,
+				isComponentClass: true,
+				isComponentClassReady: false
+			}
+
+			app.initComponentInCache = jest.fn()
+			app.getComponentView = jest.fn().mockResolvedValue(undefined)
+			app.getInterfaceTypeFromView = jest.fn()
+			app.transformLinksInStringComponent = jest.fn()
+			app.target.appendChild = jest.fn()
+			console.warn = jest.fn()
+
+			await app.createComponent()
+
+			expect(app.initComponentInCache).toHaveBeenCalled()
+			expect(app.getComponentView).toHaveBeenCalled()
+			expect(app.getInterfaceTypeFromView).not.toHaveBeenCalled()
+			expect(app.transformLinksInStringComponent).not.toHaveBeenCalled()
+			expect(app.target.appendChild).not.toHaveBeenCalled()
+			expect(app.currentRoute.component.afterRender).not.toHaveBeenCalled()
+		})
+
+		it('should call the createComponent function with a promise rejected', async () => {
+			app.currentRoute = {
+				component: {
+					afterRender: jest.fn()
+				},
+				interfaceType: null,
+				isComponentClass: true,
+				isComponentClassReady: false
+			}
+
+			app.initComponentInCache = jest.fn()
+			app.getComponentView = jest.fn().mockRejectedValue(new Error('Promise rejection error'))
+
+			app.getInterfaceTypeFromView = jest.fn()
+			app.transformLinksInStringComponent = jest.fn()
+			app.target.appendChild = jest.fn()
+			app.test = jest.fn()
+			console.warn = jest.fn()
+
+			await app.createComponent()
+
+			expect(app.initComponentInCache).toHaveBeenCalled()
+			expect(app.getComponentView).toHaveBeenCalled()
+			expect(app.getInterfaceTypeFromView).not.toHaveBeenCalled()
+			expect(app.transformLinksInStringComponent).not.toHaveBeenCalled()
+			expect(app.target.appendChild).not.toHaveBeenCalled()
+			expect(app.currentRoute.component.afterRender).not.toHaveBeenCalled()
 		})
 	})
 
@@ -808,44 +864,158 @@ describe('App', () => {
 			app.updateComponentRouteData = jest.fn()
 		})
 
-		it('should call the getComponentView function with a component class', () => {
+		describe('Component', () => {
+			it('should call the getComponentView function with a component class with before render not a promise', async () => {
+				app.currentRoute = {
+					component: {
+						afterRender: jest.fn(),
+						beforeRender: jest.fn(),
+						render: jest.fn().mockReturnValue(<div>Component</div>)
+					},
+					isComponentClass: true
+				}
+				app.runRenderWhenReady = jest.fn()
+
+				const result = await app.getComponentView()
+
+				expect(app.updateComponentRouteData).toHaveBeenCalled()
+				expect(app.currentRoute.component.beforeRender).toHaveBeenCalled()
+				expect(app.runRenderWhenReady).not.toHaveBeenCalled()
+				expect(app.currentRoute.component.render).toHaveBeenCalled()
+				expect(result).toStrictEqual(<div>Component</div>)
+			})
+
+			it('should call the getComponentView function with a component class with before render a promise', async () => {
+				app.currentRoute = {
+					component: {
+						afterRender: jest.fn(),
+						beforeRender: jest.fn().mockResolvedValue(),
+						render: jest.fn()
+					},
+					isComponentClass: true
+				}
+				app.runRenderWhenReady = jest.fn().mockResolvedValue(<div>Component</div>)
+
+				const result = await app.getComponentView()
+
+				expect(app.updateComponentRouteData).toHaveBeenCalled()
+				expect(app.currentRoute.component.beforeRender).toHaveBeenCalled()
+				expect(app.runRenderWhenReady).toHaveBeenCalled()
+				expect(app.currentRoute.component.render).not.toHaveBeenCalled()
+				expect(result).toStrictEqual(<div>Component</div>)
+			})
+
+			it('should call the getComponentView function with a component class with before render a promise and route has changed', async () => {
+				const beforeRenderMock = jest.fn().mockResolvedValue()
+
+				app.currentRoute = {
+					component: {
+						afterRender: jest.fn(),
+						beforeRender: beforeRenderMock,
+						render: jest.fn()
+					},
+					isComponentClass: true
+				}
+				app.runRenderWhenReady = jest.fn().mockResolvedValue(<div>Component</div>)
+
+				const result = await app.getComponentView()
+
+				expect(app.updateComponentRouteData).toHaveBeenCalled()
+				expect(app.currentRoute.component.beforeRender).toHaveBeenCalled()
+				expect(app.runRenderWhenReady).toHaveBeenCalledWith(
+					app.currentRoute,
+					expect.any(Promise)
+				)
+				expect(app.currentRoute.component.render).not.toHaveBeenCalled()
+				expect(result).toStrictEqual(<div>Component</div>)
+			})
+		})
+
+		describe('Not a component', () => {
+			it('should call the getComponentView function with not a component class', async () => {
+				app.currentRoute = {
+					component: jest.fn().mockReturnValue(<div>Component</div>),
+					isComponentClass: false,
+					props: {
+						name: 'John Doe'
+					}
+				}
+				jest.spyOn(app.currentRoute.component, 'call')
+
+				const result = await app.getComponentView()
+
+				expect(app.updateComponentRouteData).not.toHaveBeenCalled()
+				expect(app.currentRoute.component.call).toHaveBeenCalledWith(
+					app.currentRoute.component,
+					{
+						name: 'John Doe'
+					}
+				)
+				expect(result).toStrictEqual(<div>Component</div>)
+			})
+		})
+
+		it('should call the getComponentView function with a promise rejection', async () => {
+			await expect(app.getComponentView()).rejects.toStrictEqual(
+				new Error('getComponentView::promise not resolved')
+			)
+		})
+	})
+
+	describe('runRenderWhenReady', () => {
+		beforeEach(() => {
+			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
+			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
+				/* Empty */
+			})
+			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
+				/* Empty */
+			})
+
+			app = getInstance()
+			app.updateComponentRouteData = jest.fn()
+		})
+
+		it('should call the runRenderWhenReady function with render function called', async () => {
 			app.currentRoute = {
 				component: {
-					afterRender: jest.fn(),
-					beforeRender: jest.fn(),
 					render: jest.fn().mockReturnValue(<div>Component</div>)
 				},
-				isComponentClass: true
+				isComponentClass: true,
+				path: '/home'
 			}
 
-			const result = app.getComponentView()
+			const result = await app.runRenderWhenReady(
+				app.currentRoute,
+				jest.fn().mockResolvedValue()
+			)
 
-			expect(app.updateComponentRouteData).toHaveBeenCalled()
-			expect(app.currentRoute.component.beforeRender).toHaveBeenCalled()
 			expect(app.currentRoute.component.render).toHaveBeenCalled()
 			expect(result).toStrictEqual(<div>Component</div>)
 		})
 
-		it('should call the getComponentView function with not a component class', () => {
+		it('should call the runRenderWhenReady function with route changed and render function not called', async () => {
 			app.currentRoute = {
-				component: jest.fn().mockReturnValue(<div>Component</div>),
-				isComponentClass: false,
-				props: {
-					name: 'John Doe'
-				}
+				component: {
+					render: jest.fn().mockReturnValue(<div>Component</div>)
+				},
+				path: '/page-2'
 			}
-			jest.spyOn(app.currentRoute.component, 'call')
 
-			const result = app.getComponentView()
+			const previousRoute = {
+				component: {
+					render: jest.fn().mockReturnValue(<div>Component</div>)
+				},
+				path: '/page-1'
+			}
 
-			expect(app.updateComponentRouteData).not.toHaveBeenCalled()
-			expect(app.currentRoute.component.call).toHaveBeenCalledWith(
-				app.currentRoute.component,
-				{
-					name: 'John Doe'
-				}
+			const result = await app.runRenderWhenReady(
+				previousRoute,
+				jest.fn().mockResolvedValue()
 			)
-			expect(result).toStrictEqual(<div>Component</div>)
+
+			expect(app.currentRoute.component.render).not.toHaveBeenCalled()
+			expect(result).toStrictEqual(undefined)
 		})
 	})
 
