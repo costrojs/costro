@@ -69,7 +69,7 @@
 		"dev": "rm -rf ./dist/ && rollup --config ./config/rollup.config.js --bundleConfigAsCjs --environment ENV:development --watch --sourcemap",
 		"dev:types": "tsc --noEmit --watch",
 		"dev:unit": "rm -rf ./coverage/ && jest --config ./config/jest.config.js --watchAll --coverage",
-		"pre:publish": "npm run build && npm run test",
+		"pre:publish": "npm run build && npm run test && npm run biome:check",
 		"test": "npm run test:unit && npm run test:fixtures",
 		"test:fixtures": "rm -rf ./fixtures/dist && webpack --mode=production --config=./tests/fixtures/webpack.config.js",
 		"test:unit": "rm -rf ./coverage/ && jest --config ./config/jest.config.js --verbose --coverage",

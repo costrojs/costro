@@ -1,4 +1,4 @@
-import { App, Component, Link } from 'costro'
+import { App, Component, Link, createStore, useStore } from 'costro'
 // import { h, F } from 'costro/jsx'
 
 function Navigation() {
@@ -57,7 +57,7 @@ class CustomComponent1 extends Component {
 	}
 
 	beforeRender() {
-		this.setStore({
+		createStore({
 			name: this.props.title
 		})
 	}
@@ -81,7 +81,7 @@ class CustomComponent2 extends Component {
 	}
 
 	beforeRender() {
-		this.name = this.getStore('name', '/custom-component-1')
+		this.name = useStore('name')
 	}
 }
 

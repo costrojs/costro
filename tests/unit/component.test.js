@@ -65,49 +65,4 @@ describe('Component ', () => {
 			}
 		})
 	})
-
-	describe('Component setStore', () => {
-		it('Should call the setStore', () => {
-			component.store = new Map([['identity', { lastname: 'Doe', name: 'John' }]])
-			component.setStore({
-				identity: {
-					private: true
-				},
-				page: 'home'
-			})
-
-			const store = new Map([
-				['page', 'home'],
-				['identity', { lastname: 'Doe', name: 'John', private: true }]
-			])
-			expect(component.store).toStrictEqual(store)
-		})
-	})
-
-	describe('Component getStore', () => {
-		it('Should call the getStore', () => {
-			component.store = new Map([['identity', { lastname: 'Doe', name: 'John' }]])
-			const result = component.getStore('identity')
-
-			expect(result).toStrictEqual({
-				lastname: 'Doe',
-				name: 'John'
-			})
-		})
-
-		it('Should call the getStore without key', () => {
-			const result = component.getStore()
-
-			expect(result).toBe(null)
-		})
-
-		it('Should call the getStore with a path', () => {
-			component.__getExternalStore = jest.fn().mockReturnValue(true)
-
-			const result = component.getStore('identity', '/home')
-
-			expect(result).toBe(true)
-			expect(component.__getExternalStore).toHaveBeenCalledWith('identity', '/home')
-		})
-	})
 })
