@@ -57,12 +57,10 @@
 	},
 	"main": "dist/costro.cjs.js",
 	"types": "./types/index.d.ts",
-	"files": [
-		"dist",
-		"!dist/**/*.map",
-		"types"
-	],
+	"files": ["dist", "!dist/**/*.map", "types"],
 	"scripts": {
+		"biome:check": "biome check",
+		"biome:fix": "biome check --write",
 		"build": "rm -rf ./dist/ && rollup --config ./config/rollup.config.js --bundleConfigAsCjs --environment ENV:production && npm run tsc:d:only",
 		"dev": "rm -rf ./dist/ && rollup --config ./config/rollup.config.js --bundleConfigAsCjs --environment ENV:development --watch --sourcemap",
 		"dev:types": "tsc --noEmit --watch",
@@ -78,6 +76,7 @@
 		"@babel/core": "^7.21.8",
 		"@babel/plugin-transform-react-jsx": "^7.21.5",
 		"@babel/preset-env": "^7.21.5",
+		"@biomejs/biome": "^1.9.4",
 		"@rollup/plugin-buble": "^1.0.2",
 		"@rollup/plugin-terser": "^0.4.1",
 		"@rollup/plugin-typescript": "^11.1.0",
@@ -95,6 +94,6 @@
 		"webpack-cli": "^5.1.1"
 	},
 	"engines": {
-		"node": ">=16.20.0"
+		"node": ">=20.18.0"
 	}
 }

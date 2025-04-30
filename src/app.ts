@@ -1,6 +1,6 @@
 import Location from './location'
-import { RouteData, Route, HelperFunction, Fn, Component } from './types'
-import { getDynamicSegmentsFromPath, createRegExpFromPath } from './utils'
+import type { Component, Fn, HelperFunction, Route, RouteData } from './types'
+import { createRegExpFromPath, getDynamicSegmentsFromPath } from './utils'
 
 export default class App {
 	target: HTMLElement
@@ -85,9 +85,7 @@ export default class App {
 
 		return new Map(
 			routes
-				.filter((route): boolean =>
-					this.isInterfaceTypeFromComponentGranted(route.component)
-				)
+				.filter((route): boolean => this.isInterfaceTypeFromComponentGranted(route.component))
 				.map((route: Route): any => {
 					if (typeof route.path === 'undefined') {
 						route.path = '*'
@@ -183,9 +181,8 @@ export default class App {
 				if (route.path === this.currentRoute.path) {
 					// The route is already rendered, stop
 					return
-				} else {
-					this.destroyCurrentRoute()
 				}
+				this.destroyCurrentRoute()
 			}
 
 			this.currentRoute = route
@@ -207,12 +204,12 @@ export default class App {
 
 		if (route) {
 			return route
-		} else {
-			// In case of unknown route, search for dynamic segments matches
-			for (const route of this.routes) {
-				if (route[1].dynamicSegments.length && new RegExp(route[1].pathRegExp).test(path)) {
-					return this.routes.get(route[0])
-				}
+		}
+
+		// In case of unknown route, search for dynamic segments matches
+		for (const route of this.routes) {
+			if (route[1].dynamicSegments.length && new RegExp(route[1].pathRegExp).test(path)) {
+				return this.routes.get(route[0])
 			}
 		}
 
@@ -260,8 +257,7 @@ export default class App {
 				.then((componentView) => {
 					if (componentView && this.currentRoute) {
 						if (!this.currentRoute.interfaceType) {
-							this.currentRoute.interfaceType =
-								this.getInterfaceTypeFromView(componentView)
+							this.currentRoute.interfaceType = this.getInterfaceTypeFromView(componentView)
 							this.routes.set(this.currentRoute.path, this.currentRoute)
 						}
 
@@ -269,8 +265,7 @@ export default class App {
 							componentView = this.transformLinksInStringComponent(componentView)
 						}
 						this.target.appendChild(componentView)
-						this.currentRoute.isComponentClass &&
-							this.currentRoute.component.afterRender()
+						this.currentRoute.isComponentClass && this.currentRoute.component.afterRender()
 					}
 				})
 				.catch((error) => {
@@ -322,10 +317,7 @@ export default class App {
 			}
 
 			return Promise.resolve(
-				this.currentRoute.component.call(
-					this.currentRoute.component,
-					this.currentRoute.props
-				)
+				this.currentRoute.component.call(this.currentRoute.component, this.currentRoute.props)
 			)
 		}
 
@@ -354,9 +346,7 @@ export default class App {
 		if (this.currentRoute) {
 			this.currentRoute.component.route.path = this.location.currentPath
 			if (this.currentRoute.dynamicSegments.length) {
-				const dynamicSegments = this.location.currentPath.match(
-					this.currentRoute.pathRegExp
-				)
+				const dynamicSegments = this.location.currentPath.match(this.currentRoute.pathRegExp)
 				if (dynamicSegments && dynamicSegments.length > 1) {
 					// Remove matching text as the first item
 					dynamicSegments.shift()
@@ -380,9 +370,7 @@ export default class App {
 		if (typeof component === 'string') {
 			return 'STRING'
 		} else if (
-			([Node.ELEMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE] as number[]).includes(
-				component.nodeType
-			)
+			([Node.ELEMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE] as number[]).includes(component.nodeType)
 		) {
 			return 'ELEMENT_NODE'
 		}
@@ -424,7 +412,7 @@ export default class App {
 		return {
 			__getExternalStore: (key: string, path: string): object | undefined | null => {
 				const route = this.getRouteMatch(path)
-				if (route && route.isComponentClass && route.isComponentClassReady) {
+				if (route?.isComponentClass && route.isComponentClassReady) {
 					return route.component.getStore(key)
 				}
 

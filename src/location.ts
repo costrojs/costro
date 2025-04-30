@@ -1,4 +1,4 @@
-import { onRouteChangeFunction } from './types'
+import type { onRouteChangeFunction } from './types'
 
 export default class Location {
 	callback: onRouteChangeFunction
@@ -79,9 +79,8 @@ export default class Location {
 
 			// In case of empty string, return "/" to match this path
 			return index >= 0 ? href.slice(index + 1) : '/'
-		} else {
-			return this.stripBasePath(window.location.pathname, this.basePath)
 		}
+		return this.stripBasePath(window.location.pathname, this.basePath)
 	}
 
 	/**

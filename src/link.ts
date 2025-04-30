@@ -1,4 +1,4 @@
-import { Attributes } from './types'
+import type { Attributes } from './types'
 
 /**
  * Create the link

@@ -1,4 +1,4 @@
-import { hasOwn, extend, getDynamicSegmentsFromPath, createRegExpFromPath } from '@src/utils'
+import { createRegExpFromPath, extend, getDynamicSegmentsFromPath, hasOwn } from '@src/utils'
 
 describe('utils', () => {
 	describe('hasOwn', () => {

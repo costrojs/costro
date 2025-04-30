@@ -97,7 +97,9 @@ const routes = new Map([
 beforeEach(() => {
 	document.body.appendChild(
 		<div id="app">
-			<a href="/document-fragment" className="link"></a>
+			<a href="/document-fragment" className="link">
+				Link
+			</a>
 		</div>
 	)
 
@@ -266,9 +268,7 @@ describe('App', () => {
 		})
 
 		it('should call the isInterfaceTypeFromComponentGranted function with a valid component', () => {
-			const result = app.isInterfaceTypeFromComponentGranted(
-				customRoutesFixtures[0].component
-			)
+			const result = app.isInterfaceTypeFromComponentGranted(customRoutesFixtures[0].component)
 
 			expect(result).toBe(true)
 		})
@@ -326,10 +326,7 @@ describe('App', () => {
 			app.addEvents.mockRestore()
 			app.addEvents()
 
-			expect(document.addEventListener).toHaveBeenCalledWith(
-				'costro::navigate',
-				app.onNavigate
-			)
+			expect(document.addEventListener).toHaveBeenCalledWith('costro::navigate', app.onNavigate)
 			expect(app.target.addEventListener).toHaveBeenCalledWith('click', app.onClickOnApp)
 		})
 	})
@@ -729,7 +726,7 @@ describe('App', () => {
 				.fn()
 				.mockResolvedValue('<div><a href="" class="customLink">Link</a></div>')
 			app.getInterfaceTypeFromView = jest.fn().mockReturnValue('STRING')
-			app.transformLinksInStringComponent = jest.fn().mockReturnValue(<div></div>)
+			app.transformLinksInStringComponent = jest.fn().mockReturnValue(<div />)
 			app.target.appendChild = jest.fn()
 
 			await app.createComponent()
@@ -741,7 +738,7 @@ describe('App', () => {
 			expect(app.transformLinksInStringComponent).toHaveBeenCalledWith(
 				'<div><a href="" class="customLink">Link</a></div>'
 			)
-			expect(app.target.appendChild).toHaveBeenCalledWith(<div></div>)
+			expect(app.target.appendChild).toHaveBeenCalledWith(<div />)
 			expect(app.currentRoute.component.afterRender).toHaveBeenCalled()
 		})
 
@@ -922,10 +919,7 @@ describe('App', () => {
 
 				expect(app.updateComponentRouteData).toHaveBeenCalled()
 				expect(app.currentRoute.component.beforeRender).toHaveBeenCalled()
-				expect(app.runRenderWhenReady).toHaveBeenCalledWith(
-					app.currentRoute,
-					expect.any(Promise)
-				)
+				expect(app.runRenderWhenReady).toHaveBeenCalledWith(app.currentRoute, expect.any(Promise))
 				expect(app.currentRoute.component.render).not.toHaveBeenCalled()
 				expect(result).toStrictEqual(<div>Component</div>)
 			})
@@ -945,12 +939,9 @@ describe('App', () => {
 				const result = await app.getComponentView()
 
 				expect(app.updateComponentRouteData).not.toHaveBeenCalled()
-				expect(app.currentRoute.component.call).toHaveBeenCalledWith(
-					app.currentRoute.component,
-					{
-						name: 'John Doe'
-					}
-				)
+				expect(app.currentRoute.component.call).toHaveBeenCalledWith(app.currentRoute.component, {
+					name: 'John Doe'
+				})
 				expect(result).toStrictEqual(<div>Component</div>)
 			})
 		})
@@ -985,10 +976,7 @@ describe('App', () => {
 				path: '/home'
 			}
 
-			const result = await app.runRenderWhenReady(
-				app.currentRoute,
-				jest.fn().mockResolvedValue()
-			)
+			const result = await app.runRenderWhenReady(app.currentRoute, jest.fn().mockResolvedValue())
 
 			expect(app.currentRoute.component.render).toHaveBeenCalled()
 			expect(result).toStrictEqual(<div>Component</div>)
@@ -1009,10 +997,7 @@ describe('App', () => {
 				path: '/page-1'
 			}
 
-			const result = await app.runRenderWhenReady(
-				previousRoute,
-				jest.fn().mockResolvedValue()
-			)
+			const result = await app.runRenderWhenReady(previousRoute, jest.fn().mockResolvedValue())
 
 			expect(app.currentRoute.component.render).not.toHaveBeenCalled()
 			expect(result).toStrictEqual(undefined)
@@ -1184,9 +1169,7 @@ describe('App', () => {
 		it('should call the __getExternalStore helper function with invalid route', () => {
 			app.getRouteMatch = jest.fn().mockReturnValue(undefined)
 
-			const externalStore = app
-				.getComponentHelpers()
-				.__getExternalStore('name', '/unknown-route')
+			const externalStore = app.getComponentHelpers().__getExternalStore('name', '/unknown-route')
 
 			expect(externalStore).toBe(null)
 		})
@@ -1247,10 +1230,7 @@ describe('App', () => {
 			app.destroy()
 
 			expect(app.location.destroy).toHaveBeenCalled()
-			expect(document.removeEventListener).toHaveBeenCalledWith(
-				'costro::navigate',
-				app.onNavigate
-			)
+			expect(document.removeEventListener).toHaveBeenCalledWith('costro::navigate', app.onNavigate)
 			expect(app.target.removeEventListener).toHaveBeenCalledWith('click', app.onClickOnApp)
 			expect(app.currentRoute).toBe(undefined)
 			expect(app.previousRoute).toBe(undefined)

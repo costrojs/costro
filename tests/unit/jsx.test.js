@@ -1,4 +1,4 @@
-import { createElement, Fragment, jsx, h } from '@src/jsx'
+import { Fragment, createElement, h, jsx } from '@src/jsx'
 
 describe('JSX', () => {
 	describe('jsx to support automatic runtime', () => {

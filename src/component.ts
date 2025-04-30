@@ -1,5 +1,5 @@
+import type { RouteComponent, privateGetExternalStore } from './types'
 import { extend } from './utils'
-import { privateGetExternalStore, RouteComponent } from './types'
 
 class Component {
 	store: Map<string, object>

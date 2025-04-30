@@ -1,5 +1,5 @@
-import { h, F } from '../../dist/jsx'
 import { Component, Link, navigate } from '../../dist/costro'
+import { F, h } from '../../dist/jsx'
 
 function Navigation() {
 	return (
@@ -8,7 +8,9 @@ function Navigation() {
 				<Link to="/">htmlElement</Link>
 			</li>
 			<li>
-				<button onClick={() => navigate('/document-fragment')}>documentFragment</button>
+				<button type="button" onClick={() => navigate('/document-fragment')}>
+					documentFragment
+				</button>
 			</li>
 			<li>
 				<Link to="/custom-component/42/john-doe">CustomComponent 1</Link>
@@ -84,7 +86,7 @@ class CustomComponent2 extends Component {
 	}
 }
 
-function String() {
+function StringFn() {
 	return `
         ${Link({ children: ['Home'], to: '/' }, true)}
         <h2>String</h2>
@@ -99,8 +101,8 @@ const svg = () => (
 		y="0"
 		viewBox="0 0 48 48"
 		width="50px"
-		height="50px"
-	>
+		height="50px">
+		<title>Demo</title>
 		<g>
 			<circle id="Oval" className="st0" cx="24" cy="24" r="24" fill="#fbd971" />
 			<path
@@ -141,7 +143,7 @@ const routes = [
 		path: '/custom-component-2'
 	},
 	{
-		component: String,
+		component: StringFn,
 		path: '/string'
 	},
 	{
