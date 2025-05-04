@@ -57,7 +57,11 @@
 	},
 	"main": "dist/costro.cjs.js",
 	"types": "./types/index.d.ts",
-	"files": ["dist", "!dist/**/*.map", "types"],
+	"files": [
+		"dist",
+		"!dist/**/*.map",
+		"types"
+	],
 	"scripts": {
 		"biome:check": "biome check",
 		"biome:fix": "biome check --write",

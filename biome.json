@@ -5,6 +5,14 @@
 		"ignoreUnknown": false,
 		"ignore": ["**/node_modules", "**/dist", "**/coverage"]
 	},
+	"overrides": [
+		{
+			"include": ["package.json"],
+			"formatter": {
+				"lineWidth": 1
+			}
+		}
+	],
 	"formatter": {
 		"enabled": true,
 		"useEditorconfig": true,
@@ -37,13 +45,6 @@
 			"quoteStyle": "single",
 			"attributePosition": "auto",
 			"bracketSpacing": true
-		}
-	},
-	"css": {
-		"formatter": {
-			"indentStyle": "tab",
-			"indentWidth": 2,
-			"quoteStyle": "double"
 		}
 	}
 }
