@@ -1,4 +1,4 @@
-import { ElementAttributes, createElementFunction, Constructable, Component } from './types'
+import type { Component, Constructable, ElementAttributes, createElementFunction } from './types'
 
 type ChildrenAsArray = string[] | HTMLElement[] | SVGElement[]
 
@@ -104,7 +104,7 @@ function createAttributes(
 	} else if (name === 'htmlFor' && valueIsString) {
 		element.setAttribute('for', value)
 	} else if (isSvg && SVG_ATTRIBUTES_CAMEL_CASE.includes(name) && valueIsString) {
-		const attributesWithColon = name.replace(/[A-Z]/g, (match) => ':' + match.toLowerCase())
+		const attributesWithColon = name.replace(/[A-Z]/g, (match) => `:${match.toLowerCase()}`)
 		element.setAttributeNS(XML_NAMESPACE, attributesWithColon, value)
 	} else if (value === true) {
 		element.setAttribute(name, '')
@@ -124,6 +124,7 @@ function appendChildren(
 	children: ChildrenAsArray
 ) {
 	if (!Array.isArray(children)) {
+		// biome-ignore lint/style/noParameterAssign: Reassigning is intentional here.
 		children = [children]
 	}
 

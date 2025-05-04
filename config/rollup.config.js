@@ -1,16 +1,13 @@
-import path from 'path'
-import typescript from '@rollup/plugin-typescript'
+import path from 'node:path'
 import buble from '@rollup/plugin-buble'
 import terser from '@rollup/plugin-terser'
+import typescript from '@rollup/plugin-typescript'
 
 const isProduction = process.env.ENV === 'production'
 const dir = path.resolve(__dirname, '../dist')
-const banner =
-	'/*!\n' +
-	` * Costro v${require('../package.json').version}\n` +
-	` * (c) 2021-${new Date().getFullYear()} Yoriiis\n` +
-	' * Released under the MIT License.\n' +
-	' */'
+const banner = `/*!\n * Costro v${
+	require('../package.json').version
+}\n * (c) 2021-${new Date().getFullYear()} Yoriiis\n * Released under the MIT License.\n */`
 
 // Use custom Terser configuration to remove the Microsoft copyright from tslib and keep the banner plugin
 // Terser is executed after the banner plugin

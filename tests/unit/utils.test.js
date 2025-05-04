@@ -1,4 +1,4 @@
-import { hasOwn, extend, getDynamicSegmentsFromPath, createRegExpFromPath } from '@src/utils'
+import { createRegExpFromPath, extend, getDynamicSegmentsFromPath, hasOwn } from '@src/utils'
 
 describe('utils', () => {
 	describe('hasOwn', () => {
@@ -56,12 +56,10 @@ describe('utils', () => {
 				name: 'John',
 				skills: {
 					private: true,
-					// eslint-disable-next-line sort-keys
 					array: [1, 2, 3],
 					fn: () => true,
 					unknown: true
 				},
-				// eslint-disable-next-line sort-keys
 				lastname: 'Doe'
 			}
 			const result = extend(true, obj1, obj2)

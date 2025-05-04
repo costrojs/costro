@@ -12,9 +12,7 @@ describe('link', () => {
 			true
 		)
 
-		expect(result).toBe(
-			'<a href="/home" class="btn btn-info __customLink" data-test="">Home</a>'
-		)
+		expect(result).toBe('<a href="/home" class="btn btn-info __customLink" data-test="">Home</a>')
 	})
 
 	it('Should call the link function with HTML and className attribute', () => {

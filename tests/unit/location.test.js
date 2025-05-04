@@ -124,10 +124,7 @@ describe('Location ', () => {
 
 			location.addEvents()
 
-			expect(window.addEventListener).toHaveBeenCalledWith(
-				'hashchange',
-				location.onRouteChange
-			)
+			expect(window.addEventListener).toHaveBeenCalledWith('hashchange', location.onRouteChange)
 		})
 
 		it('Should call the addEvents with history mode', () => {
@@ -341,20 +338,14 @@ describe('Location ', () => {
 		it('Should call the destroy with hash mode', () => {
 			location.destroy()
 
-			expect(window.removeEventListener).toHaveBeenCalledWith(
-				'hashchange',
-				location.onRouteChange
-			)
+			expect(window.removeEventListener).toHaveBeenCalledWith('hashchange', location.onRouteChange)
 		})
 
 		it('Should call the destroy with history mode', () => {
 			location.isHashMode = false
 			location.destroy()
 
-			expect(window.removeEventListener).toHaveBeenCalledWith(
-				'popstate',
-				location.onRouteChange
-			)
+			expect(window.removeEventListener).toHaveBeenCalledWith('popstate', location.onRouteChange)
 		})
 	})
 })
