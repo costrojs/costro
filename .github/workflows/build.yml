@@ -26,4 +26,4 @@ jobs:
       node-version: 22
       command-install: (cd ./sandbox && npm ci)
       command-test: (cd ./sandbox && npm run test)
-      command-build: (cd ./sandbox && npm run build)
+      command-build: (npm run build && cd ./sandbox && npm run build)
