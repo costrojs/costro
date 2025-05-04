@@ -1,4 +1,4 @@
-import { App, Link, Component, createStore, useStore } from 'costro'
+import { App, Component, Link, createStore, useStore } from 'costro'
 // import { h, F } from 'costro/jsx'
 
 function Navigation() {
@@ -83,7 +83,7 @@ class CustomComponent2 extends Component {
 	}
 }
 
-function String() {
+function StringFn() {
 	return `
         ${Link({ children: ['Home'], class: 'btn btn-info', 'data-test': 'ok', to: '/' }, true)}
         <h2>String</h2>
@@ -98,8 +98,8 @@ const svg = () => (
 		y="0"
 		viewBox="0 0 48 48"
 		width="50px"
-		height="50px"
-	>
+		height="50px">
+		<title>Demo</title>
 		<g>
 			<circle id="Oval" className="st0" cx="24" cy="24" r="24" fill="#fbd971" />
 			<path
@@ -148,7 +148,7 @@ const routes = [
 		path: '/custom-component-2'
 	},
 	{
-		component: String,
+		component: StringFn,
 		path: '/string'
 	},
 	{

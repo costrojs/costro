@@ -9,9 +9,9 @@ const svgHtmlElement = (
 		y="0"
 		viewBox="0 0 48 48"
 		width="50px"
-		height="50px"
-	>
+		height="50px">
 		<g>
+			<title>Demo</title>
 			<circle id="Oval" className="st0" cx="24" cy="24" r="24" fill="#fbd971" />
 			<path
 				className="st1"
@@ -31,6 +31,7 @@ const svgHtmlElement = (
 )
 const element = (
 	<>
+		{/* biome-ignore lint/a11y/useKeyWithClickEvents: Ignoring keyboard event requirement */}
 		<span disabled data-test className="ok" onClick={(e) => console.log(e)}>
 			<i>OK</i>
 			<InputComponent />
