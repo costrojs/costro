@@ -24,6 +24,6 @@ jobs:
     uses: yoriiis/actions/.github/workflows/test-and-build.yml@main
     with:
       node-version: 22
-      command-install: (cd ./sandbox && npm ci)
+      command-install: (cd ./sandbox && npm ci && ls -l node_modules)
       command-test: (cd ./sandbox && npm run test)
       command-build: (cd ./sandbox && npm run build)
