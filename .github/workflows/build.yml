@@ -45,6 +45,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
+          name: lib-build
           path: ./dist
 
   build-sandbox:
@@ -62,6 +63,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
+          name: lib-build
           path: ./dist
 
       - uses: actions/setup-node@v4
@@ -70,7 +72,8 @@ jobs:
           cache-dependency-path: ./package-lock.json
           node-version: 22
 
-      - run: cd ./sandbox
+      - run: ls -l
+      - run: ls -l ./dist
 
       - name: Install dependencies
         run: (cd ./sandbox && npm ci)
