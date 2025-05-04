@@ -1,4 +1,4 @@
-import { App, Component, Link, createStore, useStore } from 'costro'
+import { App, Component, Link } from 'costro'
 // import { h, F } from 'costro/jsx'
 
 function Navigation() {
@@ -57,7 +57,9 @@ class CustomComponent1 extends Component {
 	}
 
 	beforeRender() {
-		createStore({ name: this.props.title })
+		this.setStore({
+			name: this.props.title
+		})
 	}
 }
 
@@ -79,7 +81,7 @@ class CustomComponent2 extends Component {
 	}
 
 	beforeRender() {
-		this.name = useStore('name')
+		this.name = this.getStore('name', '/custom-component-1')
 	}
 }
 
@@ -98,7 +100,8 @@ const svg = () => (
 		y="0"
 		viewBox="0 0 48 48"
 		width="50px"
-		height="50px">
+		height="50px"
+	>
 		<title>Demo</title>
 		<g>
 			<circle id="Oval" className="st0" cx="24" cy="24" r="24" fill="#fbd971" />

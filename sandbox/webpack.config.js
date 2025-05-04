@@ -11,22 +11,7 @@ const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath)
 module.exports = (env, argv) => {
 	const isProduction = argv.mode === 'production'
 
-	const plugins = [
-		new webpack.optimize.ModuleConcatenationPlugin(),
-		new HtmlWebpackPlugin({
-			filename: 'index.html',
-			template: resolveApp('src/index.html'),
-			inject: false,
-			chunks: ['index'],
-			minify: true
-		})
-	]
-
-	if (!isProduction) {
-		plugins.push(new webpack.ProgressPlugin())
-	}
-
-	return {
+	const config = {
 		entry: {
 			index: resolveApp('src/index.js')
 		},
@@ -92,7 +77,19 @@ module.exports = (env, argv) => {
 			compress: true,
 			hot: true
 		},
-		plugins,
+		plugins: [
+			new webpack.optimize.ModuleConcatenationPlugin(),
+			new HtmlWebpackPlugin({
+				filename: 'index.html',
+				template: resolveApp('src/index.html'),
+				inject: false,
+				chunks: ['index'],
+				minify: true
+			})
+		],
+		resolve: {
+			symlinks: false
+		},
 		optimization: {
 			chunkIds: 'deterministic', // or 'named'
 			mergeDuplicateChunks: true,
@@ -110,10 +107,16 @@ module.exports = (env, argv) => {
 				}),
 				new CssMinimizerPlugin()
 			],
-			providedExports: false,
+			providedExports: true,
 			removeAvailableModules: true,
 			removeEmptyChunks: true,
 			splitChunks: false
 		}
 	}
+
+	if (!isProduction) {
+		config.plugins.push(new webpack.ProgressPlugin())
+	}
+
+	return config
 }
