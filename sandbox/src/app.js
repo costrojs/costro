@@ -100,8 +100,7 @@ const svg = () => (
 		y="0"
 		viewBox="0 0 48 48"
 		width="50px"
-		height="50px"
-	>
+		height="50px">
 		<title>Demo</title>
 		<g>
 			<circle id="Oval" className="st0" cx="24" cy="24" r="24" fill="#fbd971" />

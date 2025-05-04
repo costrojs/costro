@@ -13,10 +13,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # os: [ubuntu-latest, windows-latest, macos-latest]
-        # node-version: [18, 20, 22]
-        os: [ubuntu-latest]
-        node-version: [22]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [18, 20, 22]
 
     timeout-minutes: 10
     steps:
@@ -71,9 +69,6 @@ jobs:
           cache: 'npm'
           cache-dependency-path: ./package-lock.json
           node-version: 22
-
-      - run: ls -l
-      - run: ls -l ./dist
 
       - name: Install dependencies
         run: (cd ./sandbox && npm ci)
