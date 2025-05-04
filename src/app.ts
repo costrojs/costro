@@ -85,7 +85,9 @@ export default class App {
 
 		return new Map(
 			routes
-				.filter((route): boolean => this.isInterfaceTypeFromComponentGranted(route.component))
+				.filter((route): boolean =>
+					this.isInterfaceTypeFromComponentGranted(route.component)
+				)
 				.map((route: Route): any => {
 					if (typeof route.path === 'undefined') {
 						route.path = '*'
@@ -257,15 +259,18 @@ export default class App {
 				.then((componentView) => {
 					if (componentView && this.currentRoute) {
 						if (!this.currentRoute.interfaceType) {
-							this.currentRoute.interfaceType = this.getInterfaceTypeFromView(componentView)
+							this.currentRoute.interfaceType =
+								this.getInterfaceTypeFromView(componentView)
 							this.routes.set(this.currentRoute.path, this.currentRoute)
 						}
 
 						if (this.currentRoute.interfaceType === 'STRING') {
+							// biome-ignore lint/style/noParameterAssign: Reassigning a function parameter is intentional here.
 							componentView = this.transformLinksInStringComponent(componentView)
 						}
 						this.target.appendChild(componentView)
-						this.currentRoute.isComponentClass && this.currentRoute.component.afterRender()
+						this.currentRoute.isComponentClass &&
+							this.currentRoute.component.afterRender()
 					}
 				})
 				.catch((error) => {
@@ -289,7 +294,6 @@ export default class App {
 				this.currentRoute.component.prototype[key] = helpers[key]
 			}
 
-			// eslint-disable-next-line new-cap
 			const instance = new this.currentRoute.component(this.currentRoute.props)
 			this.currentRoute.component = instance
 			this.currentRoute.isComponentClassReady = true
@@ -317,7 +321,10 @@ export default class App {
 			}
 
 			return Promise.resolve(
-				this.currentRoute.component.call(this.currentRoute.component, this.currentRoute.props)
+				this.currentRoute.component.call(
+					this.currentRoute.component,
+					this.currentRoute.props
+				)
 			)
 		}
 
@@ -346,7 +353,9 @@ export default class App {
 		if (this.currentRoute) {
 			this.currentRoute.component.route.path = this.location.currentPath
 			if (this.currentRoute.dynamicSegments.length) {
-				const dynamicSegments = this.location.currentPath.match(this.currentRoute.pathRegExp)
+				const dynamicSegments = this.location.currentPath.match(
+					this.currentRoute.pathRegExp
+				)
 				if (dynamicSegments && dynamicSegments.length > 1) {
 					// Remove matching text as the first item
 					dynamicSegments.shift()
@@ -369,8 +378,11 @@ export default class App {
 	getInterfaceTypeFromView(component: string | Node): string | null {
 		if (typeof component === 'string') {
 			return 'STRING'
-		} else if (
-			([Node.ELEMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE] as number[]).includes(component.nodeType)
+		}
+		if (
+			([Node.ELEMENT_NODE, Node.DOCUMENT_FRAGMENT_NODE] as number[]).includes(
+				component.nodeType
+			)
 		) {
 			return 'ELEMENT_NODE'
 		}

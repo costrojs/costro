@@ -124,6 +124,7 @@ function appendChildren(
 	children: ChildrenAsArray
 ) {
 	if (!Array.isArray(children)) {
+		// biome-ignore lint/style/noParameterAssign: Reassigning is intentional here.
 		children = [children]
 	}
 

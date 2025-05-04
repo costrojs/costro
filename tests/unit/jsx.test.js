@@ -81,7 +81,6 @@ describe('JSX', () => {
 		})
 
 		it('Should call the createElement function with a string tag and children as node', () => {
-			// eslint-disable-next-line react/jsx-key
 			const list = [0, 1, 3].map((item) => <li>{item}</li>)
 			const button = document.createElement('button')
 			button.insertAdjacentHTML('beforeend', '<span>Inner</span>')

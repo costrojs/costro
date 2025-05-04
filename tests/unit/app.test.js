@@ -175,7 +175,6 @@ describe('App', () => {
 
 		it('Should call the constructor function with invalid mode', () => {
 			expect(() => {
-				// eslint-disable-next-line no-new
 				new App({
 					mode: 'test',
 					routes,

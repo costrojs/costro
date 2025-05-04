@@ -43,8 +43,7 @@ function extend(deep = false, ...objects: any[]): any {
 	return extended
 }
 
-// eslint-disable-next-line no-useless-escape
-const PATTERN_DYNAMIC_SEGMENT = `\/:([^\/]*)`
+const PATTERN_DYNAMIC_SEGMENT = '/:([^/]*)'
 
 /**
  * Get dynamic segments from path
