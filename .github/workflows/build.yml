@@ -10,20 +10,73 @@ on:
 
 jobs:
   build:
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [18, 20, 22]
-    uses: yoriiis/actions/.github/workflows/test-and-build.yml@main
-    with:
-      node-version: ${{ matrix.node-version }}
-      os: ${{ matrix.os }}
-      command-test: npm run build && npm run test
+        # os: [ubuntu-latest, windows-latest, macos-latest]
+        # node-version: [18, 20, 22]
+        os: [ubuntu-latest]
+        node-version: [22]
+
+    timeout-minutes: 10
+    steps:
+      - name: Configuring Git with line endings
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          cache: 'npm'
+          cache-dependency-path: ./package-lock.json
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm run test
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: ./dist
 
   build-sandbox:
-    uses: yoriiis/actions/.github/workflows/test-and-build.yml@main
-    with:
-      node-version: 22
-      command-install: (cd ./sandbox && npm ci)
-      command-test: (cd ./sandbox && npm run test)
-      command-build: (npm run build && cd ./sandbox && npm run build)
+    runs-on: ubuntu-latest
+    needs: build
+    timeout-minutes: 10
+    steps:
+      - name: Configuring Git with line endings
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
+      - uses: actions/checkout@v4
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          path: ./dist
+
+      - uses: actions/setup-node@v4
+        with:
+          cache: 'npm'
+          cache-dependency-path: ./package-lock.json
+          node-version: 22
+
+      - run: cd ./sandbox
+
+      - name: Install dependencies
+        run: (cd ./sandbox && npm ci)
+
+      - name: Test
+        run: (cd ./sandbox && npm run test)
+
+      - name: Build
+        run: (cd ./sandbox && npm run build)
