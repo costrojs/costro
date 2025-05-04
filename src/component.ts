@@ -1,11 +1,9 @@
-import type { RouteComponent, privateGetExternalStore } from './types'
-import { extend } from './utils'
+import type { RouteComponent } from './types'
 
 class Component {
 	store: Map<string, object>
 	props: any
 	route: RouteComponent
-	__getExternalStore!: privateGetExternalStore
 
 	// @ts-ignore
 	constructor(props?: any) {
@@ -51,44 +49,6 @@ class Component {
 	 */
 	render() {
 		throw new Error('You have to implement the function "render" for the component.')
-	}
-
-	/**
-	 * Set the component store
-	 * @param data Data to store
-	 */
-	setStore(data: any) {
-		const keys = Object.keys(data) as string[]
-		for (let i = 0, length = keys.length; i < length; i++) {
-			const key = keys[i]
-			// Merge store data if key already exists
-			if (this.store.has(key)) {
-				const value = this.store.get(key)
-				const newValue = extend(true, { [key]: value }, { [key]: data[key] })
-				this.store.set(key, newValue[key])
-			} else {
-				this.store.set(key, data[key])
-			}
-		}
-	}
-
-	/**
-	 * Get store from a key
-	 * Store can be retrieved from an external Component
-	 * @param key Store key
-	 * @param path Cmponent path
-	 * @returns Content of the store key
-	 */
-	getStore(key: string, path?: string): object | undefined | null {
-		if (key) {
-			if (path) {
-				return this.__getExternalStore(key, path)
-			}
-
-			return this.store.get(key)
-		}
-
-		return null
 	}
 }
 

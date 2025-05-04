@@ -1,6 +1,11 @@
 import Location from './location'
-import type { Component, Fn, HelperFunction, Route, RouteData } from './types'
-import { createRegExpFromPath, getDynamicSegmentsFromPath } from './utils'
+import type { Component, Fn, Route, RouteData } from './types'
+import { createRegExpFromPath, extend, getDynamicSegmentsFromPath } from './utils'
+
+const globalStore: Map<string, object> = new Map()
+
+export const createStore = (data: any) => App.createStore(data)
+export const useStore = (data: any) => App.useStore(data)
 
 export default class App {
 	target: HTMLElement
@@ -281,15 +286,6 @@ export default class App {
 	 */
 	initComponentInCache() {
 		if (this.currentRoute) {
-			// Inject helpers on the class prototype
-			const helpers = this.getComponentHelpers()
-			const keys = Object.keys(helpers) as string[]
-			for (let i = 0, length = keys.length; i < length; i++) {
-				const key = keys[i]
-				// @ts-ignore
-				this.currentRoute.component.prototype[key] = helpers[key]
-			}
-
 			const instance = new this.currentRoute.component(this.currentRoute.props)
 			this.currentRoute.component = instance
 			this.currentRoute.isComponentClassReady = true
@@ -405,21 +401,35 @@ export default class App {
 	}
 
 	/**
-	 * Get component helper functions
-	 * Function are inject as dependencies in the Component
-	 * @returns List of helper function
+	 * Set the store
+	 * @param data Data to store
 	 */
-	getComponentHelpers(): HelperFunction {
-		return {
-			__getExternalStore: (key: string, path: string): object | undefined | null => {
-				const route = this.getRouteMatch(path)
-				if (route?.isComponentClass && route.isComponentClassReady) {
-					return route.component.getStore(key)
-				}
-
-				return null
+	static createStore(data: any) {
+		const keys = Object.keys(data) as string[]
+		for (let i = 0, length = keys.length; i < length; i++) {
+			const key = keys[i]
+			// Merge store data if key already exists
+			if (globalStore.has(key)) {
+				const value = globalStore.get(key)
+				const newValue = extend(true, { [key]: value }, { [key]: data[key] })
+				globalStore.set(key, newValue[key])
+			} else {
+				globalStore.set(key, data[key])
 			}
 		}
+	}
+
+	/**
+	 * Get store from a key
+	 * @param key Store key
+	 * @returns Content of the store key
+	 */
+	static useStore(key: string): object | undefined | null {
+		if (key) {
+			return globalStore.get(key)
+		}
+
+		return null
 	}
 
 	/**

@@ -825,20 +825,10 @@ describe('App', () => {
 				}
 			}
 
-			const helpers = {
-				__getExternalStore: () => {
-					/* Empty */
-				}
-			}
-
-			app.getComponentHelpers = jest.fn().mockReturnValue(helpers)
 			app.routes.set = jest.fn()
 
 			app.initComponentInCache()
 
-			expect(app.getComponentHelpers).toHaveBeenCalled()
-			expect(app.currentRoute.component.__getExternalStore).toBeInstanceOf(Function)
-			expect(app.currentRoute.component.__getExternalStore).toBe(helpers.__getExternalStore)
 			expect(app.currentRoute.component.props).toStrictEqual({ name: 'John' })
 			expect(app.currentRoute.component.constructor.name).toBe('CustomComponent')
 			expect(app.currentRoute.isComponentClassReady).toBe(true)
@@ -1110,97 +1100,6 @@ describe('App', () => {
 			expect(result.isEqualNode(fragment)).toBe(true)
 			expect(result.outerHTML).toStrictEqual(fragment.outerHTML)
 			expect(result.querySelector('.btn').__customLink).toBe(true)
-		})
-	})
-
-	describe('getComponentHelpers', () => {
-		beforeEach(() => {
-			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
-			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
-				/* Empty */
-			})
-			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
-				/* Empty */
-			})
-
-			app = getInstance()
-		})
-
-		it('should call the getComponentHelpers function', () => {
-			app.location.getPath = jest.fn().mockReturnValue('/document-fragment')
-
-			const result = app.getComponentHelpers()
-
-			expect(result.__getExternalStore).toBeInstanceOf(Function)
-		})
-	})
-
-	describe('getComponentHelpers __getExternalStore', () => {
-		beforeEach(() => {
-			jest.spyOn(App.prototype, 'createRoutesData').mockReturnValue(customRoutes)
-			jest.spyOn(App.prototype, 'addEvents').mockImplementation(() => {
-				/* Empty */
-			})
-			jest.spyOn(App.prototype, 'onRouteChange').mockImplementation(() => {
-				/* Empty */
-			})
-
-			app = getInstance()
-		})
-
-		it('should call the __getExternalStore helper function', () => {
-			const route = customRoutes.get('/custom-component-2')
-
-			route.isComponentClassReady = true
-
-			route.component.getStore = jest.fn().mockReturnValue('John')
-			app.getRouteMatch = jest.fn().mockReturnValue(route)
-
-			const externalStore = app
-				.getComponentHelpers()
-				.__getExternalStore('name', '/custom-component-2')
-
-			expect(app.getRouteMatch).toHaveBeenCalledWith('/custom-component-2')
-			expect(route.component.getStore).toHaveBeenCalledWith('name')
-			expect(externalStore).toBe('John')
-		})
-
-		it('should call the __getExternalStore helper function with invalid route', () => {
-			app.getRouteMatch = jest.fn().mockReturnValue(undefined)
-
-			const externalStore = app.getComponentHelpers().__getExternalStore('name', '/unknown-route')
-
-			expect(externalStore).toBe(null)
-		})
-
-		it('should call the __getExternalStore helper function with not a component class', () => {
-			const route = customRoutes.get('/document-fragment')
-
-			app.getRouteMatch = jest.fn().mockReturnValue(route)
-			route.component.getStore = jest.fn()
-
-			const externalStore = app
-				.getComponentHelpers()
-				.__getExternalStore('name', '/document-fragment')
-
-			expect(route.component.getStore).not.toHaveBeenCalled()
-			expect(externalStore).toBe(null)
-		})
-
-		it('should call the __getExternalStore helper function with a component class not ready', () => {
-			const route = customRoutes.get('/custom-component-2')
-
-			route.isComponentClassReady = false
-
-			route.component.getStore = jest.fn()
-			app.getRouteMatch = jest.fn().mockReturnValue(route)
-
-			const externalStore = app
-				.getComponentHelpers()
-				.__getExternalStore('name', '/custom-component-2')
-
-			expect(route.component.getStore).not.toHaveBeenCalled()
-			expect(externalStore).toBe(null)
 		})
 	})
 
