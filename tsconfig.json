@@ -11,7 +11,7 @@
 		"jsxFragmentFactory": "F",
 		"lib": ["DOM.Iterable", "dom", "es2021"],
 		"module": "esnext",
-		"moduleResolution": "node",
+		"moduleResolution": "bundler",
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"strict": true,

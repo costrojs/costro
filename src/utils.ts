@@ -43,8 +43,7 @@ function extend(deep = false, ...objects: any[]): any {
 	return extended
 }
 
-// eslint-disable-next-line no-useless-escape
-const PATTERN_DYNAMIC_SEGMENT = `\/:([^\/]*)`
+const PATTERN_DYNAMIC_SEGMENT = '/:([^/]*)'
 
 /**
  * Get dynamic segments from path
@@ -72,14 +71,10 @@ function getDynamicSegmentsFromPath(path: string): string[] {
  * @returns Path transformed in RegExp
  */
 function createRegExpFromPath(path: string): string {
-	return (
-		'^' +
-		path.replace(
-			new RegExp(PATTERN_DYNAMIC_SEGMENT, 'g'),
-			PATTERN_DYNAMIC_SEGMENT.replace(':', '')
-		) +
-		'$'
-	)
+	return `^${path.replace(
+		new RegExp(PATTERN_DYNAMIC_SEGMENT, 'g'),
+		PATTERN_DYNAMIC_SEGMENT.replace(':', '')
+	)}$`
 }
 
 export { extend, hasOwn, getDynamicSegmentsFromPath, createRegExpFromPath }
