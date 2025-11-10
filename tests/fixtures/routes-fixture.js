@@ -1,4 +1,4 @@
-import { Component, Link, navigate } from '../../dist/costro'
+import { Component, Link, createStore, navigate, useStore } from '../../dist/costro'
 import { F, h } from '../../dist/jsx'
 
 function Navigation() {
@@ -58,7 +58,7 @@ class CustomComponent1 extends Component {
 	}
 
 	beforeRender() {
-		this.setStore({
+		createStore({
 			name: this.props.title
 		})
 	}
@@ -82,7 +82,7 @@ class CustomComponent2 extends Component {
 	}
 
 	beforeRender() {
-		this.name = this.getStore('name', '/custom-component-1')
+		this.name = useStore('name')
 	}
 }
 

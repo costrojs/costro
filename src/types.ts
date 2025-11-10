@@ -14,14 +14,12 @@ export type Component = {
 	afterRender: Fn
 	beforeDestroy: Fn
 	beforeRender: Fn
-	getStore: (key: string) => object | undefined | Map<string, object>
 	prototype: {
 		__isComponent: boolean
 		isReactComponent: object
 	}
 	render: () => DocumentFragment | HTMLElement | SVGElement | string
 	route: RouteComponent
-	setStore: (data: any) => void
 }
 
 export type Route = {
@@ -44,12 +42,6 @@ export type RouteData = {
 export type Attributes = Record<string, string>
 
 export type onRouteChangeFunction = (currentPath: string) => void
-
-export type privateGetExternalStore = (key: string, path: string) => object | undefined | null
-
-export type HelperFunction = {
-	__getExternalStore: privateGetExternalStore
-}
 
 export type ElementAttributes = Record<string, string | Fn>
 
