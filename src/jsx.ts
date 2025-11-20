@@ -1,4 +1,4 @@
-import type { Component, Constructable, ElementAttributes, createElementFunction } from './types'
+import type { Component, Constructable, createElementFunction, ElementAttributes } from './types'
 
 type ChildrenAsArray = string[] | HTMLElement[] | SVGElement[]
 
@@ -84,14 +84,14 @@ function createAttributes(
 		} else if (value instanceof Object) {
 			const styleProperty = Object.keys(value)
 			for (let i = 0, length = styleProperty.length; i < length; i++) {
-				// @ts-ignore
+				// @ts-expect-error
 				element.style[styleProperty[i]] = value[styleProperty[i]]
 			}
 		}
 	} else if (name === 'dataset' && value instanceof Object) {
 		const datasetProperty = Object.keys(value)
 		for (let i = 0, length = datasetProperty.length; i < length; i++) {
-			// @ts-ignore
+			// @ts-expect-error
 			element.dataset[datasetProperty[i]] = value[datasetProperty[i]]
 		}
 	} else if (name === 'innerHTML' && valueIsString) {
@@ -124,7 +124,6 @@ function appendChildren(
 	children: ChildrenAsArray
 ) {
 	if (!Array.isArray(children)) {
-		// biome-ignore lint/style/noParameterAssign: Reassigning is intentional here.
 		children = [children]
 	}
 
@@ -154,11 +153,7 @@ function appendChildren(
  * @param options.children The children of the fragment
  * @returns Document fragment with his children
  */
-function Fragment({
-	children = []
-}: {
-	children?: ChildrenAsArray
-} = {}): DocumentFragment {
+function Fragment({ children = [] }: { children?: ChildrenAsArray } = {}): DocumentFragment {
 	const fragment = document.createDocumentFragment()
 	children.length && appendChildren(fragment, children)
 	return fragment
@@ -210,10 +205,10 @@ function jsx(
 			const attributeName = Object.keys(attributes)
 			for (let i = 0, length = attributeName.length; i < length; i++) {
 				const name = attributeName[i]
-				// @ts-ignore
+				// @ts-expect-error
 				const value = attributes[name]
 				if (name.startsWith('on') && typeof value === 'function') {
-					// @ts-ignore
+					// @ts-expect-error
 					element[name.toLowerCase()] = value
 				} else {
 					createAttributes(element, name, value, isSvg)

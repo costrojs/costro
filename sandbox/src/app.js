@@ -1,4 +1,5 @@
 import { App, Component, Link } from 'costro'
+
 // import { h, F } from 'costro/jsx'
 
 function Navigation() {
@@ -122,11 +123,7 @@ const svg = () => (
 )
 
 function notFound() {
-	return (
-		<>
-			<h2>notFound</h2>
-		</>
-	)
+	return <h2>notFound</h2>
 }
 
 const routes = [

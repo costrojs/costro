@@ -1,4 +1,5 @@
-import { Fragment, createElement, h, jsx } from '@src/jsx'
+// biome-ignore lint/correctness/noUnusedImports: h is used by JSX transformation
+import { createElement, Fragment, h, jsx } from '@src/jsx'
 
 describe('JSX', () => {
 	describe('jsx to support automatic runtime', () => {

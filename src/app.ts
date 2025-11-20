@@ -161,7 +161,7 @@ export default class App {
 	onClickOnApp(e: Event) {
 		const target = e.target as HTMLElement
 
-		// @ts-ignore
+		// @ts-expect-error
 		if (target.__customLink) {
 			e.preventDefault()
 
@@ -262,7 +262,6 @@ export default class App {
 						}
 
 						if (this.currentRoute.interfaceType === 'STRING') {
-							// biome-ignore lint/style/noParameterAssign: Reassigning a function parameter is intentional here.
 							componentView = this.transformLinksInStringComponent(componentView)
 						}
 						this.target.appendChild(componentView)
@@ -286,7 +285,7 @@ export default class App {
 			const keys = Object.keys(helpers) as string[]
 			for (let i = 0, length = keys.length; i < length; i++) {
 				const key = keys[i]
-				// @ts-ignore
+				// @ts-expect-error
 				this.currentRoute.component.prototype[key] = helpers[key]
 			}
 
@@ -352,7 +351,6 @@ export default class App {
 					dynamicSegments.shift()
 
 					for (let i = 0, length = dynamicSegments.length; i < length; i++) {
-						// @ts-ignore
 						const segmentKey = this.currentRoute.dynamicSegments[i]
 						this.currentRoute.component.route.params[segmentKey] = dynamicSegments[i]
 					}
@@ -395,7 +393,7 @@ export default class App {
 			const link = customLinks[i]
 			link.classList.remove('__customLink')
 
-			// @ts-ignore
+			// @ts-expect-error
 			link.__customLink = true
 		}
 

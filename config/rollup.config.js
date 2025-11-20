@@ -13,7 +13,7 @@ const banner = `/*!\n * Costro v${
 // Terser is executed after the banner plugin
 const terserConfig = terser({
 	format: {
-		comments: (node, comment) => {
+		comments: (_node, comment) => {
 			if (comment.type === 'comment2') {
 				return /Yoriiis/i.test(comment.value)
 			}

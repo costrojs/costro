@@ -8,7 +8,7 @@
 		"editor.defaultFormatter": "biomejs.biome",
 		"editor.tabSize": 4,
 		"editor.rulers": [100],
-		"[javascript][typescript][postcss][html][markdown][json][markdown]": {
+		"[javascript][typescript][css][html][markdown][json][markdown]": {
 			"editor.formatOnSave": true
 		},
 		"[markdown]": {
@@ -28,7 +28,7 @@
 			"editor.autoIndent": "none"
 		},
 		"files.associations": {
-			"*.css": "postcss",
+			"*.css": "css",
 			"*.html": "html",
 			"*.ts": "typescript",
 			"*.json": "json",
