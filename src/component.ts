@@ -1,4 +1,4 @@
-import type { RouteComponent, privateGetExternalStore } from './types'
+import type { privateGetExternalStore, RouteComponent } from './types'
 import { extend } from './utils'
 
 class Component {
@@ -7,9 +7,7 @@ class Component {
 	route: RouteComponent
 	__getExternalStore!: privateGetExternalStore
 
-	// @ts-ignore
 	constructor(props?: any) {
-		// @ts-ignore
 		this.props = props
 		this.route = {
 			params: {},
@@ -92,12 +90,12 @@ class Component {
 	}
 }
 
-// @ts-ignore
+// @ts-expect-error
 Component.prototype.__isComponent = true
 
 // Used by jsx-dom to check if the function is a class component
 // The class will be initialized and the render function automatically called
-// @ts-ignore
+// @ts-expect-error
 Component.prototype.isReactComponent = {}
 
 export default Component

@@ -1,5 +1,4 @@
 import { Component, Link, navigate } from '../../dist/costro'
-import { F, h } from '../../dist/jsx'
 
 function Navigation() {
 	return (

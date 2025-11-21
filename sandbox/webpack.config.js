@@ -8,7 +8,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const appDirectory = fs.realpathSync(process.cwd())
 const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath)
 
-module.exports = (env, argv) => {
+module.exports = (_env, argv) => {
 	const isProduction = argv.mode === 'production'
 
 	const config = {

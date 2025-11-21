@@ -129,7 +129,7 @@ export default class Location {
 	 */
 	destroy() {
 		window.removeEventListener(this.isHashMode ? 'hashchange' : 'popstate', this.onRouteChange)
-		// @ts-ignore Use only for the destroy context
+		// @ts-expect-error Use only for the destroy context
 		this.currentPath = null
 	}
 }

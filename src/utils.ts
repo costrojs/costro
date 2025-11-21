@@ -5,7 +5,7 @@
  * @returns Object has the property key
  */
 function hasOwn(obj: any, key: string): any {
-	return Object.prototype.hasOwnProperty.call(obj, key)
+	return Object.hasOwn(obj, key)
 }
 
 /**
@@ -25,10 +25,10 @@ function extend(deep = false, ...objects: any[]): any {
 			if (hasOwn(obj, key)) {
 				// If deep merge and property is an object, merge properties
 				if (deep && Object.prototype.toString.call(obj[key]) === '[object Object]') {
-					// @ts-ignore
+					// @ts-expect-error
 					extended[key] = extend(true, extended[key], obj[key])
 				} else {
-					// @ts-ignore
+					// @ts-expect-error
 					extended[key] = obj[key]
 				}
 			}

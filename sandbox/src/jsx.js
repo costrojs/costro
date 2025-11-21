@@ -32,6 +32,7 @@ const svgHtmlElement = (
 const element = (
 	<>
 		{/* biome-ignore lint/a11y/useKeyWithClickEvents: Ignoring keyboard event requirement */}
+		{/* biome-ignore lint/a11y/noStaticElementInteractions: This is a demo file */}
 		<span disabled data-test className="ok" onClick={(e) => console.log(e)}>
 			<i>OK</i>
 			<InputComponent />

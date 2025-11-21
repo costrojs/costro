@@ -45,7 +45,7 @@ export default function Link(
 	const keys = Object.keys(attrs) as string[]
 	for (let i = 0, length = keys.length; i < length; i++) {
 		const key = keys[i]
-		// @ts-ignore
+		// @ts-expect-error
 		const value = attrs[key]
 
 		// Exclude __self and __source keys
@@ -56,7 +56,7 @@ export default function Link(
 
 	// Insert the flag for the event delegation
 	// Must be executed after adding attributes (conflict between setAttribute('class') and classList.add())
-	// @ts-ignore
+	// @ts-expect-error
 	element.__customLink = true
 	if (isHtml) {
 		element.classList.add('__customLink')
