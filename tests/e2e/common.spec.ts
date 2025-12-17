@@ -36,7 +36,7 @@ test.describe(`Test`, () => {
 	test('should check the content of /document-fragment', async ({ page }) => {
 		await page.goto(`http://localhost:3000/document-fragment`)
 		const content = await page.locator('.content')
-		expect(content).toHaveText('DocumentFragment')
+		expect(content).toHaveText('DocumentFragmenta')
 	})
 
 	test('should check the content of /custom-component-1', async ({ page }) => {
