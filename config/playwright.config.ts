@@ -1,4 +1,4 @@
-import { defineConfig } from '@playwright/test'
+import { defineConfig, devices } from '@playwright/test'
 
 export default defineConfig({
 	testDir: '../tests/e2e',
@@ -28,34 +28,34 @@ export default defineConfig({
 				channel: 'chrome',
 				viewport: { width: 1280, height: 800 }
 			}
+		},
+		{
+			name: 'Chrome Mobile (Pixel 7)',
+			use: {
+				...devices['Pixel 7'],
+				channel: 'chrome'
+			}
+		},
+		{
+			name: 'Firefox Desktop',
+			use: {
+				browserName: 'firefox',
+				viewport: { width: 1280, height: 800 }
+			}
+		},
+		{
+			name: 'Safari Desktop (WebKit)',
+			use: {
+				browserName: 'webkit',
+				viewport: { width: 1280, height: 800 }
+			}
+		},
+		{
+			name: 'Safari Mobile (iPhone 14)',
+			use: {
+				...devices['iPhone 14'],
+				browserName: 'webkit'
+			}
 		}
-		// {
-		// 	name: 'Chrome Mobile (Pixel 7)',
-		// 	use: {
-		// 		...devices['Pixel 7'],
-		// 		channel: 'chrome'
-		// 	}
-		// },
-		// {
-		// 	name: 'Firefox Desktop',
-		// 	use: {
-		// 		browserName: 'firefox',
-		// 		viewport: { width: 1280, height: 800 }
-		// 	}
-		// },
-		// {
-		// 	name: 'Safari Desktop (WebKit)',
-		// 	use: {
-		// 		browserName: 'webkit',
-		// 		viewport: { width: 1280, height: 800 }
-		// 	}
-		// },
-		// {
-		// 	name: 'Safari Mobile (iPhone 14)',
-		// 	use: {
-		// 		...devices['iPhone 14'],
-		// 		browserName: 'webkit'
-		// 	}
-		// }
 	]
 })
