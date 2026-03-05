@@ -7,7 +7,7 @@ module.exports = {
 		'^@src(.*)$': '<rootDir>/src$1'
 	},
 	modulePaths: ['<rootDir>/src'],
-	preset: 'ts-jest/presets/js-with-babel',
+	preset: 'ts-jest',
 	resetMocks: true,
 	resetModules: true,
 	rootDir: '../',
