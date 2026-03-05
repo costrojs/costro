@@ -2,22 +2,6 @@ import Location from '@src/location'
 
 let location
 
-/**
- * Mock implementation of  window.location
- * @param {Object} options Url
- * @param {String} options.href Url
- * @param {String} options.pathname Pathname's url
- */
-function mockWindowLocation({ href = '', pathname = '' } = {}) {
-	Object.defineProperty(window, 'location', {
-		value: {
-			href,
-			pathname
-		},
-		writable: true
-	})
-}
-
 const callback = () => {
 	/* Empty */
 }
@@ -177,9 +161,7 @@ describe('Location ', () => {
 		})
 
 		it('Should call the getPath with hash mode and hash in the url', () => {
-			mockWindowLocation({
-				href: 'http://localhost/#/document-fragment'
-			})
+			window.location.href = 'http://localhost/#/document-fragment'
 
 			location.getPath.mockRestore()
 			const result = location.getPath()
@@ -188,9 +170,7 @@ describe('Location ', () => {
 		})
 
 		it('Should call the getPath with hash mode and no hash in the url', () => {
-			mockWindowLocation({
-				href: 'http://localhost/'
-			})
+			window.location.href = 'http://localhost/'
 
 			location.getPath.mockRestore()
 			const result = location.getPath()
@@ -199,9 +179,7 @@ describe('Location ', () => {
 		})
 
 		it('Should call the getPath with history mode', () => {
-			mockWindowLocation({
-				pathname: '/document-fragment'
-			})
+			window.history.pushState({}, '', '/document-fragment')
 			location.stripBasePath = jest.fn().mockReturnValue('/document-fragment')
 
 			location.getPath.mockRestore()
@@ -277,7 +255,7 @@ describe('Location ', () => {
 
 			location.setPath('/document-fragment')
 
-			expect(window.location.hash).toBe('/document-fragment')
+			expect(window.location.hash).toBe('#/document-fragment')
 			expect(window.history.pushState).not.toHaveBeenCalled()
 			expect(location.callback).not.toHaveBeenCalled()
 		})
