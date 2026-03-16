@@ -13,5 +13,3 @@ jobs:
     uses: yoriiis/actions/.github/workflows/npm-publish.yml@main
     with:
       command-test: npm run build && npm run test
-    secrets:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
